@@ -1,7 +1,11 @@
-# 🧠 toocans-broker-api-docs
+# toocans-broker-api-docs
 
-本 API 文档基于 OpenAPI 规范生成，包含用户注册、登录和个人信息获取接口。
+本 API 旨在提供给我们的代理商进行链上资产对接的能力
 
+## 基础信息
+开放api访问域名：
+预发布环境 - https://pre-api-broker.toocans.com
+生产环境 - https://api-broker.toocans.com
 ## 接口列表
 
 - [注册用户](auth/register.md)
