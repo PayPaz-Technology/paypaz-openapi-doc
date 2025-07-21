@@ -1,4 +1,4 @@
-# 🧠 toocans-broker-api-docs
+# toocans-broker-api-docs
 
 本 API 文档基于 OpenAPI 规范生成，包含用户注册、登录和个人信息获取接口。
 
