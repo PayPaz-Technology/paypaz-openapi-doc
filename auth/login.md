@@ -1,14 +1,6 @@
-# 登录方法
-  email登陆json 示例
-  {
-     "clientId": "24b5d2a7f4714409b4cc60bafc1dd2f6",
-     "grantType": "email", 授权类型
-     "code": null,
-     "uuid": null,
-     "channel": null, 渠道
-     "source": null, 来源
-     "inputInviteCode": null, 输入邀请码
-     "appInfo": null,
+# 📌 POST /auth/login
+
+email登陆json 示例 { "clientId": "24b5d2a7f4714409b4cc60bafc1dd2f6", "grantType": "email", 授权类型 "code": null, "uuid": null, "channel": null, 渠道 "source": null, 来源 "inputInviteCode": null, 输入邀请码 "appInfo": null,
 
 ## OpenAPI Specification
 
