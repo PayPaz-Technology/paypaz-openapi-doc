@@ -1,6 +1,3 @@
-# 修改保存代码生成业务
-
-## OpenAPI Specification
 openapi: 3.0.1
 info:
   title: ''
