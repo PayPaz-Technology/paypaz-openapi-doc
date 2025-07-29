@@ -33,8 +33,8 @@
    - `timestamp`：与 `TOOCANS-ACCESS-TIMESTAMP` 请求头相同的毫秒级时间戳
    - `method`：请求方法，字母全部大写（GET/POST）
    - `RECV-WINDOW`：接收窗口值，与 `TOOCANS-ACCESS-RECV-WINDOW` 请求头相同
-   - `requestPath`：请求接口路径，如 `/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=client12we22sssssssssss2sc3`
-   - `body`：请求主体的字符串，如果请求没有主体（通常为 GET 请求）则可省略
+   - `requestPath`：请求接口路径，无需排序 如 `/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=client12we22sssssssssss2sc3`
+   - `body`：请求主体的字符串，如果请求没有主体（通常为 GET 请求）则可省略，无需排序
 
 2. 使用 API Secret Key 对签名原文进行 HMAC SHA256 加密
 
