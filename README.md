@@ -10,7 +10,7 @@
 
 | 环境       | 说明         | 域名地址                              |
 |------------|--------------|----------------------------------------|
-| 预发布环境 | 用于测试联调 | [`https://pre-api-broker.toocans.com`](https://pre-api-broker.toocans.com) |
+| 预发布环境 | 用于测试联调 | [`https://toocans-brokerapi-uat.bdy.tech`](https://toocans-brokerapi-uat.bdy.tech) |
 | 生产环境   | 实际上线使用 | [`https://api-broker.toocans.com`](https://api-broker.toocans.com)       |
 
 ---
