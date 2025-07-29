@@ -46,7 +46,7 @@ const timestamp = Date.now().toString();
 const method = 'GET';
 const recvWindow = '10000';
 const requestPath = '/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
-const body = ''; // GET 请求通常没有请求体，如果是post，jsonbodyString
+const body = ''; // GET 请求通常没有请求体，如果是post，json 的字符串
 
 const signatureString = timestamp + method + recvWindow + requestPath + body;
 const signature = CryptoJS.enc.Base64.stringify(
