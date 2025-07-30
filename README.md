@@ -42,7 +42,7 @@ toocans后台管理生成API的密钥对基于HMAC算法运作的，您将获得
 
 3. 将加密结果进行 Base-64 编码，得到最终签名
 
-**示例GET：**
+**签名TOOCANS-ACCESS-SIGN示例GET：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'GET';
@@ -55,7 +55,7 @@ const signature = CryptoJS.enc.Base64.stringify(
   CryptoJS.HmacSHA256(signatureString, secretKey)
 );
 ```
-**示例POST：**
+**签名TOOCANS-ACCESS-SIGN示例POST：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'POST';
@@ -76,6 +76,36 @@ const signatureString = timestamp + method + recvWindow + requestPath + bodyStri
 const signature = CryptoJS.enc.Base64.stringify(
   CryptoJS.HmacSHA256(signatureString, secretKey)
 );
+```
+
+## http請求示例
+**示例GET：**
+```javascript
+GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
+Host: brokerapi.toocans.com
+-H 'TOOCANS-ACCESS-KEY: XXXXXXXXXX' \
+-H 'TOOCANS-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
+-H 'TOOCANS-ACCESS-TIMESTAMP: 1658384431891' \
+-H 'TOOCANS-ACCESS-RECV-WINDOW: 5000' \
+-H 'Content-Type: application/json' 
+```
+
+**示例POST：**
+```javascript
+POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal HTTP/1.1
+Host: brokerapi.toocans.com
+-H 'TOOCANS-ACCESS-KEY: XXXXXXXXXX' \
+-H 'TOOCANS-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
+-H 'TOOCANS-ACCESS-TIMESTAMP: 1658384431891' \
+-H 'TOOCANS-ACCESS-RECV-WINDOW: 5000' \
+-H 'Content-Type: application/json' \
+-d '{
+    "subUid": 123456789,
+    "tokenId": "TBSC_BNB",
+    "address": "0x1234567890abcdef1234567890abcdef12345678",
+    "amount": 0.01,
+    "clientWithdrawalId": "client12345678901234"
+}'
 ```
 
 ## 响应格式
