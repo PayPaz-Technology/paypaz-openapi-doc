@@ -1,4 +1,4 @@
-# Toocans Broker OpenAPI 文档
+# Toocans Broker OpenAPI 接入指南
 
 本文档提供了 Toocans Broker OpenAPI 接口的详细信息。这些 API 允许外部系统与 Toocans Broker 平台集成，用于管理子用户、资产、充值和提币。
 
@@ -6,7 +6,7 @@
 
 ## 基础信息
 
-### 开放api访问域名列表：
+### REST接口访问域名列表：
 
 | 环境       | 说明         | 域名地址                              |
 |------------|--------------|----------------------------------------|
@@ -14,9 +14,11 @@
 | 生产环境   | 实际上线使用 | [`https://brokerapi.toocans.com`](https://brokerapi.toocans.com)       |
 
 ---
-## 认证
+## 关于鉴权的api密钥
+toocans后台管理生成API的密钥对基于HMAC算法运作的，您将获得一对公钥和私钥，请务必妥善保管。
+### 公共参数
 
-所有 REST 私有请求都必须包含以下请求头：
+所有需要签名认证的接口都需要包好以下http的请求头：
 
 - `TOOCANS-ACCESS-KEY`：字符串类型的 API Key
 - `TOOCANS-ACCESS-SIGN`：使用 HMAC SHA256 哈希函数获得的哈希值，再使用 Base-64 编码（详见下方签名说明）
@@ -40,7 +42,7 @@
 
 3. 将加密结果进行 Base-64 编码，得到最终签名
 
-**示例：**
+**示例GET：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'GET';
@@ -49,6 +51,28 @@ const requestPath = '/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 const body = ''; // GET 请求通常没有请求体，如果是post，json 的字符串
 
 const signatureString = timestamp + method + recvWindow + requestPath + body;
+const signature = CryptoJS.enc.Base64.stringify(
+  CryptoJS.HmacSHA256(signatureString, secretKey)
+);
+```
+**示例POST：**
+```javascript
+const timestamp = Date.now().toString();
+const method = 'POST';
+const recvWindow = '10000';
+const requestPath = '/t-api/toocans-broker-api/v1/op/openapi/createWithdrawal';
+const body = {
+    "subUid": 123456789,
+    "tokenId": "TBSC_BNB",
+    "address": "0x1234567890abcdef1234567890abcdef12345678",
+    "amount": 0.01,
+    "clientWithdrawalId": "client12345678901234"
+};
+
+// Convert body to JSON string for the signature
+const bodyString = JSON.stringify(body);
+
+const signatureString = timestamp + method + recvWindow + requestPath + bodyString;
 const signature = CryptoJS.enc.Base64.stringify(
   CryptoJS.HmacSHA256(signatureString, secretKey)
 );
