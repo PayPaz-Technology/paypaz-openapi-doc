@@ -1,4 +1,4 @@
-# 基础数据
+# 基础数据 - 不需要签名认证
 
 <a id="opIdserverTime"></a>
 
