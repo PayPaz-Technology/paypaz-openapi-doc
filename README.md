@@ -119,9 +119,6 @@ Host: brokerapi.toocans.com
   "data": {}         // 响应数据，结构因端点而异
 }
 ```
-## 接口导航
-- [业务接口，需要签名认证](/toocans-broker-api.md)
-- [公用接口，不需要签名认证](/base-data-api.md)
 
 ### HTTP 状态码
 
