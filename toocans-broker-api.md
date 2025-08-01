@@ -1,3 +1,4 @@
+# Authentication
 
 # Toocans Broker OpenAPI 文档
 
@@ -95,7 +96,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 |»» keepOrderBy|boolean|false|none||none|
 |»» keepSubSelectOrderBy|boolean|false|none||none|
 |»» asyncCount|boolean|false|none||none|
-|»» chain|[Chain](#schemachain)|false|none||none|
 |»» result|[[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)]|false|none||none|
 |»»» id|integer(int64)|false|none||平台生成|
 |»»» clientWithdrawalId|string|false|none||客户端订单ID|
@@ -113,6 +113,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 |»»» arriveTime|integer(int64)|false|none||提现到账时间|
 |»»» totalQuantity|number|false|none||用户输入的提现数量|
 |»»» txId|string|false|none||transaction hash|
+|»» chain|[Chain](#schemachain)|false|none||none|
 |»» empty|boolean|false|none||none|
 |»» first|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
 |»»» id|integer(int64)|false|none||平台生成|
@@ -237,7 +238,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 |»» keepOrderBy|boolean|false|none||none|
 |»» keepSubSelectOrderBy|boolean|false|none||none|
 |»» asyncCount|boolean|false|none||none|
-|»» chain|[Chain](#schemachain)|false|none||none|
 |»» result|[[DepositOrderOpenApiVO](#schemadepositorderopenapivo)]|false|none||[充值订单OpenAPI响应VO]|
 |»»» id|integer(int64)|false|none||充值订单ID|
 |»»» tokenId|string|false|none||币种ID|
@@ -251,6 +251,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 |»»» updatedAt|integer(int64)|false|none||更新时间（毫秒时间戳）|
 |»»» userId|integer(int64)|false|none||用户ID（主账号）|
 |»»» subUserId|integer(int64)|false|none||子用户ID|
+|»» chain|[Chain](#schemachain)|false|none||none|
 |»» empty|boolean|false|none||none|
 |»» first|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
 |»»» id|integer(int64)|false|none||充值订单ID|
@@ -1048,8 +1049,8 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |» keepOrderBy|boolean|false|none||none|
 |» keepSubSelectOrderBy|boolean|false|none||none|
 |» asyncCount|boolean|false|none||none|
-|» chain|[Chain](#schemachain)|false|none||none|
 |» result|[[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)]|false|none||none|
+|» chain|[Chain](#schemachain)|false|none||none|
 |» empty|boolean|false|none||none|
 |» first|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
 |» last|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
@@ -1112,8 +1113,8 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |» keepOrderBy|boolean|false|none||none|
 |» keepSubSelectOrderBy|boolean|false|none||none|
 |» asyncCount|boolean|false|none||none|
-|» chain|[Chain](#schemachain)|false|none||none|
 |» result|[[DepositOrderOpenApiVO](#schemadepositorderopenapivo)]|false|none||[充值订单OpenAPI响应VO]|
+|» chain|[Chain](#schemachain)|false|none||none|
 |» empty|boolean|false|none||none|
 |» first|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
 |» last|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
