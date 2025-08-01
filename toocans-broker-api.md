@@ -32,7 +32,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
-|Authorization|header|string| 否 |none|
 |body|body|[QueryWithdrawalOrderRequest](#schemaquerywithdrawalorderrequest)| 否 |none|
 
 > 返回示例
@@ -48,7 +47,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 |状态码|状态码含义|说明|数据模型|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|提币订单分页列表|[RPageWithdrawalOrderOpenApiVO](#schemarpagewithdrawalorderopenapivo)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized|string|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal Server Error|Inline|
 
 ### 返回数据结构
@@ -178,7 +176,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
-|Authorization|header|string| 否 |none|
 |body|body|[QueryDepositOrderRequest](#schemaquerydepositorderrequest)| 否 |none|
 
 > 返回示例
@@ -194,7 +191,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 |状态码|状态码含义|说明|数据模型|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|充值订单分页列表|[RPageDepositOrderOpenApiVO](#schemarpagedepositorderopenapivo)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized|string|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal Server Error|Inline|
 
 ### 返回数据结构
