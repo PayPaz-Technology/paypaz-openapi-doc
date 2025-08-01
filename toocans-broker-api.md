@@ -1,5 +1,3 @@
-# Authentication
-
 # Toocans Broker OpenAPI 文档
 
 <a id="opIdqueryWithdrawalOrders"></a>
@@ -16,13 +14,13 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "clientWithdrawalId": "client12345678",
   "tokenId": "TBSC_BNB",
   "txId": "0xabcd1234...",
-  "startTime": 1626307200000,
-  "endTime": 1626393600000,
+  "startTime": "1626307200000",
+  "endTime": "1626393600000",
   "pageNo": 1,
   "pageSize": 10
 }
@@ -39,7 +37,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":0,"clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":0,"subUserId":0,"address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":0,"updatedAt":0,"arriveTime":0,"totalQuantity":0,"txId":"string"}]}
+{"code":0,"msg":"string","data":[{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}]}
 ```
 
 ### 返回结果
@@ -47,6 +45,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 |状态码|状态码含义|说明|数据模型|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|提币订单分页列表|[RPageWithdrawalOrderOpenApiVO](#schemarpagewithdrawalorderopenapivo)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized|string|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal Server Error|Inline|
 
 ### 返回数据结构
@@ -60,93 +59,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
 |» data|[[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)]|false|none||none|
-|»» id|integer(int64)|false|none||平台生成|
-|»» clientWithdrawalId|string|false|none||客户端订单ID|
-|»» transactionId|string|false|none||订单ID|
-|»» tokenId|string|false|none||tokenId|
-|»» chainTokenId|string|false|none||链tokenId|
-|»» userId|integer(int64)|false|none||none|
-|»» subUserId|integer(int64)|false|none||企业-子用户id|
-|»» address|string|false|none||提现地址 用户的|
-|»» arriveQuantity|number|false|none||实际提币数量|
-|»» status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|»» withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|»» createdAt|integer(int64)|false|none||创建时间|
-|»» updatedAt|integer(int64)|false|none||更新时间|
-|»» arriveTime|integer(int64)|false|none||提现到账时间|
-|»» totalQuantity|number|false|none||用户输入的提现数量|
-|»» txId|string|false|none||transaction hash|
-|»» stackTrace|string|false|none||none|
-|»» pageNum|integer(int32)|false|none||none|
-|»» pageSize|integer(int32)|false|none||none|
-|»» startRow|integer(int64)|false|none||none|
-|»» endRow|integer(int64)|false|none||none|
-|»» total|integer(int64)|false|none||none|
-|»» pages|integer(int32)|false|none||none|
-|»» count|boolean|false|none||none|
-|»» reasonable|boolean|false|none||none|
-|»» pageSizeZero|boolean|false|none||none|
-|»» countColumn|string|false|none||none|
-|»» orderBy|string|false|none||none|
-|»» orderByOnly|boolean|false|none||none|
-|»» boundSqlInterceptor|[BoundSqlInterceptor](#schemaboundsqlinterceptor)|false|none||none|
-|»» dialectClass|string|false|none||none|
-|»» keepOrderBy|boolean|false|none||none|
-|»» keepSubSelectOrderBy|boolean|false|none||none|
-|»» asyncCount|boolean|false|none||none|
-|»» result|[[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)]|false|none||none|
-|»»» id|integer(int64)|false|none||平台生成|
-|»»» clientWithdrawalId|string|false|none||客户端订单ID|
-|»»» transactionId|string|false|none||订单ID|
-|»»» tokenId|string|false|none||tokenId|
-|»»» chainTokenId|string|false|none||链tokenId|
-|»»» userId|integer(int64)|false|none||none|
-|»»» subUserId|integer(int64)|false|none||企业-子用户id|
-|»»» address|string|false|none||提现地址 用户的|
-|»»» arriveQuantity|number|false|none||实际提币数量|
-|»»» status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|»»» withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|»»» createdAt|integer(int64)|false|none||创建时间|
-|»»» updatedAt|integer(int64)|false|none||更新时间|
-|»»» arriveTime|integer(int64)|false|none||提现到账时间|
-|»»» totalQuantity|number|false|none||用户输入的提现数量|
-|»»» txId|string|false|none||transaction hash|
-|»» chain|[Chain](#schemachain)|false|none||none|
-|»» empty|boolean|false|none||none|
-|»» first|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
-|»»» id|integer(int64)|false|none||平台生成|
-|»»» clientWithdrawalId|string|false|none||客户端订单ID|
-|»»» transactionId|string|false|none||订单ID|
-|»»» tokenId|string|false|none||tokenId|
-|»»» chainTokenId|string|false|none||链tokenId|
-|»»» userId|integer(int64)|false|none||none|
-|»»» subUserId|integer(int64)|false|none||企业-子用户id|
-|»»» address|string|false|none||提现地址 用户的|
-|»»» arriveQuantity|number|false|none||实际提币数量|
-|»»» status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|»»» withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|»»» createdAt|integer(int64)|false|none||创建时间|
-|»»» updatedAt|integer(int64)|false|none||更新时间|
-|»»» arriveTime|integer(int64)|false|none||提现到账时间|
-|»»» totalQuantity|number|false|none||用户输入的提现数量|
-|»»» txId|string|false|none||transaction hash|
-|»» last|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
-|»»» id|integer(int64)|false|none||平台生成|
-|»»» clientWithdrawalId|string|false|none||客户端订单ID|
-|»»» transactionId|string|false|none||订单ID|
-|»»» tokenId|string|false|none||tokenId|
-|»»» chainTokenId|string|false|none||链tokenId|
-|»»» userId|integer(int64)|false|none||none|
-|»»» subUserId|integer(int64)|false|none||企业-子用户id|
-|»»» address|string|false|none||提现地址 用户的|
-|»»» arriveQuantity|number|false|none||实际提币数量|
-|»»» status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|»»» withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|»»» createdAt|integer(int64)|false|none||创建时间|
-|»»» updatedAt|integer(int64)|false|none||更新时间|
-|»»» arriveTime|integer(int64)|false|none||提现到账时间|
-|»»» totalQuantity|number|false|none||用户输入的提现数量|
-|»»» txId|string|false|none||transaction hash|
+
 
 <a id="opIdqueryDepositOrders"></a>
 
@@ -162,11 +75,11 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
   "tokenId": "TBSC_BNB",
-  "startTime": 1626307200000,
-  "endTime": 1626393600000,
+  "startTime": "1626307200000",
+  "endTime": "1626393600000",
   "pageNo": 1,
   "pageSize": 10
 }
@@ -183,7 +96,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":123456789,"tokenId":"TBSC_BNB","chainTokenId":"BNB","quantity":0.01,"fromAddress":"0x1234567890abcdef1234567890abcdef12345678","walletAddress":"0xabcdef1234567890abcdef1234567890abcdef12","txId":"0x9876543210abcdef9876543210abcdef98765432","status":1,"createdAt":1626307200000,"updatedAt":1626307260000,"userId":123456,"subUserId":789012}]}
+{"code":0,"msg":"string","data":[{"id":"123456789","tokenId":"TBSC_BNB","chainTokenId":"BNB","quantity":0.01,"fromAddress":"0x1234567890abcdef1234567890abcdef12345678","walletAddress":"0xabcdef1234567890abcdef1234567890abcdef12","txId":"0x9876543210abcdef9876543210abcdef98765432","status":1,"createdAt":"1626307200000","updatedAt":"1626307260000","userId":"123456","subUserId":"789012"}]}
 ```
 
 ### 返回结果
@@ -191,6 +104,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 |状态码|状态码含义|说明|数据模型|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|充值订单分页列表|[RPageDepositOrderOpenApiVO](#schemarpagedepositorderopenapivo)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized|string|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal Server Error|Inline|
 
 ### 返回数据结构
@@ -204,77 +118,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
 |» data|[[DepositOrderOpenApiVO](#schemadepositorderopenapivo)]|false|none||[充值订单OpenAPI响应VO]|
-|»» id|integer(int64)|false|none||充值订单ID|
-|»» tokenId|string|false|none||币种ID|
-|»» chainTokenId|string|false|none||链上币种ID|
-|»» quantity|number|false|none||充值数量|
-|»» fromAddress|string|false|none||来源地址|
-|»» walletAddress|string|false|none||钱包地址|
-|»» txId|string|false|none||交易ID（区块链交易哈希）|
-|»» status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
-|»» createdAt|integer(int64)|false|none||创建时间（毫秒时间戳）|
-|»» updatedAt|integer(int64)|false|none||更新时间（毫秒时间戳）|
-|»» userId|integer(int64)|false|none||用户ID（主账号）|
-|»» subUserId|integer(int64)|false|none||子用户ID|
-|»» stackTrace|string|false|none||none|
-|»» pageNum|integer(int32)|false|none||none|
-|»» pageSize|integer(int32)|false|none||none|
-|»» startRow|integer(int64)|false|none||none|
-|»» endRow|integer(int64)|false|none||none|
-|»» total|integer(int64)|false|none||none|
-|»» pages|integer(int32)|false|none||none|
-|»» count|boolean|false|none||none|
-|»» reasonable|boolean|false|none||none|
-|»» pageSizeZero|boolean|false|none||none|
-|»» countColumn|string|false|none||none|
-|»» orderBy|string|false|none||none|
-|»» orderByOnly|boolean|false|none||none|
-|»» boundSqlInterceptor|[BoundSqlInterceptor](#schemaboundsqlinterceptor)|false|none||none|
-|»» dialectClass|string|false|none||none|
-|»» keepOrderBy|boolean|false|none||none|
-|»» keepSubSelectOrderBy|boolean|false|none||none|
-|»» asyncCount|boolean|false|none||none|
-|»» result|[[DepositOrderOpenApiVO](#schemadepositorderopenapivo)]|false|none||[充值订单OpenAPI响应VO]|
-|»»» id|integer(int64)|false|none||充值订单ID|
-|»»» tokenId|string|false|none||币种ID|
-|»»» chainTokenId|string|false|none||链上币种ID|
-|»»» quantity|number|false|none||充值数量|
-|»»» fromAddress|string|false|none||来源地址|
-|»»» walletAddress|string|false|none||钱包地址|
-|»»» txId|string|false|none||交易ID（区块链交易哈希）|
-|»»» status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
-|»»» createdAt|integer(int64)|false|none||创建时间（毫秒时间戳）|
-|»»» updatedAt|integer(int64)|false|none||更新时间（毫秒时间戳）|
-|»»» userId|integer(int64)|false|none||用户ID（主账号）|
-|»»» subUserId|integer(int64)|false|none||子用户ID|
-|»» chain|[Chain](#schemachain)|false|none||none|
-|»» empty|boolean|false|none||none|
-|»» first|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
-|»»» id|integer(int64)|false|none||充值订单ID|
-|»»» tokenId|string|false|none||币种ID|
-|»»» chainTokenId|string|false|none||链上币种ID|
-|»»» quantity|number|false|none||充值数量|
-|»»» fromAddress|string|false|none||来源地址|
-|»»» walletAddress|string|false|none||钱包地址|
-|»»» txId|string|false|none||交易ID（区块链交易哈希）|
-|»»» status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
-|»»» createdAt|integer(int64)|false|none||创建时间（毫秒时间戳）|
-|»»» updatedAt|integer(int64)|false|none||更新时间（毫秒时间戳）|
-|»»» userId|integer(int64)|false|none||用户ID（主账号）|
-|»»» subUserId|integer(int64)|false|none||子用户ID|
-|»» last|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
-|»»» id|integer(int64)|false|none||充值订单ID|
-|»»» tokenId|string|false|none||币种ID|
-|»»» chainTokenId|string|false|none||链上币种ID|
-|»»» quantity|number|false|none||充值数量|
-|»»» fromAddress|string|false|none||来源地址|
-|»»» walletAddress|string|false|none||钱包地址|
-|»»» txId|string|false|none||交易ID（区块链交易哈希）|
-|»»» status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
-|»»» createdAt|integer(int64)|false|none||创建时间（毫秒时间戳）|
-|»»» updatedAt|integer(int64)|false|none||更新时间（毫秒时间戳）|
-|»»» userId|integer(int64)|false|none||用户ID（主账号）|
-|»»» subUserId|integer(int64)|false|none||子用户ID|
+|
 
 <a id="opIdgetDepositAddress"></a>
 
@@ -290,7 +134,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "tokenId": "TBSC_BNB"
 }
 ```
@@ -299,7 +143,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
-|Authorization|header|string| 否 |none|
 |body|body|[GetDepositAddressRequest](#schemagetdepositaddressrequest)| 否 |none|
 
 > 返回示例
@@ -307,7 +150,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":0,"userId":0,"tokenId":"string","address":"string","createdAt":0,"updatedAt":0,"tag":"string","subUserId":0}}
+{"code":0,"msg":"string","data":{"id":"0","userId":"0","tokenId":"string","address":"string","createdAt":"0","updatedAt":"0","tag":"string","subUserId":"0"}}
 ```
 
 ### 返回结果
@@ -329,14 +172,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
 |» data|[SubWalletAddressOpenApiVO](#schemasubwalletaddressopenapivo)|false|none||企业子用户钱包地址实体类<br /> 用于存储和管理子用户的钱包地址信息<br /> 对应数据库表：tb_sub_wallet_address|
-|»» id|integer(int64)|false|none||主键ID|
-|»» userId|integer(int64)|false|none||用户ID<br /> 主账号用户的标识符|
-|»» tokenId|string|false|none||币种ID<br /> 例如：TBSC_BNB、TBSC_USDT等|
-|»» address|string|false|none||钱包地址<br /> 区块链上的钱包地址，用于接收充值|
-|»» createdAt|integer(int64)|false|none||创建时间<br /> 记录创建的时间戳（毫秒）|
-|»» updatedAt|integer(int64)|false|none||更新时间<br /> 记录最后更新的时间戳（毫秒）|
-|»» tag|string|false|none||标签<br /> 某些币种（如XRP、XLM等）需要的额外标识符|
-|»» subUserId|integer(int64)|false|none||子用户ID<br /> 企业-子用户的ID，标识具体的子账号|
+
 
 <a id="opIdcreateWithdrawal"></a>
 
@@ -352,7 +188,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "tokenId": "TBSC_BNB",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "amount": 0.01,
@@ -364,7 +200,6 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
-|Authorization|header|string| 否 |none|
 |body|body|[CreateWithdrawalRequest](#schemacreatewithdrawalrequest)| 否 |none|
 
 > 返回示例
@@ -372,7 +207,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":0,"clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":0,"subUserId":0,"address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":0,"updatedAt":0,"arriveTime":0,"totalQuantity":0,"txId":"string"}}
+{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
 ```
 
 ### 返回结果
@@ -394,22 +229,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
 |» data|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
-|»» id|integer(int64)|false|none||平台生成|
-|»» clientWithdrawalId|string|false|none||客户端订单ID|
-|»» transactionId|string|false|none||订单ID|
-|»» tokenId|string|false|none||tokenId|
-|»» chainTokenId|string|false|none||链tokenId|
-|»» userId|integer(int64)|false|none||none|
-|»» subUserId|integer(int64)|false|none||企业-子用户id|
-|»» address|string|false|none||提现地址 用户的|
-|»» arriveQuantity|number|false|none||实际提币数量|
-|»» status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|»» withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|»» createdAt|integer(int64)|false|none||创建时间|
-|»» updatedAt|integer(int64)|false|none||更新时间|
-|»» arriveTime|integer(int64)|false|none||提现到账时间|
-|»» totalQuantity|number|false|none||用户输入的提现数量|
-|»» txId|string|false|none||transaction hash|
+
 
 <a id="opIdcreateSubUser"></a>
 
@@ -425,14 +245,14 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
 
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
-|Authorization|header|string| 否 |none|
+|body|body|object| 否 |none|
 
 > 返回示例
 
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":0}
+{"code":0,"msg":"string","data":"0"}
 ```
 
 ### 返回结果
@@ -453,7 +273,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
 |---|---|---|---|---|---|
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
-|» data|integer(int64)|false|none||none|
+|» data|string|false|none||none|
 
 <a id="opIdwithdrawalOrderInfo"></a>
 
@@ -470,14 +290,13 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
 |clientWithdrawalId|query|string| 是 |客户端提币订单ID|
-|Authorization|header|string| 否 |none|
 
 > 返回示例
 
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":0,"clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":0,"subUserId":0,"address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":0,"updatedAt":0,"arriveTime":0,"totalQuantity":0,"txId":"string"}}
+{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
 ```
 
 ### 返回结果
@@ -499,22 +318,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
 |» data|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
-|»» id|integer(int64)|false|none||平台生成|
-|»» clientWithdrawalId|string|false|none||客户端订单ID|
-|»» transactionId|string|false|none||订单ID|
-|»» tokenId|string|false|none||tokenId|
-|»» chainTokenId|string|false|none||链tokenId|
-|»» userId|integer(int64)|false|none||none|
-|»» subUserId|integer(int64)|false|none||企业-子用户id|
-|»» address|string|false|none||提现地址 用户的|
-|»» arriveQuantity|number|false|none||实际提币数量|
-|»» status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|»» withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|»» createdAt|integer(int64)|false|none||创建时间|
-|»» updatedAt|integer(int64)|false|none||更新时间|
-|»» arriveTime|integer(int64)|false|none||提现到账时间|
-|»» totalQuantity|number|false|none||用户输入的提现数量|
-|»» txId|string|false|none||transaction hash|
+
 
 <a id="opIdqueryBrokerAssets"></a>
 
@@ -531,14 +335,13 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |名称|位置|类型|必选|说明|
 |---|---|---|---|---|
 |tokenId|query|string| 否 |币种ID|
-|Authorization|header|string| 否 |none|
 
 > 返回示例
 
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":0,"accountId":0,"tokenId":"string","userId":0,"total":0,"assetTotal":0,"availableAssetTotal":0,"marketPrice":0,"locked":0,"available":0,"indebted":0,"createdAt":0,"updatedAt":0,"accountType":0}]}
+{"code":0,"msg":"string","data":[{"id":"0","accountId":"0","tokenId":"string","userId":"0","total":0,"assetTotal":0,"availableAssetTotal":0,"marketPrice":0,"locked":0,"available":0,"indebted":0,"createdAt":"0","updatedAt":"0","accountType":0}]}
 ```
 
 ### 返回结果
@@ -560,20 +363,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
 |» data|[[BalanceOpenApiVO](#schemabalanceopenapivo)]|false|none||[现金资产表]|
-|»» id|integer(int64)|false|none||none|
-|»» accountId|integer(int64)|false|none||交易账号|
-|»» tokenId|string|false|none||none|
-|»» userId|integer(int64)|false|none||none|
-|»» total|number|false|none||总资产|
-|»» assetTotal|number|false|none||对应的usdt计价总资产|
-|»» availableAssetTotal|number|false|none||对应的usdt计价可用总资产|
-|»» marketPrice|number|false|none||实时价格|
-|»» locked|number|false|none||已冻结资产。|
-|»» available|number|false|none||可用资产|
-|»» indebted|number|false|none||负债资产|
-|»» createdAt|integer(int64)|false|none||创建时间|
-|»» updatedAt|integer(int64)|false|none||更新时间|
-|»» accountType|integer(int32)|false|none||1现货，2期权，3期货，4杠杆账户|
+
 
 # 数据模型
 
@@ -614,7 +404,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 {
   "code": 0,
   "msg": "string",
-  "data": 0
+  "data": "0"
 }
 
 ```
@@ -627,7 +417,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |---|---|---|---|---|---|
 |code|integer(int32)|false|none||none|
 |msg|string|false|none||none|
-|data|integer(int64)|false|none||none|
+|data|string|false|none||none|
 
 <h2 id="tocS_QueryWithdrawalOrderRequest">QueryWithdrawalOrderRequest</h2>
 
@@ -638,13 +428,13 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "clientWithdrawalId": "client12345678",
   "tokenId": "TBSC_BNB",
   "txId": "0xabcd1234...",
-  "startTime": 1626307200000,
-  "endTime": 1626393600000,
+  "startTime": "1626307200000",
+  "endTime": "1626393600000",
   "pageNo": 1,
   "pageSize": 10
 }
@@ -657,13 +447,13 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|subUid|integer(int64)|true|none||子用户ID|
+|subUid|string|true|none||子用户ID|
 |address|string|false|none||提币地址|
 |clientWithdrawalId|string|false|none||客户端提币订单ID|
 |tokenId|string|false|none||币种ID|
 |txId|string|false|none||交易ID（区块链交易哈希）|
-|startTime|integer(int64)|false|none||开始时间（毫秒时间戳）|
-|endTime|integer(int64)|false|none||结束时间（毫秒时间戳）|
+|startTime|string|false|none||开始时间（毫秒时间戳）|
+|endTime|string|false|none||结束时间（毫秒时间戳）|
 |pageNo|integer(int32)|false|none||页码，从1开始|
 |pageSize|integer(int32)|false|none||每页大小，范围1-100|
 
@@ -676,7 +466,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "tokenId": "TBSC_BNB",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "amount": 0.01,
@@ -691,7 +481,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|subUid|integer(int64)|true|none||子用户ID|
+|subUid|string|true|none||子用户ID|
 |tokenId|string|true|none||币种ID|
 |address|string|true|none||提币地址|
 |amount|number|true|none||提币数量|
@@ -706,11 +496,11 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
   "tokenId": "TBSC_BNB",
-  "startTime": 1626307200000,
-  "endTime": 1626393600000,
+  "startTime": "1626307200000",
+  "endTime": "1626393600000",
   "pageNo": 1,
   "pageSize": 10
 }
@@ -723,11 +513,11 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|subUid|integer(int64)|true|none||子用户ID|
+|subUid|string|true|none||子用户ID|
 |walletAddress|string|false|none||钱包地址|
 |tokenId|string|false|none||币种ID|
-|startTime|integer(int64)|false|none||开始时间（毫秒时间戳）|
-|endTime|integer(int64)|false|none||结束时间（毫秒时间戳）|
+|startTime|string|false|none||开始时间（毫秒时间戳）|
+|endTime|string|false|none||结束时间（毫秒时间戳）|
 |pageNo|integer(int32)|false|none||页码，从1开始|
 |pageSize|integer(int32)|false|none||每页大小，范围1-100|
 
@@ -740,7 +530,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "subUid": 123456789,
+  "subUid": "123456789",
   "tokenId": "TBSC_BNB"
 }
 
@@ -752,7 +542,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|subUid|integer(int64)|true|none||子用户ID|
+|subUid|string|true|none||子用户ID|
 |tokenId|string|true|none||币种ID|
 
 <h2 id="tocS_WithdrawalOrderOpenApiVO">WithdrawalOrderOpenApiVO</h2>
@@ -764,20 +554,20 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "id": 0,
+  "id": "0",
   "clientWithdrawalId": "string",
   "transactionId": "string",
   "tokenId": "string",
   "chainTokenId": "string",
-  "userId": 0,
-  "subUserId": 0,
+  "userId": "0",
+  "subUserId": "0",
   "address": "string",
   "arriveQuantity": 0,
   "status": 0,
   "withdrawMethod": 0,
-  "createdAt": 0,
-  "updatedAt": 0,
-  "arriveTime": 0,
+  "createdAt": "0",
+  "updatedAt": "0",
+  "arriveTime": "0",
   "totalQuantity": 0,
   "txId": "string"
 }
@@ -788,20 +578,20 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|id|integer(int64)|false|none||平台生成|
+|id|string|false|none||平台生成|
 |clientWithdrawalId|string|false|none||客户端订单ID|
 |transactionId|string|false|none||订单ID|
 |tokenId|string|false|none||tokenId|
 |chainTokenId|string|false|none||链tokenId|
-|userId|integer(int64)|false|none||none|
-|subUserId|integer(int64)|false|none||企业-子用户id|
+|userId|string|false|none||none|
+|subUserId|string|false|none||企业-子用户id|
 |address|string|false|none||提现地址 用户的|
 |arriveQuantity|number|false|none||实际提币数量|
 |status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
 |withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|createdAt|integer(int64)|false|none||创建时间|
-|updatedAt|integer(int64)|false|none||更新时间|
-|arriveTime|integer(int64)|false|none||提现到账时间|
+|createdAt|string|false|none||创建时间|
+|updatedAt|string|false|none||更新时间|
+|arriveTime|string|false|none||提现到账时间|
 |totalQuantity|number|false|none||用户输入的提现数量|
 |txId|string|false|none||transaction hash|
 
@@ -814,7 +604,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "id": 123456789,
+  "id": "123456789",
   "tokenId": "TBSC_BNB",
   "chainTokenId": "BNB",
   "quantity": 0.01,
@@ -822,10 +612,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
   "txId": "0x9876543210abcdef9876543210abcdef98765432",
   "status": 1,
-  "createdAt": 1626307200000,
-  "updatedAt": 1626307260000,
-  "userId": 123456,
-  "subUserId": 789012
+  "createdAt": "1626307200000",
+  "updatedAt": "1626307260000",
+  "userId": "123456",
+  "subUserId": "789012"
 }
 
 ```
@@ -836,7 +626,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|id|integer(int64)|false|none||充值订单ID|
+|id|string|false|none||充值订单ID|
 |tokenId|string|false|none||币种ID|
 |chainTokenId|string|false|none||链上币种ID|
 |quantity|number|false|none||充值数量|
@@ -844,10 +634,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |walletAddress|string|false|none||钱包地址|
 |txId|string|false|none||交易ID（区块链交易哈希）|
 |status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
-|createdAt|integer(int64)|false|none||创建时间（毫秒时间戳）|
-|updatedAt|integer(int64)|false|none||更新时间（毫秒时间戳）|
-|userId|integer(int64)|false|none||用户ID（主账号）|
-|subUserId|integer(int64)|false|none||子用户ID|
+|createdAt|string|false|none||创建时间（毫秒时间戳）|
+|updatedAt|string|false|none||更新时间（毫秒时间戳）|
+|userId|string|false|none||用户ID（主账号）|
+|subUserId|string|false|none||子用户ID|
 
 <h2 id="tocS_RWithdrawalOrderOpenApiVO">RWithdrawalOrderOpenApiVO</h2>
 
@@ -861,20 +651,20 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "code": 0,
   "msg": "string",
   "data": {
-    "id": 0,
+    "id": "0",
     "clientWithdrawalId": "string",
     "transactionId": "string",
     "tokenId": "string",
     "chainTokenId": "string",
-    "userId": 0,
-    "subUserId": 0,
+    "userId": "0",
+    "subUserId": "0",
     "address": "string",
     "arriveQuantity": 0,
     "status": 0,
     "withdrawMethod": 0,
-    "createdAt": 0,
-    "updatedAt": 0,
-    "arriveTime": 0,
+    "createdAt": "0",
+    "updatedAt": "0",
+    "arriveTime": "0",
     "totalQuantity": 0,
     "txId": "string"
   }
@@ -901,10 +691,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "id": 0,
-  "accountId": 0,
+  "id": "0",
+  "accountId": "0",
   "tokenId": "string",
-  "userId": 0,
+  "userId": "0",
   "total": 0,
   "assetTotal": 0,
   "availableAssetTotal": 0,
@@ -912,8 +702,8 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "locked": 0,
   "available": 0,
   "indebted": 0,
-  "createdAt": 0,
-  "updatedAt": 0,
+  "createdAt": "0",
+  "updatedAt": "0",
   "accountType": 0
 }
 
@@ -925,10 +715,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|id|integer(int64)|false|none||none|
-|accountId|integer(int64)|false|none||交易账号|
+|id|string|false|none||none|
+|accountId|string|false|none||交易账号|
 |tokenId|string|false|none||none|
-|userId|integer(int64)|false|none||none|
+|userId|string|false|none||none|
 |total|number|false|none||总资产|
 |assetTotal|number|false|none||对应的usdt计价总资产|
 |availableAssetTotal|number|false|none||对应的usdt计价可用总资产|
@@ -936,8 +726,8 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |locked|number|false|none||已冻结资产。|
 |available|number|false|none||可用资产|
 |indebted|number|false|none||负债资产|
-|createdAt|integer(int64)|false|none||创建时间|
-|updatedAt|integer(int64)|false|none||更新时间|
+|createdAt|string|false|none||创建时间|
+|updatedAt|string|false|none||更新时间|
 |accountType|integer(int32)|false|none||1现货，2期权，3期货，4杠杆账户|
 
 <h2 id="tocS_RListBalanceOpenApiVO">RListBalanceOpenApiVO</h2>
@@ -953,10 +743,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "msg": "string",
   "data": [
     {
-      "id": 0,
-      "accountId": 0,
+      "id": "0",
+      "accountId": "0",
       "tokenId": "string",
-      "userId": 0,
+      "userId": "0",
       "total": 0,
       "assetTotal": 0,
       "availableAssetTotal": 0,
@@ -964,8 +754,8 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
       "locked": 0,
       "available": 0,
       "indebted": 0,
-      "createdAt": 0,
-      "updatedAt": 0,
+      "createdAt": "0",
+      "updatedAt": "0",
       "accountType": 0
     }
   ]
@@ -996,20 +786,20 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "msg": "string",
   "data": [
     {
-      "id": 0,
+      "id": "0",
       "clientWithdrawalId": "string",
       "transactionId": "string",
       "tokenId": "string",
       "chainTokenId": "string",
-      "userId": 0,
-      "subUserId": 0,
+      "userId": "0",
+      "subUserId": "0",
       "address": "string",
       "arriveQuantity": 0,
       "status": 0,
       "withdrawMethod": 0,
-      "createdAt": 0,
-      "updatedAt": 0,
-      "arriveTime": 0,
+      "createdAt": "0",
+      "updatedAt": "0",
+      "arriveTime": "0",
       "totalQuantity": 0,
       "txId": "string"
     }
@@ -1027,29 +817,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |code|integer(int32)|false|none||none|
 |msg|string|false|none||none|
 |data|[[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)]|false|none||none|
-|» stackTrace|string|false|none||none|
-|» pageNum|integer(int32)|false|none||none|
-|» pageSize|integer(int32)|false|none||none|
-|» startRow|integer(int64)|false|none||none|
-|» endRow|integer(int64)|false|none||none|
-|» total|integer(int64)|false|none||none|
-|» pages|integer(int32)|false|none||none|
-|» count|boolean|false|none||none|
-|» reasonable|boolean|false|none||none|
-|» pageSizeZero|boolean|false|none||none|
-|» countColumn|string|false|none||none|
-|» orderBy|string|false|none||none|
-|» orderByOnly|boolean|false|none||none|
-|» boundSqlInterceptor|[BoundSqlInterceptor](#schemaboundsqlinterceptor)|false|none||none|
-|» dialectClass|string|false|none||none|
-|» keepOrderBy|boolean|false|none||none|
-|» keepSubSelectOrderBy|boolean|false|none||none|
-|» asyncCount|boolean|false|none||none|
-|» result|[[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)]|false|none||none|
-|» chain|[Chain](#schemachain)|false|none||none|
-|» empty|boolean|false|none||none|
-|» first|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
-|» last|[WithdrawalOrderOpenApiVO](#schemawithdrawalorderopenapivo)|false|none||none|
+
 
 <h2 id="tocS_RPageDepositOrderOpenApiVO">RPageDepositOrderOpenApiVO</h2>
 
@@ -1064,7 +832,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "msg": "string",
   "data": [
     {
-      "id": 123456789,
+      "id": "123456789",
       "tokenId": "TBSC_BNB",
       "chainTokenId": "BNB",
       "quantity": 0.01,
@@ -1072,10 +840,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
       "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
       "txId": "0x9876543210abcdef9876543210abcdef98765432",
       "status": 1,
-      "createdAt": 1626307200000,
-      "updatedAt": 1626307260000,
-      "userId": 123456,
-      "subUserId": 789012
+      "createdAt": "1626307200000",
+      "updatedAt": "1626307260000",
+      "userId": "123456",
+      "subUserId": "789012"
     }
   ]
 }
@@ -1091,29 +859,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |code|integer(int32)|false|none||none|
 |msg|string|false|none||none|
 |data|[[DepositOrderOpenApiVO](#schemadepositorderopenapivo)]|false|none||[充值订单OpenAPI响应VO]|
-|» stackTrace|string|false|none||none|
-|» pageNum|integer(int32)|false|none||none|
-|» pageSize|integer(int32)|false|none||none|
-|» startRow|integer(int64)|false|none||none|
-|» endRow|integer(int64)|false|none||none|
-|» total|integer(int64)|false|none||none|
-|» pages|integer(int32)|false|none||none|
-|» count|boolean|false|none||none|
-|» reasonable|boolean|false|none||none|
-|» pageSizeZero|boolean|false|none||none|
-|» countColumn|string|false|none||none|
-|» orderBy|string|false|none||none|
-|» orderByOnly|boolean|false|none||none|
-|» boundSqlInterceptor|[BoundSqlInterceptor](#schemaboundsqlinterceptor)|false|none||none|
-|» dialectClass|string|false|none||none|
-|» keepOrderBy|boolean|false|none||none|
-|» keepSubSelectOrderBy|boolean|false|none||none|
-|» asyncCount|boolean|false|none||none|
-|» result|[[DepositOrderOpenApiVO](#schemadepositorderopenapivo)]|false|none||[充值订单OpenAPI响应VO]|
-|» chain|[Chain](#schemachain)|false|none||none|
-|» empty|boolean|false|none||none|
-|» first|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
-|» last|[DepositOrderOpenApiVO](#schemadepositorderopenapivo)|false|none||充值订单OpenAPI响应VO|
+
 
 <h2 id="tocS_RSubWalletAddressOpenApiVO">RSubWalletAddressOpenApiVO</h2>
 
@@ -1127,14 +873,14 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "code": 0,
   "msg": "string",
   "data": {
-    "id": 0,
-    "userId": 0,
+    "id": "0",
+    "userId": "0",
     "tokenId": "string",
     "address": "string",
-    "createdAt": 0,
-    "updatedAt": 0,
+    "createdAt": "0",
+    "updatedAt": "0",
     "tag": "string",
-    "subUserId": 0
+    "subUserId": "0"
   }
 }
 
@@ -1148,7 +894,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |---|---|---|---|---|---|
 |code|integer(int32)|false|none||none|
 |msg|string|false|none||none|
-|data|[SubWalletAddressOpenApiVO](#schemasubwalletaddressopenapivo)|false|none||企业子用户钱包地址实体类<br /> 用于存储和管理子用户的钱包地址信息<br /> 对应数据库表：tb_sub_wallet_address|
+|data|[SubWalletAddressOpenApiVO](#schemasubwalletaddressopenapivo)|false|none||企业子用户钱包地址实体类<br /> 用于存储和管理子用户的钱包地址信息<br /> |
 
 <h2 id="tocS_SubWalletAddressOpenApiVO">SubWalletAddressOpenApiVO</h2>
 
@@ -1159,32 +905,31 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ```json
 {
-  "id": 0,
-  "userId": 0,
+  "id": "0",
+  "userId": "0",
   "tokenId": "string",
   "address": "string",
-  "createdAt": 0,
-  "updatedAt": 0,
+  "createdAt": "0",
+  "updatedAt": "0",
   "tag": "string",
-  "subUserId": 0
+  "subUserId": "0"
 }
 
 ```
 
 企业子用户钱包地址实体类
  用于存储和管理子用户的钱包地址信息
- 对应数据库表：tb_sub_wallet_address
+
 
 ### 属性
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|id|integer(int64)|false|none||主键ID|
-|userId|integer(int64)|false|none||用户ID<br /> 主账号用户的标识符|
+|id|string|false|none||主键ID|
+|userId|string|false|none||用户ID<br /> 主账号用户的标识符|
 |tokenId|string|false|none||币种ID<br /> 例如：TBSC_BNB、TBSC_USDT等|
 |address|string|false|none||钱包地址<br /> 区块链上的钱包地址，用于接收充值|
-|createdAt|integer(int64)|false|none||创建时间<br /> 记录创建的时间戳（毫秒）|
-|updatedAt|integer(int64)|false|none||更新时间<br /> 记录最后更新的时间戳（毫秒）|
+|createdAt|string|false|none||创建时间<br /> 记录创建的时间戳（毫秒）|
+|updatedAt|string|false|none||更新时间<br /> 记录最后更新的时间戳（毫秒）|
 |tag|string|false|none||标签<br /> 某些币种（如XRP、XLM等）需要的额外标识符|
-|subUserId|integer(int64)|false|none||子用户ID<br /> 企业-子用户的ID，标识具体的子账号|
-
+|subUserId|string|false|none||子用户ID<br /> 企业-子用户的ID，标识具体的子账号|
