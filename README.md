@@ -120,8 +120,8 @@ Host: brokerapi.toocans.com
 }
 ```
 ## 接口导航
-- [需要签名认证，业务接口](/toocans-broker-api.md)
-- [公用接口](auth/register.md)
+- [业务接口，需要签名认证](/toocans-broker-api.md)
+- [公用接口，不需要签名认证](/base-data-api.md)
 
 ### HTTP 状态码
 
