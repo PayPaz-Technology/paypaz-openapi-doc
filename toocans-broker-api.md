@@ -37,7 +37,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}]}
+{"code":0,"msg":"string","data":[{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}]}
 ```
 
 ### 返回结果
@@ -207,7 +207,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
+{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
 ```
 
 ### 返回结果
@@ -296,7 +296,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"status":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
+{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
 ```
 
 ### 返回结果
@@ -563,7 +563,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "subUserId": "0",
   "address": "string",
   "arriveQuantity": 0,
-  "status": 0,
+  "statusInfo": 0,
   "withdrawMethod": 0,
   "createdAt": "0",
   "updatedAt": "0",
@@ -576,24 +576,23 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 ### 属性
 
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|id|string|false|none||平台生成|
-|clientWithdrawalId|string|false|none||客户端订单ID|
-|transactionId|string|false|none||订单ID|
-|tokenId|string|false|none||tokenId|
-|chainTokenId|string|false|none||链tokenId|
-|userId|string|false|none||none|
-|subUserId|string|false|none||企业-子用户id|
-|address|string|false|none||提现地址 用户的|
-|arriveQuantity|number|false|none||实际提币数量|
-|status|integer(int32)|false|none||1,提币待审核中，2，系统自动审核，3人工审核通过 4 人工审核拒绝，5,钱包处理中,6钱包提交失败（可以重新请求）7,8 (订单提交中)  10，提币成功， 11 提币失败 12  人工审核拒绝失败|
-|withdrawMethod|integer(int32)|false|none||0，init   1:区块链交易,2:内部转账|
-|createdAt|string|false|none||创建时间|
-|updatedAt|string|false|none||更新时间|
-|arriveTime|string|false|none||提现到账时间|
-|totalQuantity|number|false|none||用户输入的提现数量|
-|txId|string|false|none||transaction hash|
+|名称|类型|必选|约束|中文名| 说明                                                                                              |
+|---|---|---|---|---|-------------------------------------------------------------------------------------------------|
+|id|string|false|none|| 平台生成                                                                                            |
+|clientWithdrawalId|string|false|none|| 客户端订单ID                                                                                         |
+|transactionId|string|false|none|| 订单ID                                                                                            |
+|tokenId|string|false|none|| tokenId                                                                                         |
+|chainTokenId|string|false|none|| 链tokenId                                                                                        |
+|userId|string|false|none|| none                                                                                            |
+|subUserId|string|false|none|| 企业-子用户id                                                                                        |
+|address|string|false|none|| 提现地址 用户的                                                                                        |
+|arriveQuantity|number|false|none|| 实际提币数量                                                                                          |
+|statusInfo|integer(int32)|false|none|| 1,提币处理中，2，提币成功，3提币失败 |
+|createdAt|string|false|none|| 创建时间                                                                                            |
+|updatedAt|string|false|none|| 更新时间                                                                                            |
+|arriveTime|string|false|none|| 提现到账时间                                                                                          |
+|totalQuantity|number|false|none|| 用户输入的提现数量                                                                                       |
+|txId|string|false|none|| transaction hash                                                                                |
 
 <h2 id="tocS_DepositOrderOpenApiVO">DepositOrderOpenApiVO</h2>
 
@@ -660,7 +659,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
     "subUserId": "0",
     "address": "string",
     "arriveQuantity": 0,
-    "status": 0,
+    "statusInfo": 0,
     "withdrawMethod": 0,
     "createdAt": "0",
     "updatedAt": "0",
@@ -795,7 +794,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
       "subUserId": "0",
       "address": "string",
       "arriveQuantity": 0,
-      "status": 0,
+      "statusInfo": 0,
       "withdrawMethod": 0,
       "createdAt": "0",
       "updatedAt": "0",
@@ -839,7 +838,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
       "fromAddress": "0x1234567890abcdef1234567890abcdef12345678",
       "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
       "txId": "0x9876543210abcdef9876543210abcdef98765432",
-      "status": 1,
+      "statusInfo": 1,
       "createdAt": "1626307200000",
       "updatedAt": "1626307260000",
       "userId": "123456",
