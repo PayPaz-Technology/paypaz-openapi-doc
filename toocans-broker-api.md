@@ -243,9 +243,9 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
 
 ### 请求参数
 
-|名称|位置|类型|必选|说明|
-|---|---|---|---|---|
-|body|body|object| 否 |none|
+|名称|位置|类型|必选| 说明        |
+|---|---|---|---|-----------|
+|body|body|object| 否 | 子用户subUserId |
 
 > 返回示例
 
