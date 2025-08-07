@@ -37,7 +37,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}]}
+{"code":0,"msg":"string","data":[{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}]}
 ```
 
 ### 返回结果
@@ -207,7 +207,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
+{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
 ```
 
 ### 返回结果
@@ -296,7 +296,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"withdrawMethod":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
+{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
 ```
 
 ### 返回结果
@@ -564,7 +564,6 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
   "address": "string",
   "arriveQuantity": 0,
   "statusInfo": 0,
-  "withdrawMethod": 0,
   "createdAt": "0",
   "updatedAt": "0",
   "arriveTime": "0",
