@@ -1,8 +1,9 @@
 
-
 <a id="opIdqueryWithdrawalOrders"></a>
 
-## POST 根据subUID、地址、订单号查询提币订单
+以下业务接口，都需要通过签名认证
+
+## 1.POST 根据subUID、地址、订单号查询提币订单
  分页查询指定条件下的提币订单列表
 
 POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
@@ -63,7 +64,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 
 <a id="opIdqueryDepositOrders"></a>
 
-## POST 根据UID或地址查询充值订单
+## 2.POST 根据UID或地址查询充值订单
  分页查询指定条件下的充值订单列表
 
 POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
@@ -122,7 +123,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 
 <a id="opIdgetDepositAddress"></a>
 
-## POST 根据子用户UID和tokenID获取充值地址
+## 3.POST 根据子用户UID和tokenID获取充值地址
  为指定子用户和币种获取充值地址，如果不存在则创建新地址
 
 POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
@@ -176,7 +177,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 
 <a id="opIdcreateWithdrawal"></a>
 
-## POST 根据UID发起提币
+## 4.POST 根据UID发起提币
  为指定子用户创建提币订单
 
 POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
@@ -233,7 +234,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 
 <a id="opIdcreateSubUser"></a>
 
-## POST 创建子用户UID
+## 5.POST 创建子用户UID
  为当前OpenAPI用户创建一个新的子用户
 
 POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
@@ -277,7 +278,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
 
 <a id="opIdwithdrawalOrderInfo"></a>
 
-## GET 查询提币订单详情
+## 6.GET 查询提币订单详情
  根据客户端提币订单ID查询提币订单详细信息
 
 GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
@@ -322,7 +323,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 
 <a id="opIdqueryBrokerAssets"></a>
 
-## GET 根据tokenId查询该broker下所有资产
+## 7.GET 根据tokenId查询该broker下所有资产
  查询当前OpenAPI用户下指定币种或所有币种的资产信息
 
 GET /t-api/toocans-broker-api/v1/op/openapi/assets
