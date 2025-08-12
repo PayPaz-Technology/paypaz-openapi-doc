@@ -25,7 +25,7 @@ public class Encryption {
 
 
 
-    final  static String TIMESTAMP = System.currentTimeMillis() +"";;
+    final  static String TIMESTAMP = System.currentTimeMillis() +"";
     final static String RECV_WINDOW = "20000";
 //    final static String BASE_U= "http://localhost:8082";
     final static String BASE_U= "https://toocans-brokerapi-uat.bdy.tech";
