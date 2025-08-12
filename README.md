@@ -42,7 +42,7 @@ toocans后台管理生成API的密钥对基于HMAC算法运作的，您将获得
 
 3. 将加密结果进行 Base-64 编码，得到最终签名
 
-**签名TOOCANS-ACCESS-SIGN示例GET：**
+**签名TOOCANS-ACCESS-SIGN,javascript示例GET：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'GET';
@@ -55,7 +55,45 @@ const signature = CryptoJS.enc.Base64.stringify(
   CryptoJS.HmacSHA256(signatureString, secretKey)
 );
 ```
-**签名TOOCANS-ACCESS-SIGN示例POST：**
+
+**签名TOOCANS-ACCESS-SIGN,java示例GET：**
+```java
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.security.SecureRandom;
+    private static String generateHmacSha256Signature(String data, String secret) throws Exception{
+
+            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+            sha256_HMAC.init(secret_key);
+            byte[] hash = sha256_HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(hash);
+
+    }
+     String timestamp = Long.toString(System.currentTimeMillis());
+        String method = "GET";
+        String recvWindow = "20000";
+        String clientWithdrawalId = "WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW";
+        String requestPath = "/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
+        String bodyString = "";
+
+        // Build signature string
+        String signatureString = timestamp + method + recvWindow + requestPath + bodyString;
+        System.out.println("signatureString: " + signatureString);
+
+        // Assume secretKey is defined
+        String secretKey = "your_secret_key_here"; // Replace with actual key
+        System.out.println("secretKey: " + secretKey);
+
+        // Generate signature
+        String signature = generateHmacSha256Signature(signatureString, secretKey);
+```
+
+
+
+**签名TOOCANS-ACCESS-SIGN,javascript示例POST：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'POST';
@@ -77,6 +115,47 @@ const signature = CryptoJS.enc.Base64.stringify(
   CryptoJS.HmacSHA256(signatureString, secretKey)
 );
 ```
+
+**签名TOOCANS-ACCESS-SIGN,java示例POST：**
+```java
+    private static String generateHmacSha256Signature(String data, String secret) throws Exception{
+
+            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+            sha256_HMAC.init(secret_key);
+            byte[] hash = sha256_HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(hash);
+
+    }
+       String timestamp = Long.toString(System.currentTimeMillis());
+        String method = "POST";
+        String recvWindow = "10000";
+        String requestPath = "/t-api/toocans-broker-api/v1/op/openapi/createWithdrawal";
+        
+        // 直接构建JSON对象
+        JSONObject body = new JSONObject();
+        body.put("subUid", 123456789);
+        body.put("tokenId", "TBSC_BNB");
+        body.put("address", "0x1234567890abcdef1234567890abcdef12345678");
+        body.put("amount", 0.01);
+        body.put("clientWithdrawalId", "client12345678901234");
+        
+        // 获取JSON字符串
+        String bodyString = body.toString();
+        
+        // 构建签名字符串
+        String signatureString = timestamp + method + recvWindow + requestPath + bodyString;
+        System.out.println("Signature String: " + signatureString);
+
+        // 替换为你的实际密钥
+        String secretKey = "your_secret_key_here"; 
+        
+        // 生成签名
+        String signature = generateHmacSha256Signature(signatureString, secretKey);
+    }
+}
+```
+
 
 ## http請求示例
 **示例GET：**
