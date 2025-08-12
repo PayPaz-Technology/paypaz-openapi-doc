@@ -1,8 +1,9 @@
 
-
 <a id="opIdqueryWithdrawalOrders"></a>
 
-## POST 根据subUID、地址、订单号查询提币订单
+以下业务接口，都需要通过签名认证
+
+## 1.POST 根据subUID、地址、订单号查询提币订单
  分页查询指定条件下的提币订单列表
 
 POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
@@ -17,15 +18,15 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 
 ```json
 {
-  "subUid": "123456789",
-  "address": "0x1234567890abcdef1234567890abcdef12345678",
-  "clientWithdrawalId": "client12345678",
-  "tokenId": "TBSC_BNB",
-  "txId": "0xabcd1234...",
-  "startTime": "1626307200000",
-  "endTime": "1626393600000",
-  "pageNo": 1,
-  "pageSize": 10
+	"subUid": "468001460675025856",
+	"tokenId": "USDT",
+	"address": "0xa8c5eea944c3af945203e18cf990905519a158ad",
+	"txId": "0xd3ef6ed39ee456de7c897ffa9c677aa64dcb560d37a8abbb1478fe82630ae1da",
+	"clientWithdrawalId": "client12345678",
+	"startTime": "1754641181883",
+	"endTime": "1754641181899",
+	"pageNo": 1,
+	"pageSize": 10
 }
 ```
 
@@ -40,7 +41,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}]}
+{"code":200,"msg":"success","data":[{"id":"1954852203515473920","clientWithdrawalId":"r6uxDU8utpPlNe9yUfuzEkPLQHtd3NVnN5","transactionId":null,"tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","userId":"468001460","subUserId":"468001460441872416","address":"0xa8c5eea944c3af945203e18cf990905519a158ad","arriveQuantity":"0.000000099","statusInfo":1,"createdAt":"1754908059358","updatedAt":"1754908059358","arriveTime":null,"totalQuantity":"0.0000001","txId":null}]}
 ```
 
 ### 返回结果
@@ -66,7 +67,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 
 <a id="opIdqueryDepositOrders"></a>
 
-## POST 根据UID或地址查询充值订单
+## 2.POST 根据UID或地址查询充值订单
  分页查询指定条件下的充值订单列表
 
 POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
@@ -81,13 +82,13 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 
 ```json
 {
-  "subUid": "123456789",
-  "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
-  "tokenId": "TBSC_BNB",
-  "startTime": "1626307200000",
-  "endTime": "1626393600000",
-  "pageNo": 1,
-  "pageSize": 10
+	"subUid": "468001460846937517",
+	"walletAddress": "0x53917cb4b09850b26d74a0ab1985639661719c56",
+	"tokenId": "TBSC_BNB",
+	"startTime": "1754560605211",
+	"endTime": "1826393600000",
+	"pageNo": 1,
+	"pageSize": 20
 }
 ```
 
@@ -102,7 +103,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":"123456789","tokenId":"TBSC_BNB","chainTokenId":"BNB","quantity":0.01,"fromAddress":"0x1234567890abcdef1234567890abcdef12345678","walletAddress":"0xabcdef1234567890abcdef1234567890abcdef12","txId":"0x9876543210abcdef9876543210abcdef98765432","status":1,"createdAt":"1626307200000","updatedAt":"1626307260000","userId":"123456","subUserId":"789012"}]}
+{"code":200,"msg":"success","data":[{"id":"1953394928857518080","tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","quantity":"0.001","fromAddress":"0xa8c5eea944c3af945203e18cf990905519a158ad","walletAddress":"0x53917cb4b09850b26d74a0ab1985639661719c56","txId":"0xe8fe1bb9f6164727962a2079252b4560f8d684f6e2fc7f807e24f1527ffcc9eb","status":1,"createdAt":"1754560618019","updatedAt":null,"userId":"468001460","subUserId":"468001460825249908"},{"id":"1953394875141066752","tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","quantity":"0.001","fromAddress":"0xa8c5eea944c3af945203e18cf990905519a158ad","walletAddress":"0x53917cb4b09850b26d74a0ab1985639661719c56","txId":"0x13a4cb957572361c23b99933e5a45223163f2f208318401eca4964c5bbec7747","status":1,"createdAt":"1754560605212","updatedAt":null,"userId":"468001460","subUserId":"468001460825249908"}]}
 ```
 
 ### 返回结果
@@ -128,7 +129,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 
 <a id="opIdgetDepositAddress"></a>
 
-## POST 根据子用户UID和tokenID获取充值地址
+## 3.POST 根据子用户UID和tokenID获取充值地址
  为指定子用户和币种获取充值地址，如果不存在则创建新地址
 
 POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
@@ -143,7 +144,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 
 ```json
 {
-  "subUid": "123456789",
+  "subUid": "468001460884111247",
   "tokenId": "TBSC_BNB"
 }
 ```
@@ -159,7 +160,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","userId":"0","tokenId":"string","address":"string","createdAt":"0","updatedAt":"0","tag":"string","subUserId":"0"}}
+{"code":200,"msg":"success","data":{"id":"1954903438730211328","userId":"468001460","tokenId":"TBSC_BNB","address":"0x240fcc1543d8fc62b8811d85a6927f3ed4ec583e","createdAt":"1754920274799","updatedAt":"1754920274799","tag":null,"subUserId":"468001460884111247"}}
 ```
 
 ### 返回结果
@@ -185,7 +186,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 
 <a id="opIdcreateWithdrawal"></a>
 
-## POST 根据UID发起提币
+## 4.POST 根据UID发起提币
  为指定子用户创建提币订单
 
 POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
@@ -201,11 +202,11 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 
 ```json
 {
-  "subUid": "123456789",
-  "tokenId": "TBSC_BNB",
-  "address": "0x1234567890abcdef1234567890abcdef12345678",
-  "amount": 0.01,
-  "clientWithdrawalId": "client12345678901234"
+	"subUid": "468001460825249908",
+	"tokenId": "TBSC_BNB",
+	"address": "0xa8c5eea944c3af945203e18cf990905519a158ad",
+	"amount": "0.0000001",
+	"clientWithdrawalId": "4ISZqseemfqpbz0WQyUkocdOrFprWDXda"
 }
 ```
 
@@ -220,7 +221,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
+{"code":200,"msg":"success","data":{"id":"1954903793908068352","clientWithdrawalId":"4ISZqseemfqpbz0WQyUkocdOrFprWDXda","transactionId":null,"tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","userId":"468001460","subUserId":"468001460825249908","address":"0xa8c5eea944c3af945203e18cf990905519a158ad","arriveQuantity":"0.000000099","statusInfo":1,"createdAt":"1754920359476","updatedAt":"1754920359476","arriveTime":null,"totalQuantity":"0.0000001","txId":null}}
 ```
 
 ### 返回结果
@@ -246,7 +247,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 
 <a id="opIdcreateSubUser"></a>
 
-## POST 创建子用户UID
+## 5.POST 创建子用户UID
  为当前OpenAPI用户创建一个新的子用户
 
 POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
@@ -258,14 +259,14 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
 
 |名称|位置|类型|必选| 说明        |
 |---|---|---|---|-----------|
-|body|body|object| 否 | 子用户subUserId |
+|body|body|object| 否 | 子用户 subUserId |
 
 > 返回示例
 
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":"0"}
+{"code":200,"msg":"success","data":"468001460884111247"}
 ```
 
 ### 返回结果
@@ -290,7 +291,7 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createSubUser
 
 <a id="opIdwithdrawalOrderInfo"></a>
 
-## GET 查询提币订单详情
+## 6.GET 查询提币订单详情
  根据客户端提币订单ID查询提币订单详细信息
 
 GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
@@ -313,7 +314,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":{"id":"0","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"0","subUserId":"0","address":"string","arriveQuantity":0,"statusInfo":0,"createdAt":"0","updatedAt":"0","arriveTime":"0","totalQuantity":0,"txId":"string"}}
+{"code":200,"msg":"success","data":{"id":"1954903600726814720","clientWithdrawalId":"WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW","transactionId":null,"tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","userId":"468001460","subUserId":"468001460825249908","address":"0xa8c5eea944c3af945203e18cf990905519a158ad","arriveQuantity":"0.000000099","statusInfo":1,"createdAt":"1754920313415","updatedAt":"1754920313415","arriveTime":null,"totalQuantity":"0.0000001","txId":null}}
 ```
 
 ### 返回结果
@@ -339,7 +340,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 
 <a id="opIdqueryBrokerAssets"></a>
 
-## GET 根据tokenId查询该broker下所有资产
+## 7.GET 根据tokenId查询该broker下所有资产
  查询当前OpenAPI用户下指定币种或所有币种的资产信息
 
 GET /t-api/toocans-broker-api/v1/op/openapi/assets
@@ -360,7 +361,7 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":"0","accountId":"0","tokenId":"string","userId":"0","total":0,"assetTotal":0,"availableAssetTotal":0,"marketPrice":0,"locked":0,"available":0,"indebted":0,"createdAt":"0","updatedAt":"0","accountType":0}]}
+{"code":200,"msg":"success","data":[{"id":"1953034545579294720","accountId":"1951221207996780544","tokenId":"USDT","userId":"468001460","total":"0.070013132010012112","assetTotal":"0.070013132010012112","availableAssetTotal":"0.070013132010012112","marketPrice":"0","locked":"0","available":"0.070013132010012112","indebted":"0","createdAt":"1754474695950","updatedAt":"1754559221966","accountType":1},{"id":"1953010034274480128","accountId":"1951221207996780544","tokenId":"BNB","userId":"468001460","total":"1","assetTotal":"799.31","availableAssetTotal":"798.51069","marketPrice":"799.31","locked":"0.001","available":"0.999","indebted":"0","createdAt":"1754468851999","updatedAt":"1754559160300","accountType":1},{"id":"1952934600546816000","accountId":"1951221207996780544","tokenId":"TBSC_BNB","userId":"468001460","total":"0.272193990000000101","assetTotal":"0.272193990000000101","availableAssetTotal":"0.272098890000000101","marketPrice":"0","locked":"0.0000951","available":"0.272098890000000101","indebted":"0","createdAt":"1754450867197","updatedAt":"1754920359479","accountType":1}]}
 ```
 
 ### 返回结果
