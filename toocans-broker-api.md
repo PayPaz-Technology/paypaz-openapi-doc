@@ -9,6 +9,9 @@ POST /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrders
 
 根据subUID、地址、订单号查询提币订单
  分页查询指定条件下的提币订单列表
+### tokenId 特殊说明
+ 生产环境tokenId: USDT
+ 预发布环境tokenId: TBSC_BNB
 
 > Body 请求参数
 
@@ -70,6 +73,9 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositOrders
 
 根据UID或地址查询充值订单
  分页查询指定条件下的充值订单列表
+### tokenId 特殊说明
+生产环境tokenId: USDT
+预发布环境tokenId: TBSC_BNB
 
 > Body 请求参数
 
@@ -129,6 +135,9 @@ POST /t-api/toocans-broker-api/v1/op/openapi/depositAddress
 
 根据子用户UID和tokenID获取充值地址
  为指定子用户和币种获取充值地址，如果不存在则创建新地址
+### tokenId 特殊说明
+生产环境tokenId: TRON_USDT
+预发布环境tokenId: TBSC_BNB
 
 > Body 请求参数
 
@@ -183,6 +192,10 @@ POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal
 
 根据UID发起提币
  为指定子用户创建提币订单
+
+### tokenId 特殊说明
+生产环境tokenId: TRON_USDT
+预发布环境tokenId: TBSC_BNB
 
 > Body 请求参数
 
@@ -285,6 +298,10 @@ GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
 查询提币订单详情
  根据客户端提币订单ID查询提币订单详细信息
 
+### tokenId 特殊说明
+生产环境tokenId: USDT
+预发布环境tokenId: TBSC_BNB
+
 ### 请求参数
 
 |名称|位置|类型|必选|说明|
@@ -329,7 +346,9 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 
 根据tokenId查询该broker下所有资产
  查询当前OpenAPI用户下指定币种或所有币种的资产信息
-
+### tokenId 特殊说明
+生产环境tokenId: USDT
+预发布环境tokenId: TBSC_BNB
 ### 请求参数
 
 |名称|位置|类型|必选|说明|
