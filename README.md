@@ -63,7 +63,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.security.SecureRandom;
-    private static String generateHmacSha256Signature(String data, String secret) throws Exception{
+private static String generateHmacSha256Signature(String data, String secret) throws Exception{
 
             Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
             SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
@@ -71,24 +71,27 @@ import java.security.SecureRandom;
             byte[] hash = sha256_HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hash);
 
-    }
-     String timestamp = Long.toString(System.currentTimeMillis());
-        String method = "GET";
-        String recvWindow = "20000";
-        String clientWithdrawalId = "WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW";
-        String requestPath = "/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
-        String bodyString = "";
+}
+public static void main(String[] args) throws Exception {
 
-        // Build signature string
-        String signatureString = timestamp + method + recvWindow + requestPath + bodyString;
-        System.out.println("signatureString: " + signatureString);
-
-        // Assume secretKey is defined
-        String secretKey = "your_secret_key_here"; // Replace with actual key
-        System.out.println("secretKey: " + secretKey);
-
-        // Generate signature
-        String signature = generateHmacSha256Signature(signatureString, secretKey);
+   String timestamp = Long.toString(System.currentTimeMillis());
+   String method = "GET";
+   String recvWindow = "20000";
+   String clientWithdrawalId = "WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW";
+   String requestPath = "/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
+   String bodyString = "";
+   
+   // Build signature string
+   String signatureString = timestamp + method + recvWindow + requestPath + bodyString;
+   System.out.println("signatureString: " + signatureString);
+   
+   // Assume secretKey is defined
+   String secretKey = "your_secret_key_here"; // Replace with actual key
+   System.out.println("secretKey: " + secretKey);
+   
+   // Generate signature
+   String signature = generateHmacSha256Signature(signatureString, secretKey);
+}
 ```
 
 
@@ -118,15 +121,20 @@ const signature = CryptoJS.enc.Base64.stringify(
 
 **签名TOOCANS-ACCESS-SIGN,java示例POST：**
 ```java
-    private static String generateHmacSha256Signature(String data, String secret) throws Exception{
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+private static String generateHmacSha256Signature(String data, String secret) throws Exception{
+   Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+   SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+   sha256_HMAC.init(secret_key);
+    byte[] hash = sha256_HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
+   return Base64.getEncoder().encodeToString(hash);
 
-            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
-            sha256_HMAC.init(secret_key);
-            byte[] hash = sha256_HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(hash);
+}
+public static void main(String[] args) throws Exception {
 
-    }
        String timestamp = Long.toString(System.currentTimeMillis());
         String method = "POST";
         String recvWindow = "10000";
@@ -152,7 +160,7 @@ const signature = CryptoJS.enc.Base64.stringify(
         
         // 生成签名
         String signature = generateHmacSha256Signature(signatureString, secretKey);
-    }
+    
 }
 ```
 
