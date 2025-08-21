@@ -736,12 +736,12 @@ GET /t-api/toocans-broker-api/v1/op/openapi/assets
 |accountId|string|false|none||交易账号|
 |tokenId|string|false|none||none|
 |userId|string|false|none||none|
-|total|number|false|none||总资产|
-|assetTotal|number|false|none||对应的usdt计价总资产|
-|availableAssetTotal|number|false|none||对应的usdt计价可用总资产|
+|total|number|false|none||持有该token的数量|
+|assetTotal|number|false|none||以usdt计价，token的价值|
+|availableAssetTotal|number|false|none||以usdt计价，可用token的价值|
 |marketPrice|number|false|none||实时价格|
-|locked|number|false|none||已冻结资产。|
-|available|number|false|none||可用资产|
+|locked|number|false|none||已冻结的token的数量。|
+|available|number|false|none||可用的该token的数量|
 |indebted|number|false|none||负债资产|
 |createdAt|string|false|none||创建时间|
 |updatedAt|string|false|none||更新时间|
