@@ -10,8 +10,8 @@
 
 | 环境       | 说明         | 域名地址                              |
 |------------|--------------|----------------------------------------|
-| 预发布环境 | 用于测试联调 | [`https://toocans-brokerapi-uat.bdy.tech`](https://toocans-brokerapi-uat.bdy.tech) |
-| 生产环境   | 实际上线使用 | [`https://brokerapi.toocans.com`](https://brokerapi.toocans.com)       |
+| 预发布环境 | 用于测试联调 | [`https://uat-api.bdy.tech`](https://uat-api.bdy.tech) |
+| 生产环境   | 实际上线使用 | [`https://api.toocans.com`](https://api.toocans.com)       |
 
 * [java demo](/src/Encryption.java)
 ---
