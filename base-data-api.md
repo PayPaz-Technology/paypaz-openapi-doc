@@ -4,7 +4,7 @@
 
 ## GET 获取服务器时间戳
 
-GET /t-api/toocans-broker-api/v1/bc/baseConfig/serverTime
+GET /t-api/broker-api/v1/bc/baseConfig/serverTime
 
 获取服务器时间时间戳
 
