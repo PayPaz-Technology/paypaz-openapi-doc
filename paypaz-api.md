@@ -294,7 +294,7 @@ POST /t-api/broker-api/v1/op/openapi/createSubUser
 ## 6.GET 查询提币订单详情
  根据客户端提币订单ID查询提币订单详细信息
 
-GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo
+GET /t-api/broker-api/v1/op/openapi/withdrawalOrderInfo
 
 查询提币订单详情
  根据客户端提币订单ID查询提币订单详细信息
