@@ -74,10 +74,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/createSubUser")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
