@@ -1,4 +1,4 @@
-package org.toocans.broker.api;
+package org.paypaz.broker.api;
 
 import cn.hutool.json.JSONUtil;
 import okhttp3.*;
@@ -28,8 +28,8 @@ public class Encryption {
     final  static String TIMESTAMP = System.currentTimeMillis() +"";
     final static String RECV_WINDOW = "20000";
 //    final static String BASE_U= "http://localhost:8082";
-    final static String BASE_U= "https://toocans-brokerapi-uat.bdy.tech";
-    final static String BASE_URL = "/t-api/toocans-broker-api/v1/op/openapi";
+    final static String BASE_U= "https://paypaz-brokerapi-uat.bdy.tech";
+    final static String BASE_URL = "/t-api/paypaz-broker-api/v1/op/openapi";
 
     public static void main(String[] args) throws Exception {
 
@@ -74,10 +74,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/createSubUser")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -107,10 +107,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/assets?" + sb)
                 .get()
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .build();
         Call call = client.newCall(request);
         try {
@@ -140,10 +140,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/depositAddress")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -195,10 +195,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/depositOrders")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -239,10 +239,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/createWithdrawal")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -289,10 +289,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/withdrawalOrders")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -320,10 +320,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U + BASE_URL + "/withdrawalOrderInfo?" + sb)
                 .get()
-                .addHeader("TOOCANS-ACCESS-KEY", API_KEY)
-                .addHeader("TOOCANS-ACCESS-SIGN", signature)
-                .addHeader("TOOCANS-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("TOOCANS-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("paypaz-ACCESS-KEY", API_KEY)
+                .addHeader("paypaz-ACCESS-SIGN", signature)
+                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .build();
         Call call = client.newCall(request);
         try {
