@@ -1,4 +1,4 @@
-# Toocans Broker OpenAPI 接入指南
+# Paypaz OpenAPI 接入指南
 
 本文档提供了 Toocans Broker OpenAPI 接口的详细信息。这些 API 允许外部系统与 Toocans Broker 平台集成，用于管理子用户、资产、充值和提币。
 
