@@ -1,6 +1,6 @@
 # Paypaz OpenAPI 接入指南
 
-本文档提供了 Toocans Broker OpenAPI 接口的详细信息。这些 API 允许外部系统与 Toocans Broker 平台集成，用于管理子用户、资产、充值和提币。
+本文档提供了 Paypaz  Broker OpenAPI 接口的详细信息。这些 API 允许外部系统与 Paypaz Broker 平台集成，用于管理子用户、资产、充值和提币。
 
 ---
 
@@ -11,44 +11,44 @@
 | 环境       | 说明         | 域名地址                              |
 |------------|--------------|----------------------------------------|
 | 预发布环境 | 用于测试联调 | [`https://uat-api.bdy.tech`](https://uat-api.bdy.tech) |
-| 生产环境   | 实际上线使用 | [`https://api.toocans.com`](https://api.toocans.com)       |
+| 生产环境   | 实际上线使用 | [`https://api.PAYPAZ.com`](https://api.PAYPAZ.com)       |
 
 * [java demo](/src/Encryption.java)
 ---
 ## 关于鉴权的api密钥
-toocans后台管理生成API的密钥对基于HMAC算法运作的，您将获得一对公钥和私钥，请务必妥善保管。
+Paypaz后台管理生成API的密钥对基于HMAC算法运作的，您将获得一对公钥和私钥，请务必妥善保管。
 ### 公共参数
 
 所有需要签名认证的接口都需要包好以下http的请求头：
 
-- `TOOCANS-ACCESS-KEY`：字符串类型的 API Key
-- `TOOCANS-ACCESS-SIGN`：使用 HMAC SHA256 哈希函数获得的哈希值，再使用 Base-64 编码（详见下方签名说明）
-- `TOOCANS-ACCESS-TIMESTAMP`：发起请求的时间（UTC 时间，毫秒级时间戳）
-- `TOOCANS-ACCESS-RECV-WINDOW`：单位是毫秒，默认值为 20000，用于指定请求在多长时间内有效，同时用于防止重放攻击，最大不超过 60000 毫秒
+- `PAYPAZ-ACCESS-KEY`：字符串类型的 API Key
+- `PAYPAZ-ACCESS-SIGN`：使用 HMAC SHA256 哈希函数获得的哈希值，再使用 Base-64 编码（详见下方签名说明）
+- `PAYPAZ-ACCESS-TIMESTAMP`：发起请求的时间（UTC 时间，毫秒级时间戳）
+- `PAYPAZ-ACCESS-RECV-WINDOW`：单位是毫秒，默认值为 20000，用于指定请求在多长时间内有效，同时用于防止重放攻击，最大不超过 60000 毫秒
 
 所有请求都应包含 `Content-Type: application/json` 头部，并确保请求体为有效的 JSON 格式（如适用）。
 
 ### 签名生成方法
 
-`TOOCANS-ACCESS-SIGN` 的生成步骤如下：
+`PAYPAZ-ACCESS-SIGN` 的生成步骤如下：
 
 1. 构造签名原文字符串：`timestamp + method + RECV-WINDOW + requestPath + body`
-   - `timestamp`：与 `TOOCANS-ACCESS-TIMESTAMP` 请求头相同的毫秒级时间戳
+   - `timestamp`：与 `PAYPAZ-ACCESS-TIMESTAMP` 请求头相同的毫秒级时间戳
    - `method`：请求方法，字母全部大写（GET/POST）
-   - `RECV-WINDOW`：接收窗口值，与 `TOOCANS-ACCESS-RECV-WINDOW` 请求头相同
-   - `requestPath`：请求接口路径，无需排序 如 `/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899`
+   - `RECV-WINDOW`：接收窗口值，与 `PAYPAZ-ACCESS-RECV-WINDOW` 请求头相同
+   - `requestPath`：请求接口路径，无需排序 如 `/t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899`
    - `body`：请求主体的字符串，如果请求没有主体（通常为 GET 请求）则可省略，无需排序
 
 2. 使用 API Secret Key 对签名原文进行 HMAC SHA256 加密
 
 3. 将加密结果进行 Base-64 编码，得到最终签名
 
-**签名TOOCANS-ACCESS-SIGN,javascript示例GET：**
+**签名PAYPAZ-ACCESS-SIGN,javascript示例GET：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'GET';
 const recvWindow = '10000';
-const requestPath = '/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
+const requestPath = '/t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
 const body = ''; // GET 请求通常没有请求体，如果是post，json 的字符串
 
 const signatureString = timestamp + method + recvWindow + requestPath + body;
@@ -57,7 +57,7 @@ const signature = CryptoJS.enc.Base64.stringify(
 );
 ```
 
-**签名TOOCANS-ACCESS-SIGN,java示例GET：**
+**签名PAYPAZ-ACCESS-SIGN,java示例GET：**
 ```java
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -79,7 +79,7 @@ public static void main(String[] args) throws Exception {
    String method = "GET";
    String recvWindow = "20000";
    String clientWithdrawalId = "WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW";
-   String requestPath = "/t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
+   String requestPath = "/t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
    String bodyString = "";
    
    // Build signature string
@@ -97,12 +97,12 @@ public static void main(String[] args) throws Exception {
 
 
 
-**签名TOOCANS-ACCESS-SIGN,javascript示例POST：**
+**签名PAYPAZ-ACCESS-SIGN,javascript示例POST：**
 ```javascript
 const timestamp = Date.now().toString();
 const method = 'POST';
 const recvWindow = '10000';
-const requestPath = '/t-api/toocans-broker-api/v1/op/openapi/createWithdrawal';
+const requestPath = '/t-api/broker-api/v1/op/openapi/createWithdrawal';
 const body = {
     "subUid": 123456789,
     "tokenId": "TBSC_BNB",
@@ -120,7 +120,7 @@ const signature = CryptoJS.enc.Base64.stringify(
 );
 ```
 
-**签名TOOCANS-ACCESS-SIGN,java示例POST：**
+**签名PAYPAZ-ACCESS-SIGN,java示例POST：**
 ```java
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -139,7 +139,7 @@ public static void main(String[] args) throws Exception {
        String timestamp = Long.toString(System.currentTimeMillis());
         String method = "POST";
         String recvWindow = "10000";
-        String requestPath = "/t-api/toocans-broker-api/v1/op/openapi/createWithdrawal";
+        String requestPath = "/t-api/broker-api/v1/op/openapi/createWithdrawal";
         
         // 直接构建JSON对象
         JSONObject body = new JSONObject();
@@ -169,23 +169,23 @@ public static void main(String[] args) throws Exception {
 ## http請求示例
 **示例GET：**
 ```javascript
-GET /t-api/toocans-broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
-Host: brokerapi.toocans.com
--H 'TOOCANS-ACCESS-KEY: XXXXXXXXXX' \
--H 'TOOCANS-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
--H 'TOOCANS-ACCESS-TIMESTAMP: 1658384431891' \
--H 'TOOCANS-ACCESS-RECV-WINDOW: 5000' \
+GET /t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
+Host: brokerapi.PAYPAZ.com
+-H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
+-H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
+-H 'PAYPAZ-ACCESS-TIMESTAMP: 1658384431891' \
+-H 'PAYPAZ-ACCESS-RECV-WINDOW: 5000' \
 -H 'Content-Type: application/json' 
 ```
 
 **示例POST：**
 ```javascript
-POST /t-api/toocans-broker-api/v1/op/openapi/createWithdrawal HTTP/1.1
-Host: brokerapi.toocans.com
--H 'TOOCANS-ACCESS-KEY: XXXXXXXXXX' \
--H 'TOOCANS-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
--H 'TOOCANS-ACCESS-TIMESTAMP: 1658384431891' \
--H 'TOOCANS-ACCESS-RECV-WINDOW: 5000' \
+POST /t-api/broker-api/v1/op/openapi/createWithdrawal HTTP/1.1
+Host: brokerapi.paypaz.com
+-H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
+-H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
+-H 'PAYPAZ-ACCESS-TIMESTAMP: 1658384431891' \
+-H 'PAYPAZ-ACCESS-RECV-WINDOW: 5000' \
 -H 'Content-Type: application/json' \
 -d '{
     "subUid": 123456789,
@@ -270,4 +270,4 @@ API 中使用以下权限：
 - `deposit`：充值相关操作所需
 - `withdraw`：提币相关操作所需
 
-请联系 Toocans Broker 管理员获取 API 密钥的必要权限。
+请联系 PAYPAZ Broker 管理员获取 API 密钥的必要权限。
