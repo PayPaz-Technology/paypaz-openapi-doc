@@ -11,7 +11,7 @@
 | 环境       | 说明         | 域名地址                              |
 |------------|--------------|----------------------------------------|
 | 预发布环境 | 用于测试联调 | [`https://uat-api.bdy.tech`](https://uat-api.bdy.tech) |
-| 生产环境   | 实际上线使用 | [`https://api.PAYPAZ.com`](https://api.PAYPAZ.com)       |
+| 生产环境   | 实际上线使用 | [`https://api.PAYPAZ.com`](https://api.paypaz.com)       |
 
 * [java demo](/src/Encryption.java)
 ---
@@ -36,7 +36,7 @@ Paypaz后台管理生成API的密钥对基于HMAC算法运作的，您将获得�
    - `timestamp`：与 `PAYPAZ-ACCESS-TIMESTAMP` 请求头相同的毫秒级时间戳
    - `method`：请求方法，字母全部大写（GET/POST）
    - `RECV-WINDOW`：接收窗口值，与 `PAYPAZ-ACCESS-RECV-WINDOW` 请求头相同
-   - `requestPath`：请求接口路径，无需排序 如 `/t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899`
+   - `requestPath`：请求接口路径，无需排序 如 `/t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899`
    - `body`：请求主体的字符串，如果请求没有主体（通常为 GET 请求）则可省略，无需排序
 
 2. 使用 API Secret Key 对签名原文进行 HMAC SHA256 加密
@@ -48,7 +48,7 @@ Paypaz后台管理生成API的密钥对基于HMAC算法运作的，您将获得�
 const timestamp = Date.now().toString();
 const method = 'GET';
 const recvWindow = '10000';
-const requestPath = '/t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
+const requestPath = '/t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
 const body = ''; // GET 请求通常没有请求体，如果是post，json 的字符串
 
 const signatureString = timestamp + method + recvWindow + requestPath + body;
@@ -79,7 +79,7 @@ public static void main(String[] args) throws Exception {
    String method = "GET";
    String recvWindow = "20000";
    String clientWithdrawalId = "WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW";
-   String requestPath = "/t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
+   String requestPath = "/t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
    String bodyString = "";
    
    // Build signature string
@@ -139,7 +139,7 @@ public static void main(String[] args) throws Exception {
        String timestamp = Long.toString(System.currentTimeMillis());
         String method = "POST";
         String recvWindow = "10000";
-        String requestPath = "/t-api/broker-api/v1/op/openapi/createWithdrawal";
+        String requestPath = "/t-api/broker-openapi/v1/op/openapi/createWithdrawal";
         
         // 直接构建JSON对象
         JSONObject body = new JSONObject();
@@ -169,7 +169,7 @@ public static void main(String[] args) throws Exception {
 ## http請求示例
 **示例GET：**
 ```javascript
-GET /t-api/broker-api/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
+GET /t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
 Host: brokerapi.PAYPAZ.com
 -H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
 -H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
@@ -180,7 +180,7 @@ Host: brokerapi.PAYPAZ.com
 
 **示例POST：**
 ```javascript
-POST /t-api/broker-api/v1/op/openapi/createWithdrawal HTTP/1.1
+POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal HTTP/1.1
 Host: brokerapi.paypaz.com
 -H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
 -H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
