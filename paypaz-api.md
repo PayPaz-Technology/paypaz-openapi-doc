@@ -192,7 +192,7 @@ POST /t-api/broker-openapi/v1/op/openapi/depositAddress
 POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal
 
 根据UID发起提币
- 为指定子用户创建提币订单
+ 为指定子用户创建提币订单，这个子用户的 2FA 要由调用方自己来验证。
 
 ### tokenId 特殊说明
 生产环境tokenId: TRON_USDT
