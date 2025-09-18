@@ -206,6 +206,7 @@ POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal
 	"tokenId": "TBSC_BNB",
 	"address": "0xa8c5eea944c3af945203e18cf990905519a158ad",
 	"amount": "0.0000001",
+    "twoFactorAuthentication": true,
 	"clientWithdrawalId": "4ISZqseemfqpbz0WQyUkocdOrFprWDXda"
 }
 ```
@@ -505,6 +506,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 |tokenId|string|true|none||币种ID|
 |address|string|true|none||提币地址|
 |amount|number|true|none||提币数量|
+|twoFactorAuthentication|boolean|true|none||2fa标识|
 |clientWithdrawalId|string|true|none||客户端订单ID（用于幂等性控制）|
 
 <h2 id="tocS_QueryDepositOrderRequest">QueryDepositOrderRequest</h2>
