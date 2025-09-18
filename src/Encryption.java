@@ -1,4 +1,4 @@
-package org.paypaz.broker.api;
+package org.paypaz.broker.util;
 
 import cn.hutool.json.JSONUtil;
 import okhttp3.*;
@@ -15,21 +15,20 @@ import java.util.*;
  * OpenAPI 接口调用示例
  */
 public class Encryption {
-//    final static String API_KEY = "MCowBQYDK2VwAyEAXmkBih05iCSED2FWQGhHfRKvCEdPvUxKODoThg9K0KA";
-//    final static String API_SECRET = "MC4CAQAwBQYDK2VwBCIEILgovvekSbdI9uLp/TJKJO8mgn9TynZLT+q4EyQR";
+    final static String API_KEY = "MCowBQYDK2VwAyEAXmkBih05iCSED2FWQGhHfRKvCEdPvUxKODoThg9K0KA";
+    final static String API_SECRET = "MC4CAQAwBQYDK2VwBCIEILgovvekSbdI9uLp/TJKJO8mgn9TynZLT+q4EyQR";
 
 //
-    final static String API_KEY = "MCowBQYDK2VwAyEAnW/xONd55t9M/mOv/y/VSiJumoMWOew+Tr8UKbuPG/o=";
-    final static String API_SECRET = "MC4CAQAwBQYDK2VwBCIEIPOciC7O+zn84xhZmmbuVa8KUJ/kCgJb8YImeizZF0zr";
+//    final static String API_KEY = "MCowBQYDK2VwAyEAnW/xONd55t9M/mOv/y/VSiJumoMWOew+Tr8UKbuPG/o=";
+//    final static String API_SECRET = "MC4CAQAwBQYDK2VwBCIEIPOciC7O+zn84xhZmmbuVa8KUJ/kCgJb8YImeizZF0zr";
 
 
 
 
-    final  static String TIMESTAMP = System.currentTimeMillis() +"";
+    final  static String TIMESTAMP = System.currentTimeMillis() +"";;
     final static String RECV_WINDOW = "20000";
-//    final static String BASE_U= "http://localhost:8082";
-    final static String BASE_U= "https://paypaz-brokerapi-uat.bdy.tech";
-    final static String BASE_URL = "/t-api/paypaz-broker-api/v1/op/openapi";
+    final static String BASE_U= "http://localhost:8082";
+    final static String BASE_URL = "/t-api/broker-openapi/v1/op/openapi";
 
     public static void main(String[] args) throws Exception {
 
@@ -42,22 +41,24 @@ public class Encryption {
         encryptionTest.queryBrokerAssets("");
 //
 //        // 获取充值地址
-        encryptionTest.getDepositAddress(675861471654133738L, "TBSC_BNB");
+        encryptionTest.getDepositAddress(449267154299440717L, "TRON");
 //
 //        // 查询充值订单
-        long subUid = 468001460825249908L;
+        long subUid = 449267154217741487L;
         encryptionTest.queryDepositOrders(subUid, "USDT", 1, 10, null, null,null);
 //
 //        // 创建提币订单
         String clientOrderId = UUID.randomUUID().toString().replace("-", "");
-        encryptionTest.createWithdrawal(449267154888989985L, "TBSC_BNB", "0.001045", "0x2c90a96735d851c6728fb6949264b88198b5dc6c", clientOrderId);
+        encryptionTest.createWithdrawal(subUid, "TBSC_BNB", "0.0001", "0x2c90a96735d851c6728fb6949264b88198b5dc6c", clientOrderId);
+
+        encryptionTest.createWithdrawal(subUid, "BTC", "0.12", "bc1pyxe8e7c9lr3tsl4jnlqsjr6v49j42clj39v3vdzhdwpp9728cd6qc7kgh2", clientOrderId);
 
 //        // 查询提币订单
         encryptionTest.queryWithdrawalOrders(subUid, "USDT", 1, 20, null, null);
 
         // 查询提币订单详情
-        String  orederId = "b15d4321e38046c19955dac55c9043f2";
-        encryptionTest.withdrawalOrderInfo(orederId);
+//        String  orederId = "b15d4321e38046c19955dac55c9043f2";
+        encryptionTest.withdrawalOrderInfo(clientOrderId);
     }
 
     /**
@@ -107,10 +108,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/assets?" + sb)
                 .get()
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .build();
         Call call = client.newCall(request);
         try {
@@ -140,10 +141,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/depositAddress")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -185,8 +186,6 @@ public class Encryption {
             map.put("walletAddress", address);
         }
 
-
-        
         String signature = genPostSign(map,BASE_URL + "/depositOrders");
         String jsonMap = JSONUtil.toJsonStr(map);
 
@@ -195,10 +194,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/depositOrders")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -226,7 +225,8 @@ public class Encryption {
         map.put("tokenId", tokenId);
         map.put("amount", amount);
         map.put("address", address);
-        
+        map.put("twoFactorAuthentication", Boolean.FALSE);
+
         if (clientOrderId != null) {
             map.put("clientWithdrawalId", clientOrderId);
         }
@@ -239,10 +239,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/createWithdrawal")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -289,10 +289,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U+BASE_URL + "/withdrawalOrders")
                 .post(RequestBody.create(mediaType, jsonMap))
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Call call = client.newCall(request);
@@ -320,10 +320,10 @@ public class Encryption {
         Request request = new Request.Builder()
                 .url(BASE_U + BASE_URL + "/withdrawalOrderInfo?" + sb)
                 .get()
-                .addHeader("paypaz-ACCESS-KEY", API_KEY)
-                .addHeader("paypaz-ACCESS-SIGN", signature)
-                .addHeader("paypaz-ACCESS-TIMESTAMP", TIMESTAMP)
-                .addHeader("paypaz-ACCESS-RECV-WINDOW", RECV_WINDOW)
+                .addHeader("PAYPAZ-ACCESS-KEY", API_KEY)
+                .addHeader("PAYPAZ-ACCESS-SIGN", signature)
+                .addHeader("PAYPAZ-ACCESS-TIMESTAMP", TIMESTAMP)
+                .addHeader("PAYPAZ-ACCESS-RECV-WINDOW", RECV_WINDOW)
                 .build();
         Call call = client.newCall(request);
         try {
@@ -343,9 +343,7 @@ public class Encryption {
      * @throws InvalidKeyException
      */
     private static String genPostSign(Map<String, Object> params, String requestPath) throws Exception {
-        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-        SecretKeySpec secret_key = new SecretKeySpec(API_SECRET.getBytes(), "HmacSHA256");
-        sha256_HMAC.init(secret_key);
+
 
         String paramJson = JSONUtil.toJsonStr(params);
 
