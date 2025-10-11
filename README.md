@@ -13,7 +13,6 @@
 | 预发布环境 | 用于测试联调 | [`https://openapi.paypaz.dev`](https://openapi.paypaz.dev) |
 | 生产环境   | 实际上线使用 | [`https://openapi.paypaz.com`](https://openapi.paypaz.com)       |
 
-* [java demo](/src/Encryption.java)
 ---
 ## 关于鉴权的api密钥
 Paypaz后台管理生成API的密钥对基于HMAC算法运作的，您将获得一对公钥和私钥，请务必妥善保管。

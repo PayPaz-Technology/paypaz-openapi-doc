@@ -3,7 +3,7 @@
 
 以下业务接口，都需要通过签名认证
 
-## 1.POST 根据subUID、地址、订单号查询提币订单
+## 1.POST 根据客户子用户Uid，subUID、地址、订单号查询提币订单
  分页查询指定条件下的提币订单列表
 
 POST /t-api/broker-openapi/v1/op/openapi/withdrawalOrders
@@ -19,6 +19,7 @@ POST /t-api/broker-openapi/v1/op/openapi/withdrawalOrders
 ```json
 {
 	"subUid": "468001460675025856",
+    "clientSubUserId": "csub_abc123",
 	"tokenId": "USDT",
 	"address": "0xa8c5eea944c3af945203e18cf990905519a158ad",
 	"txId": "0xd3ef6ed39ee456de7c897ffa9c677aa64dcb560d37a8abbb1478fe82630ae1da",
@@ -39,9 +40,8 @@ POST /t-api/broker-openapi/v1/op/openapi/withdrawalOrders
 > 返回示例
 
 > 200 Response
-
 ```
-{"code":200,"msg":"success","data":[{"id":"1954852203515473920","clientWithdrawalId":"r6uxDU8utpPlNe9yUfuzEkPLQHtd3NVnN5","transactionId":null,"tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","userId":"468001460","subUserId":"468001460441872416","address":"0xa8c5eea944c3af945203e18cf990905519a158ad","arriveQuantity":"0.000000099","statusInfo":1,"createdAt":"1754908059358","updatedAt":"1754908059358","arriveTime":null,"totalQuantity":"0.0000001","txId":null}]}
+{"code":0,"msg":"string","data":[{"id":"string","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"string","subUserId":"string","address":"string","arriveQuantity":"string","statusInfo":0,"createdAt":"string","updatedAt":"string","arriveTime":"string","totalQuantity":"string","txId":"string"}]}
 ```
 
 ### 返回结果
@@ -67,7 +67,7 @@ POST /t-api/broker-openapi/v1/op/openapi/withdrawalOrders
 
 <a id="opIdqueryDepositOrders"></a>
 
-## 2.POST 根据UID或地址查询充值订单
+## 2.POST 根据客户子UID或地址查询充值订单
  分页查询指定条件下的充值订单列表
 
 POST /t-api/broker-openapi/v1/op/openapi/depositOrders
@@ -82,13 +82,16 @@ POST /t-api/broker-openapi/v1/op/openapi/depositOrders
 
 ```json
 {
-	"subUid": "468001460846937517",
-	"walletAddress": "0x53917cb4b09850b26d74a0ab1985639661719c56",
-	"tokenId": "TBSC_BNB",
-	"startTime": "1754560605211",
-	"endTime": "1826393600000",
-	"pageNo": 1,
-	"pageSize": 20
+  "subUid": 123456789,
+  "clientSubUserId": "csub_abc123",
+  "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+  "orderNo": "D202501010001",
+  "tokenId": "TBSC_BNB",
+  "startTime": 1626307200000,
+  "endTime": 1626393600000,
+  "pageNo": 1,
+  "pageSize": 10,
+  "validSubUserIdentifier": true
 }
 ```
 
@@ -103,7 +106,7 @@ POST /t-api/broker-openapi/v1/op/openapi/depositOrders
 > 200 Response
 
 ```
-{"code":200,"msg":"success","data":[{"id":"1953394928857518080","tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","quantity":"0.001","fromAddress":"0xa8c5eea944c3af945203e18cf990905519a158ad","walletAddress":"0x53917cb4b09850b26d74a0ab1985639661719c56","txId":"0xe8fe1bb9f6164727962a2079252b4560f8d684f6e2fc7f807e24f1527ffcc9eb","status":1,"createdAt":"1754560618019","updatedAt":null,"userId":"468001460","subUserId":"468001460825249908"},{"id":"1953394875141066752","tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","quantity":"0.001","fromAddress":"0xa8c5eea944c3af945203e18cf990905519a158ad","walletAddress":"0x53917cb4b09850b26d74a0ab1985639661719c56","txId":"0x13a4cb957572361c23b99933e5a45223163f2f208318401eca4964c5bbec7747","status":1,"createdAt":"1754560605212","updatedAt":null,"userId":"468001460","subUserId":"468001460825249908"}]}
+{"code":0,"msg":"string","data":[{"id":123456789,"orderNo":"D202501010001","tokenId":"TBSC_BNB","chainTokenId":"BNB","quantity":0.01,"fee":0,"netAmount":0.01,"fromAddress":"0x1234567890abcdef1234567890abcdef12345678","walletAddress":"0xabcdef1234567890abcdef1234567890abcdef12","txId":"0x9876543210abcdef9876543210abcdef98765432","status":1,"createdAt":1626307200000,"updatedAt":1626307260000,"userId":123456,"subUserId":789012}]}
 ```
 
 ### 返回结果
@@ -144,7 +147,7 @@ POST /t-api/broker-openapi/v1/op/openapi/depositAddress
 
 ```json
 {
-  "subUid": "468001460884111247",
+  "clientSubUserId": "csub_abc123",
   "tokenId": "TBSC_BNB"
 }
 ```
@@ -160,7 +163,7 @@ POST /t-api/broker-openapi/v1/op/openapi/depositAddress
 > 200 Response
 
 ```
-{"code":200,"msg":"success","data":{"id":"1954903438730211328","userId":"468001460","tokenId":"TBSC_BNB","address":"0x240fcc1543d8fc62b8811d85a6927f3ed4ec583e","createdAt":"1754920274799","updatedAt":"1754920274799","tag":null,"subUserId":"468001460884111247"}}
+{"code":0,"msg":"string","data":{"id":"string","userId":"string","tokenId":"string","address":"string","createdAt":"string","updatedAt":"string","tag":"string","subUserId":"string"}}
 ```
 
 ### 返回结果
@@ -202,12 +205,12 @@ POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal
 
 ```json
 {
-	"subUid": "468001460825249908",
-	"tokenId": "TBSC_BNB",
-	"address": "0xa8c5eea944c3af945203e18cf990905519a158ad",
-	"amount": "0.0000001",
-    "twoFactorAuthentication": true,
-	"clientWithdrawalId": "4ISZqseemfqpbz0WQyUkocdOrFprWDXda"
+  "clientSubUserId": "csub_abc123",
+  "tokenId": "TBSC_BNB",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "amount": 0.01,
+  "clientWithdrawalId": "client12345678901234",
+  "twoFactorAuthentication": true
 }
 ```
 
@@ -222,7 +225,7 @@ POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal
 > 200 Response
 
 ```
-{"code":200,"msg":"success","data":{"id":"1954903793908068352","clientWithdrawalId":"4ISZqseemfqpbz0WQyUkocdOrFprWDXda","transactionId":null,"tokenId":"TBSC_BNB","chainTokenId":"TBSC_BNB","userId":"468001460","subUserId":"468001460825249908","address":"0xa8c5eea944c3af945203e18cf990905519a158ad","arriveQuantity":"0.000000099","statusInfo":1,"createdAt":"1754920359476","updatedAt":"1754920359476","arriveTime":null,"totalQuantity":"0.0000001","txId":null}}
+{"code":0,"msg":"string","data":{"id":"string","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"string","subUserId":"string","address":"string","arriveQuantity":"string","statusInfo":0,"createdAt":"string","updatedAt":"string","arriveTime":"string","totalQuantity":"string","txId":"string"}}
 ```
 
 ### 返回结果
@@ -248,51 +251,7 @@ POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal
 
 <a id="opIdcreateSubUser"></a>
 
-## 5.POST 创建子用户UID
- 为当前OpenAPI用户创建一个新的子用户
-
-POST /t-api/broker-openapi/v1/op/openapi/createSubUser
-
-创建子用户UID
- 为当前OpenAPI用户创建一个新的子用户
-
-### 请求参数
-
-|名称|位置|类型|必选| 说明        |
-|---|---|---|---|-----------|
-|body|body|object| 否 | 子用户 subUserId |
-
-> 返回示例
-
-> 200 Response
-
-```
-{"code":200,"msg":"success","data":"468001460884111247"}
-```
-
-### 返回结果
-
-|状态码|状态码含义|说明|数据模型|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|用户ID|[RLong](#schemarlong)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized|string|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal Server Error|Inline|
-
-### 返回数据结构
-
-状态码 **200**
-
-*响应信息主体*
-
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|» code|integer(int32)|false|none||none|
-|» msg|string|false|none||none|
-|» data|string|false|none||none|
-
-<a id="opIdwithdrawalOrderInfo"></a>
-
-## 6.GET 查询提币订单详情
+## 5.GET 查询提币订单详情
  根据客户端提币订单ID查询提币订单详细信息
 
 GET /t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo
@@ -341,7 +300,7 @@ GET /t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo
 
 <a id="opIdqueryBrokerAssets"></a>
 
-## 7.GET 根据tokenId查询该broker下所有资产
+## 6.GET 根据tokenId查询该broker下所有资产
  查询当前OpenAPI用户下指定币种或所有币种的资产信息
 
 GET /t-api/broker-openapi/v1/op/openapi/assets
@@ -450,6 +409,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 ```json
 {
   "subUid": "123456789",
+  "clientSubUserId": "csub_abc123",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "clientWithdrawalId": "client12345678",
   "tokenId": "TBSC_BNB",
@@ -466,17 +426,18 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 ### 属性
 
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|subUid|string|true|none||子用户ID|
-|address|string|false|none||提币地址|
-|clientWithdrawalId|string|false|none||客户端提币订单ID|
-|tokenId|string|false|none||币种ID|
-|txId|string|false|none||交易ID（区块链交易哈希）|
-|startTime|string|false|none||开始时间（毫秒时间戳）|
-|endTime|string|false|none||结束时间（毫秒时间戳）|
-|pageNo|integer(int32)|false|none||页码，从1开始|
-|pageSize|integer(int32)|false|none||每页大小，范围1-100|
+|名称|类型|必选|约束|中文名| 说明            |
+|---|---|---|---|---|---------------|
+|subUid|string|true|none|| 子用户ID         |
+|clientSubUserId|string|true|none|| 客户子用户ID       |
+|address|string|false|none|| 提币地址          |
+|clientWithdrawalId|string|false|none|| 客户端提币订单ID     |
+|tokenId|string|false|none|| 币种ID          |
+|txId|string|false|none|| 交易ID（区块链交易哈希） |
+|startTime|string|false|none|| 开始时间（毫秒时间戳）   |
+|endTime|string|false|none|| 结束时间（毫秒时间戳）   |
+|pageNo|integer(int32)|false|none|| 页码，从1开始       |
+|pageSize|integer(int32)|false|none|| 每页大小，范围1-100  |
 
 <h2 id="tocS_CreateWithdrawalRequest">CreateWithdrawalRequest</h2>
 
@@ -487,7 +448,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 ```json
 {
-  "subUid": "123456789",
+  "clientSubUserId": "csub_abc123",
   "tokenId": "TBSC_BNB",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "amount": 0.01,
@@ -500,14 +461,14 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 ### 属性
 
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|subUid|string|true|none||子用户ID|
-|tokenId|string|true|none||币种ID|
-|address|string|true|none||提币地址|
-|amount|number|true|none||提币数量|
-|twoFactorAuthentication|boolean|true|none||2fa标识|
-|clientWithdrawalId|string|true|none||客户端订单ID（用于幂等性控制）|
+|名称|类型|必选|约束|中文名| 说明               |
+|---|---|---|---|---|------------------|
+|clientSubUserId|string|true|none|| 客户子用户ID          |
+|tokenId|string|true|none|| 币种ID             |
+|address|string|true|none|| 提币地址             |
+|amount|number|true|none|| 提币数量             |
+|twoFactorAuthentication|boolean|true|none|| 2fa标识            |
+|clientWithdrawalId|string|true|none|| 客户端订单ID（用于幂等性控制） |
 
 <h2 id="tocS_QueryDepositOrderRequest">QueryDepositOrderRequest</h2>
 
@@ -518,7 +479,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 ```json
 {
-  "subUid": "123456789",
+  "clientSubUserId": "123456789",
   "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
   "tokenId": "TBSC_BNB",
   "startTime": "1626307200000",
@@ -536,6 +497,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
 |subUid|string|true|none||子用户ID|
+|clientSubUserId|string|true|none||子用户ID|
 |walletAddress|string|false|none||钱包地址|
 |tokenId|string|false|none||币种ID|
 |startTime|string|false|none||开始时间（毫秒时间戳）|
@@ -564,7 +526,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|subUid|string|true|none||子用户ID|
+|clientSubUserId|string|true|none||子用户ID|
 |tokenId|string|true|none||币种ID|
 
 <h2 id="tocS_WithdrawalOrderOpenApiVO">WithdrawalOrderOpenApiVO</h2>
@@ -597,23 +559,24 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 ### 属性
 
-|名称|类型|必选|约束|中文名| 说明                                                                                              |
-|---|---|---|---|---|-------------------------------------------------------------------------------------------------|
-|id|string|false|none|| 平台生成                                                                                            |
-|clientWithdrawalId|string|false|none|| 客户端订单ID                                                                                         |
-|transactionId|string|false|none|| 订单ID                                                                                            |
-|tokenId|string|false|none|| tokenId                                                                                         |
-|chainTokenId|string|false|none|| 链tokenId                                                                                        |
-|userId|string|false|none|| none                                                                                            |
-|subUserId|string|false|none|| 企业-子用户id                                                                                        |
-|address|string|false|none|| 提现地址 用户的                                                                                        |
-|arriveQuantity|number|false|none|| 实际提币数量                                                                                          |
+|名称|类型|必选|约束|中文名| 说明                   |
+|---|---|---|---|---|----------------------|
+|id|string|false|none|| 平台生成                 |
+|clientWithdrawalId|string|false|none|| 客户端订单ID              |
+|transactionId|string|false|none|| 订单ID                 |
+|tokenId|string|false|none|| tokenId              |
+|chainTokenId|string|false|none|| 链tokenId             |
+|userId|string|false|none|| none                 |
+|subUserId|string|false|none|| 企业-子用户id             |
+|address|string|false|none|| 提现地址 用户的             |
+|arriveQuantity|number|false|none|| 实际提币数量               |
+|platformFee|number|false|none|| 手续费                  |
 |statusInfo|integer(int32)|false|none|| 1,提币处理中，2，提币成功，3提币失败 |
-|createdAt|string|false|none|| 创建时间                                                                                            |
-|updatedAt|string|false|none|| 更新时间                                                                                            |
-|arriveTime|string|false|none|| 提现到账时间                                                                                          |
-|totalQuantity|number|false|none|| 用户输入的提现数量                                                                                       |
-|txId|string|false|none|| transaction hash                                                                                |
+|createdAt|string|false|none|| 创建时间                 |
+|updatedAt|string|false|none|| 更新时间                 |
+|arriveTime|string|false|none|| 提现到账时间               |
+|totalQuantity|number|false|none|| 用户输入的提现数量            |
+|txId|string|false|none|| transaction hash     |
 
 <h2 id="tocS_DepositOrderOpenApiVO">DepositOrderOpenApiVO</h2>
 
@@ -625,9 +588,12 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 ```json
 {
   "id": "123456789",
+  "orderNo": "d9df7282-7ab5-4143-98aa-3d10762ab5ef",
   "tokenId": "TBSC_BNB",
   "chainTokenId": "BNB",
   "quantity": 0.01,
+  "fee": "0.01",
+  "netAmount": "0.0",
   "fromAddress": "0x1234567890abcdef1234567890abcdef12345678",
   "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
   "txId": "0x9876543210abcdef9876543210abcdef98765432",
@@ -644,20 +610,23 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 
 ### 属性
 
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|id|string|false|none||充值订单ID|
-|tokenId|string|false|none||币种ID|
-|chainTokenId|string|false|none||链上币种ID|
-|quantity|number|false|none||充值数量|
-|fromAddress|string|false|none||来源地址|
-|walletAddress|string|false|none||钱包地址|
-|txId|string|false|none||交易ID（区块链交易哈希）|
-|status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
-|createdAt|string|false|none||创建时间（毫秒时间戳）|
-|updatedAt|string|false|none||更新时间（毫秒时间戳）|
-|userId|string|false|none||用户ID（主账号）|
-|subUserId|string|false|none||子用户ID|
+|名称|类型|必选|约束|中文名| 说明                                              |
+|---|---|---|---|---|-------------------------------------------------|
+|id|string|false|none|| 充值订单ID                                          |
+|orderNo|string|false|none|| 充值订单号                                           |
+|tokenId|string|false|none|| 币种ID                                            |
+|chainTokenId|string|false|none|| 链上币种ID                                          |
+|quantity|number|false|none|| 充值数量                                            |
+|fee|number|false|none|| 手续费                                             |
+|netAmount|number|false|none|| 到账金额                                            |
+|fromAddress|string|false|none|| 来源地址                                            |
+|walletAddress|string|false|none|| 钱包地址                                            |
+|txId|string|false|none|| 交易ID（区块链交易哈希）                                   |
+|status|integer(int32)|false|none|| 充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败 |
+|createdAt|string|false|none|| 创建时间（毫秒时间戳）                                     |
+|updatedAt|string|false|none|| 更新时间（毫秒时间戳）                                     |
+|userId|string|false|none|| 用户ID（主账号）                                       |
+|subUserId|string|false|none|| 子用户ID                                           |
 
 <h2 id="tocS_RWithdrawalOrderOpenApiVO">RWithdrawalOrderOpenApiVO</h2>
 
@@ -680,6 +649,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
     "subUserId": "0",
     "address": "string",
     "arriveQuantity": 0,
+    "platformFee": "0",
     "statusInfo": 0,
     "createdAt": "0",
     "updatedAt": "0",
@@ -854,6 +824,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
       "tokenId": "TBSC_BNB",
       "chainTokenId": "BNB",
       "quantity": 0.01,
+      "platformFee": "0.0",
       "fromAddress": "0x1234567890abcdef1234567890abcdef12345678",
       "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
       "txId": "0x9876543210abcdef9876543210abcdef98765432",
