@@ -5,3 +5,4 @@
 * [业务接口](/paypaz-api.md)
  
 * [公用接口](/base-data-api.md)
+* [webhook说明](/WEBHOOK_GUIDE.md)
