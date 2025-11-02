@@ -433,7 +433,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 |address|string|false|none|| 提币地址          |
 |clientWithdrawalId|string|false|none|| 客户端提币订单ID     |
 |tokenId|string|false|none|| 币种ID          |
-|txId|string|false|none|| 交易ID（区块链交易哈希） |
+|txId|string|false|none|| 交易ID（区块链交易ID） |
 |startTime|string|false|none|| 开始时间（毫秒时间戳）   |
 |endTime|string|false|none|| 结束时间（毫秒时间戳）   |
 |pageNo|integer(int32)|false|none|| 页码，从1开始       |
@@ -621,7 +621,7 @@ GET /t-api/broker-openapi/v1/op/openapi/assets
 |netAmount|number|false|none|| 到账金额                                            |
 |fromAddress|string|false|none|| 来源地址                                            |
 |walletAddress|string|false|none|| 钱包地址                                            |
-|txId|string|false|none|| 交易ID（区块链交易哈希）                                   |
+|txId|string|false|none|| 交易ID（区块链交易ID）                                   |
 |status|integer(int32)|false|none|| 充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败 |
 |createdAt|string|false|none|| 创建时间（毫秒时间戳）                                     |
 |updatedAt|string|false|none|| 更新时间（毫秒时间戳）                                     |
