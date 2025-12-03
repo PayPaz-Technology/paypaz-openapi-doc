@@ -47,7 +47,7 @@ Paypaz后台管理生成API的密钥对基于HMAC算法运作的，您将获得�
 const timestamp = Date.now().toString();
 const method = 'GET';
 const recvWindow = '10000';
-const requestPath = '/t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
+const requestPath = '/t-api/openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e55899';
 const body = ''; // GET 请求通常没有请求体，如果是post，json 的字符串
 
 const signatureString = timestamp + method + recvWindow + requestPath + body;
@@ -78,7 +78,7 @@ public static void main(String[] args) throws Exception {
    String method = "GET";
    String recvWindow = "20000";
    String clientWithdrawalId = "WKxXXnkaD0luIGvnZVrglg7UALaYDPTLiQdEbYvUZjL9qI4ekEqW";
-   String requestPath = "/t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
+   String requestPath = "/t-api/openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=" + clientWithdrawalId;
    String bodyString = "";
    
    // Build signature string
@@ -101,10 +101,11 @@ public static void main(String[] args) throws Exception {
 const timestamp = Date.now().toString();
 const method = 'POST';
 const recvWindow = '10000';
-const requestPath = '/t-api/broker-api/v1/op/openapi/createWithdrawal';
+const requestPath = '/t-api/openapi/v1/op/openapi/createWithdrawal';
 const body = {
     "subUid": 123456789,
-    "tokenId": "TBSC_BNB",
+    "tokenId": "USDT",
+    "chainId": "TRON",
     "address": "0x1234567890abcdef1234567890abcdef12345678",
     "amount": 0.01,
     "clientWithdrawalId": "client12345678901234"
@@ -138,12 +139,13 @@ public static void main(String[] args) throws Exception {
        String timestamp = Long.toString(System.currentTimeMillis());
         String method = "POST";
         String recvWindow = "10000";
-        String requestPath = "/t-api/broker-openapi/v1/op/openapi/createWithdrawal";
+        String requestPath = "/t-api/openapi/v1/op/openapi/createWithdrawal";
         
         // 直接构建JSON对象
         JSONObject body = new JSONObject();
         body.put("subUid", 123456789);
-        body.put("tokenId", "TBSC_BNB");
+        body.put("tokenId", "USDT");
+        body.put("chainId", "TRON");
         body.put("address", "0x1234567890abcdef1234567890abcdef12345678");
         body.put("amount", 0.01);
         body.put("clientWithdrawalId", "client12345678901234");
@@ -168,7 +170,7 @@ public static void main(String[] args) throws Exception {
 ## http请求示例
 **示例GET：**
 ```javascript
-GET /t-api/broker-openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
+GET /t-api/openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
 Host: brokerapi.PAYPAZ.com
 -H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
 -H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
@@ -179,7 +181,7 @@ Host: brokerapi.PAYPAZ.com
 
 **示例POST：**
 ```javascript
-POST /t-api/broker-openapi/v1/op/openapi/createWithdrawal HTTP/1.1
+POST /t-api/openapi/v1/op/openapi/createWithdrawal HTTP/1.1
 Host: brokerapi.paypaz.com
 -H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
 -H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
