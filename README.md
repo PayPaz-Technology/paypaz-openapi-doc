@@ -8,10 +8,10 @@
 
 ### REST接口访问域名列表：
 
-| 环境       | 说明         | 域名地址                              |
-|------------|--------------|----------------------------------------|
-| 预发布环境 | 用于测试联调 | [`https://openapi.paypaz.dev`](https://openapi.paypaz.dev) |
-| 生产环境   | 实际上线使用 | [`https://openapi.paypaz.com`](https://openapi.paypaz.com)       |
+| 环境       | 说明         | 域名地址                                                        | 对外出口IP         |
+|------------|--------------|-------------------------------------------------------------|--------------------|
+| 预发布环境 | 用于测试联调 | [`https://open-api.paypaz.dev`](https://openapi.paypaz.dev) | 16.163.219.116     |
+| 生产环境   | 实际上线使用 | [`https://open-api.paypaz.com`](https://openapi.paypaz.com) |                    |
 
 ---
 ## 关于鉴权的api密钥
