@@ -267,7 +267,6 @@ Host: brokerapi.paypaz.com
 ## API 权限
 
 API 中使用以下权限：
-- `createSubUser`：创建子用户和查询资产所需
 - `deposit`：充值相关操作所需
 - `withdraw`：提币相关操作所需
 
