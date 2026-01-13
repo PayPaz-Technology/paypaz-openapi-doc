@@ -187,7 +187,7 @@ POST /t-api/openapi/v1/op/openapi/depositAddress
 |---|---|---|---|---|---|
 |» code|integer(int32)|false|none||none|
 |» msg|string|false|none||none|
-|» data|[SubWalletAddressOpenApiVO](#schemasubwalletaddressopenapivo)|false|none||企业子用户钱包地址实体类<br /> 用于存储和管理子用户的钱包地址信息<br /> 对应数据库表：tb_sub_wallet_address|
+|» data|[SubWalletAddressOpenApiVO](#schemasubwalletaddressopenapivo)|false|none||企业子用户钱包地址实体类<br /> |
 
 
 <a id="opIdcreateWithdrawal"></a>
