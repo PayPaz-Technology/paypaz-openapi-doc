@@ -11,7 +11,7 @@
 | 环境       | 说明         | 域名地址                                                        | 对外出口IP         |
 |------------|--------------|-------------------------------------------------------------|--------------------|
 | 预发布环境 | 用于测试联调 | [`https://open-api.paypaz.dev`](https://openapi.paypaz.dev) | 16.163.219.116     |
-| 生产环境   | 实际上线使用 | [`https://open-api.paypaz.com`](https://openapi.paypaz.com) |                    |
+| 生产环境   | 实际上线使用 | [`https://open-api.paypaz.com`](https://openapi.paypaz.com) | 18.167.66.134                  |
 
 ---
 ## 关于鉴权的api密钥
