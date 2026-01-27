@@ -68,7 +68,7 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 
 <a id="opIdqueryDepositOrders"></a>
 
-## 2.POST 根据客户子UID或地址查询充值订单
+## 2.POST 根据客户子UID，地址，订单号查询充值订单
  分页查询指定条件下的充值订单列表
 
 POST /t-api/openapi/v1/op/openapi/depositOrders
