@@ -18,17 +18,17 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 
 ```json
 {
-	"subUid": "468001460675025856",
-    "clientSubUserId": "csub_abc123",
-	"tokenId": "USDT",
-	"chainId": "TRON",
-	"address": "0xa8c5eea944c3af945203e18cf990905519a158ad",
-	"txId": "0xd3ef6ed39ee456de7c897ffa9c677aa64dcb560d37a8abbb1478fe82630ae1da",
-	"clientWithdrawalId": "client12345678",
-	"startTime": "1754641181883",
-	"endTime": "1754641181899",
-	"pageNo": 1,
-	"pageSize": 10
+  "subUid": 123456789,
+  "clientSubUserId": "csub_abc123",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "clientWithdrawalId": "client12345678",
+  "tokenId": "USDT",
+  "chainId": "TRON",
+  "txId": "0xabcd1234...",
+  "startTime": 1626307200000,
+  "endTime": 1626393600000,
+  "pageNo": 1,
+  "pageSize": 10
 }
 ```
 
@@ -42,7 +42,7 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 
 > 200 Response
 ```
-{"code":0,"msg":"string","data":[{"id":"string","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainTokenId":"string","userId":"string","subUserId":"string","address":"string","arriveQuantity":"string","statusInfo":0,"createdAt":"string","updatedAt":"string","arriveTime":"string","totalQuantity":"string","txId":"string"}]}
+{"code":0,"msg":"string","data":[{"id":"string","clientWithdrawalId":"string","transactionId":"string","tokenId":"string","chainId":"string","userId":"string","subUserId":"string","address":"string","platformFee":"string","arriveQuantity":"string","statusInfo":0,"createdAt":"string","updatedAt":"string","arriveTime":"string","totalQuantity":"string","txId":"string"}]}
 ```
 
 ### 返回结果
@@ -82,19 +82,18 @@ POST /t-api/openapi/v1/op/openapi/depositOrders
 > Body 请求参数
 
 ```json
-{
+ {
   "subUid": 123456789,
   "clientSubUserId": "csub_abc123",
   "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
   "orderNo": "D202501010001",
-  "tokenId": "USDT",
+  "tokenId": "USDC,USDT",
   "chainId": "TRON",
   "startTime": 1626307200000,
   "endTime": 1626393600000,
   "pageNo": 1,
-  "pageSize": 10,
-  "validSubUserIdentifier": true
-}
+  "pageSize": 10
+ }
 ```
 
 ### 请求参数
@@ -108,7 +107,7 @@ POST /t-api/openapi/v1/op/openapi/depositOrders
 > 200 Response
 
 ```
-{"code":0,"msg":"string","data":[{"id":123456789,"orderNo":"D202501010001","tokenId":"TBSC_BNB","chainTokenId":"BNB","quantity":0.01,"fee":0,"netAmount":0.01,"fromAddress":"0x1234567890abcdef1234567890abcdef12345678","walletAddress":"0xabcdef1234567890abcdef1234567890abcdef12","txId":"0x9876543210abcdef9876543210abcdef98765432","status":1,"createdAt":1626307200000,"updatedAt":1626307260000,"userId":123456,"subUserId":789012}]}
+{"code":0,"msg":"string","data":[{"id":123456789,"orderNo":"D202501010001","tokenId":"TBSC_BNB","chainId":"BNB","quantity":0.01,"fee":0,"netAmount":0.01,"fromAddress":"0x1234567890abcdef1234567890abcdef12345678","walletAddress":"0xabcdef1234567890abcdef1234567890abcdef12","txId":"0x9876543210abcdef9876543210abcdef98765432","status":1,"createdAt":1626307200000,"updatedAt":1626307260000,"userId":123456,"subUserId":789012}]}
 ```
 
 ### 返回结果
@@ -642,21 +641,21 @@ GET /t-api/openapi/v1/op/openapi/allToken
 
 ```json
 {
-  "id": "123456789",
-  "orderNo": "d9df7282-7ab5-4143-98aa-3d10762ab5ef",
-  "tokenId": "TBSC_BNB",
-  "chainTokenId": "BNB",
-  "quantity": 0.01,
-  "fee": "0.01",
-  "netAmount": "0.0",
-  "fromAddress": "0x1234567890abcdef1234567890abcdef12345678",
-  "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
-  "txId": "0x9876543210abcdef9876543210abcdef98765432",
-  "status": 1,
-  "createdAt": "1626307200000",
-  "updatedAt": "1626307260000",
-  "userId": "123456",
-  "subUserId": "789012"
+ "id": 123456789,
+ "orderNo": "D202501010001",
+ "tokenId": "USDT",
+ "chainId": "TRON",
+ "quantity": 0.01,
+ "fee": 0,
+ "netAmount": 0.01,
+ "fromAddress": "0x1234567890abcdef1234567890abcdef12345678",
+ "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
+ "txId": "0x9876543210abcdef9876543210abcdef98765432",
+ "status": 1,
+ "createdAt": 1626307200000,
+ "updatedAt": 1626307260000,
+ "userId": 123456,
+ "subUserId": 789012
 }
 
 ```
@@ -667,22 +666,21 @@ GET /t-api/openapi/v1/op/openapi/allToken
 
 |名称|类型|必选|约束|中文名| 说明                                              |
 |---|---|---|---|---|-------------------------------------------------|
-|id|string|false|none|| 充值订单ID                                          |
-|orderNo|string|false|none|| 充值订单号                                           |
-|tokenId|string|false|none|| 币种ID                                            |
-|chainId|string|false|none|| 链ID                                             |
-|quantity|number|false|none|| 充值数量                                            |
-|fee|number|false|none|| 手续费                                             |
-|netAmount|number|false|none|| 到账金额                                            |
-|fromAddress|string|false|none|| 来源地址                                            |
-|walletAddress|string|false|none|| 钱包地址                                            |
-|txId|string|false|none|| 交易ID（区块链交易ID）                                   |
-|status|integer(int32)|false|none|| 充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败 |
-|createdAt|string|false|none|| 创建时间（毫秒时间戳）                                     |
-|updatedAt|string|false|none|| 更新时间（毫秒时间戳）                                     |
-|userId|string|false|none|| 用户ID（主账号）                                       |
-|subUserId|string|false|none|| 子用户ID                                           |
-
+|id|string|false|none||充值订单ID|
+|orderNo|string|false|none||订单号|
+|tokenId|string|false|none||币种ID|
+|chainId|string|false|none||链上币种ID|
+|quantity|string|false|none||充值数量|
+|fee|string|false|none||手续费|
+|netAmount|string|false|none||净入账金额|
+|fromAddress|string|false|none||来源地址|
+|walletAddress|string|false|none||钱包地址|
+|txId|string|false|none||交易ID（区块链交易哈希）|
+|status|integer(int32)|false|none||充值状态： 0: 初始化 INIT; 1: 完成 已到账; 2: 处理中 充值中; 3: 失败|
+|createdAt|string|false|none||创建时间（毫秒时间戳）|
+|updatedAt|string|false|none||更新时间（毫秒时间戳）|
+|userId|string|false|none||用户ID（主账号）|
+|subUserId|string|false|none||子用户ID|
 <h2 id="tocS_RWithdrawalOrderOpenApiVO">RWithdrawalOrderOpenApiVO</h2>
 
 <a id="schemarwithdrawalorderopenapivo"></a>
@@ -819,27 +817,22 @@ GET /t-api/openapi/v1/op/openapi/allToken
 
 ```json
 {
-  "code": 0,
-  "msg": "string",
-  "data": [
-    {
-      "id": "0",
-      "clientWithdrawalId": "string",
-      "transactionId": "string",
-      "tokenId": "string",
-      "chainTokenId": "string",
-      "userId": "0",
-      "subUserId": "0",
-      "address": "string",
-      "arriveQuantity": 0,
-      "statusInfo": 0,
-      "createdAt": "0",
-      "updatedAt": "0",
-      "arriveTime": "0",
-      "totalQuantity": 0,
-      "txId": "string"
-    }
-  ]
+ "id": "string",
+ "clientWithdrawalId": "string",
+ "transactionId": "string",
+ "tokenId": "string",
+ "chainId": "string",
+ "userId": "string",
+ "subUserId": "string",
+ "address": "string",
+ "platformFee": "string",
+ "arriveQuantity": "string",
+ "statusInfo": 0,
+ "createdAt": "string",
+ "updatedAt": "string",
+ "arriveTime": "string",
+ "totalQuantity": "string",
+ "txId": "string"
 }
 
 ```
