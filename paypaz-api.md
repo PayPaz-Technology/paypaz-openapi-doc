@@ -10,9 +10,9 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 
 根据subUID、地址、订单号查询提币订单
  分页查询指定条件下的提币订单列表
-### tokenId 特殊说明
- 生产环境tokenId: USDT
- 预发布环境tokenId: TBSC_BNB
+### 特殊说明
+ 预发布环境tokenId: USDT
+ 预发布环境chainId: TRON
 ### 
 > Body 请求参数
 
@@ -76,8 +76,8 @@ POST /t-api/openapi/v1/op/openapi/depositOrders
 根据UID或地址查询充值订单
  分页查询指定条件下的充值订单列表
 ### tokenId 特殊说明
-生产环境tokenId: USDT
-预发布环境tokenId: TBSC_BNB
+预发布环境tokenId: USDT
+预发布环境chainId: TRON
 
 > Body 请求参数
 
@@ -142,8 +142,8 @@ POST /t-api/openapi/v1/op/openapi/depositAddress
 根据子用户UID和tokenID获取充值地址
  为指定子用户和币种获取充值地址，如果不存在则创建新地址
 ### tokenId 特殊说明
-生产环境tokenId: TRON_USDT
-预发布环境tokenId: TBSC_BNB
+预发布环境tokenId: USDT
+预发布环境chainId: TRON
 
 > Body 请求参数
 
@@ -201,8 +201,8 @@ POST /t-api/openapi/v1/op/openapi/createWithdrawal
  为指定子用户创建提币订单，这个子用户的 2FA 要由调用方自己来验证。
 
 ### tokenId 特殊说明
-生产环境tokenId: TRON_USDT
-预发布环境tokenId: TBSC_BNB
+预发布环境tokenId: USDT
+预发布环境chainId: TRON
 
 > Body 请求参数
 
@@ -264,8 +264,8 @@ GET /t-api/openapi/v1/op/openapi/withdrawalOrderInfo
  根据客户端提币订单ID查询提币订单详细信息
 
 ### tokenId 特殊说明
-生产环境tokenId: USDT
-预发布环境tokenId: TBSC_BNB
+预发布环境tokenId: USDT
+预发布环境chainId: TRON
 
 ### 请求参数
 
@@ -312,8 +312,8 @@ GET /t-api/openapi/v1/op/openapi/assets
 根据tokenId查询该broker下所有资产
  查询当前OpenAPI用户下指定币种或所有币种的资产信息
 ### tokenId 特殊说明
-生产环境tokenId: USDT
-预发布环境tokenId: TBSC_BNB
+预发布环境tokenId: USDT
+预发布环境chainId: TRON
 ### 请求参数
 
 |名称|位置|类型|必选|说明|
