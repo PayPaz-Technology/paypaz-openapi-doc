@@ -34,7 +34,7 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 |---|---|---|---|---|
 |body|body|QueryWithdrawalOrderRequest| 否 |none|
 
-### 查询提币订单请求DTO 属性
+### QueryWithdrawalOrderRequest 属性
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
