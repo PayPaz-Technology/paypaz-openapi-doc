@@ -747,8 +747,7 @@ GET /t-api/openapi/v1/op/openapi/allToken
   "available": 0,
   "indebted": 0,
   "createdAt": "0",
-  "updatedAt": "0",
-  "accountType": 0
+  "updatedAt": "0"
 }
 
 ```
@@ -758,22 +757,17 @@ GET /t-api/openapi/v1/op/openapi/allToken
 ### 属性
 
 |名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
+|---|---|---|---|---|--|
 |id|string|false|none||none|
-|accountId|string|false|none||交易账号|
+|accountId|string|false|none||账号|
 |tokenId|string|false|none||none|
 |userId|string|false|none||none|
 |total|number|false|none||持有该token的数量|
-|assetTotal|number|false|none||以usdt计价，token的价值|
-|availableAssetTotal|number|false|none||以usdt计价，可用token的价值|
-|marketPrice|number|false|none||实时价格|
 |locked|number|false|none||已冻结的token的数量。|
 |available|number|false|none||可用的该token的数量|
 |indebted|number|false|none||负债资产|
 |createdAt|string|false|none||创建时间|
 |updatedAt|string|false|none||更新时间|
-|accountType|integer(int32)|false|none||1现货，2期权，3期货，4杠杆账户|
-
 <h2 id="tocS_RListBalanceOpenApiVO">RListBalanceOpenApiVO</h2>
 
 <a id="schemarlistbalanceopenapivo"></a>
@@ -799,8 +793,7 @@ GET /t-api/openapi/v1/op/openapi/allToken
       "available": 0,
       "indebted": 0,
       "createdAt": "0",
-      "updatedAt": "0",
-      "accountType": 0
+      "updatedAt": "0"
     }
   ]
 }
