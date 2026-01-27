@@ -88,6 +88,25 @@ private boolean verifySignature(String payload, String timestamp, String signatu
   }
 }
 ```
+### 充值成功事件 data的 属性
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|id|string|false|none||充值订单ID|
+|orderNo|string|false|none||订单号|
+|tokenId|string|false|none||币种ID|
+|chainId|string|false|none||链上币种ID|
+|quantity|string|false|none||充值数量|
+|fee|string|false|none||手续费|
+|netAmount|string|false|none||净入账金额|
+|fromAddress|string|false|none||来源地址|
+|walletAddress|string|false|none||钱包地址|
+|txId|string|false|none||交易ID（区块链交易哈希）|
+|status|integer(int32)|false|none||充值状态： 1: 完成 已到账;|
+|createdAt|string|false|none||创建时间（毫秒时间戳）|
+|updatedAt|string|false|none||更新时间（毫秒时间戳）|
+|userId|string|false|none||用户ID（主账号）|
+|subUserId|string|false|none||子用户ID|
 
 #### 提现成功事件
 ```json
@@ -112,6 +131,26 @@ private boolean verifySignature(String payload, String timestamp, String signatu
   }
 }
 ```
+### 提现成功事件 data的属性
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|id|string|false|none||平台生成|
+|clientWithdrawalId|string|false|none||客户端订单ID|
+|transactionId|string|false|none||订单ID|
+|tokenId|string|false|none||tokenId|
+|chainId|string|false|none||链tokenId|
+|userId|string|false|none||none|
+|subUserId|string|false|none||企业-子用户id|
+|address|string|false|none||提现地址 用户的|
+|platformFee|string|false|none||手续费|
+|arriveQuantity|string|false|none||实际提币数量|
+|statusInfo|integer(int32)|false|none||1,提币处理  2，提币成功， 3，提币失败|
+|createdAt|string|false|none||创建时间|
+|updatedAt|string|false|none||更新时间|
+|arriveTime|string|false|none||提现到账时间|
+|totalQuantity|string|false|none||用户输入的提现数量|
+|txId|string|false|none||transaction hash|
 
 ## 5. 重试机制
 
