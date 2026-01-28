@@ -162,9 +162,7 @@ private boolean verifySignature(String payload, String timestamp, String signatu
 
 ### 5.2 响应要求
 
-您的服务器应返回以下 HTTP 状态码：
-- `200` 或 `201`: 表示成功接收并处理了 Webhook
-- 其他状态码: 表示处理失败，系统将根据重试策略进行重试
+**http响应内容 (Body)**：返回字符串 `success` 表示客户端已成功接收通知。其他字符串， 表示处理失败，系统将根据重试策略进行重试
 
 ## 6. 最佳实践
 
