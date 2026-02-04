@@ -8,9 +8,12 @@ PayPaz Webhook 系统允许您接收实时通知，了解与您的账户相关�
 
 系统支持以下事件类型：
 
-- `TRANSACTION_DEPOSIT_SUCCEEDED`: 充值成功
-- `TRANSACTION_WITHDRAWAL_SUCCEEDED`: 提现成功
-- `TRANSACTION_WITHDRAWAL_FAILED`: 提现失败
+- `transaction.deposit.succeeded`: 充值成功
+- `transaction.withdrawal.succeeded`: 提现成功
+- `transaction.withdrawal.failed`: 提现失败
+- `transaction.payinorder.expired`: 支付订单过期
+- `transaction.payinorder.underpaid`: 支付订单未足额支付
+- `transaction.payinorder.completed`: 支付订单完成
 
 ## 3. Webhook 配置
 
@@ -151,6 +154,114 @@ private boolean verifySignature(String payload, String timestamp, String signatu
 |arriveTime|string|false|none||提现到账时间|
 |totalQuantity|string|false|none||用户输入的提现数量|
 |txId|string|false|none||transaction hash|
+
+#### 支付订单过期事件
+```json
+{
+  "eventType": "transaction.payinorder.expired",
+  "data": {
+    "id": 123456789,
+    "payOrderNo": "P202601010001",
+    "orderStatus": 4,
+    "orderSource": 1,
+    "tokenId": "USDT",
+    "chainId": "TRON",
+    "walletAddress": "TXxxx...",
+    "payAmount": "10",
+    "amount": "0",
+    "fee": "0",
+    "netAmount": "0",
+    "arriveTime": 0,
+    "fromAddress": null,
+    "txId": null,
+    "expireSeconds": 3600,
+    "userId": 123456,
+    "subUserId": 789012,
+    "createdAt": 1700000000000,
+    "updatedAt": 1700003600000
+  }
+}
+```
+
+#### 支付订单完成事件
+```json
+{
+  "eventType": "transaction.payinorder.completed",
+  "data": {
+    "id": 123456789,
+    "payOrderNo": "P202601010001",
+    "orderStatus": 3,
+    "orderSource": 1,
+    "tokenId": "USDT",
+    "chainId": "TRON",
+    "walletAddress": "TXxxx...",
+    "payAmount": "10",
+    "amount": "10.5",
+    "fee": "0.1",
+    "netAmount": "10.4",
+    "arriveTime": 1700003600000,
+    "fromAddress": "TFromxxx...",
+    "txId": "0xabc123...",
+    "expireSeconds": 3600,
+    "userId": 123456,
+    "subUserId": 789012,
+    "createdAt": 1700000000000,
+    "updatedAt": 1700003600000
+  }
+}
+```
+
+#### 支付订单未足额支付事件
+```json
+{
+  "eventType": "transaction.payinorder.underpaid",
+  "data": {
+    "id": 123456789,
+    "payOrderNo": "P202601010001",
+    "orderStatus": 2,
+    "orderSource": 1,
+    "tokenId": "USDT",
+    "chainId": "TRON",
+    "walletAddress": "TXxxx...",
+    "payAmount": "10",
+    "amount": "5",
+    "fee": "0",
+    "netAmount": "0",
+    "arriveTime": 0,
+    "fromAddress": "TFromxxx...",
+    "txId": "0xdef456...",
+    "expireSeconds": 3600,
+    "userId": 123456,
+    "subUserId": 789012,
+    "createdAt": 1700000000000,
+    "updatedAt": 1700001800000
+  }
+}
+```
+
+### 支付订单事件 data的属性
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|id|integer(int64)|false|none||ID|
+|payOrderNo|string|false|none||支付订单号|
+|orderStatus|integer(int32)|false|none||订单状态(1=处理中,2=未足额支付,3=已经完成,4=已经过期)|
+|orderSource|integer(int32)|false|none||订单来源(1=broker,2=paypaz)|
+|tokenId|string|false|none||tokenId|
+|chainId|string|false|none||chainId|
+|walletAddress|string|false|none||钱包地址|
+|payAmount|string|false|none||支付金额|
+|amount|string|false|none||链上金额|
+|fee|string|false|none||手续费|
+|netAmount|string|false|none||收到金额（扣除手续费后金额）|
+|arriveTime|string|false|none||到账时间(毫秒时间戳)|
+|fromAddress|string|false|none||来源地址|
+|txId|string|false|none||交易ID（区块链交易哈希）|
+|expireSeconds|integer(int32)|false|none||有效期(秒)|
+|userId|integer(int64)|false|none||用户ID(主账号)|
+|subUserId|integer(int64)|false|none||子用户ID|
+|createdAt|string|false|none||创建时间(毫秒时间戳)|
+|updatedAt|string|false|none||修改时间(毫秒时间戳)|
 
 ## 5. 重试机制
 

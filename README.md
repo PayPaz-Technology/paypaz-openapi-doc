@@ -267,7 +267,7 @@ Host: brokerapi.paypaz.com
 ## API 权限
 
 API 中使用以下权限：
-- `deposit`：充值相关操作所需
+- `deposit`：充值和支付订单相关操作所需
 - `withdraw`：提币相关操作所需
 
 ## API接口限流说明
@@ -275,14 +275,15 @@ API 中使用以下权限：
 以下接口实施了基于用户ID的限流策略：
 
 | 接口路径 | 接口方法 | 限流时间窗口 | 最大请求次数 | 说明 |
-|---------|---------|------------|------------|------|
-| `/t-api/openapi/v1/op/openapi/depositAddress` | POST | 60秒 | 1000次 | 获取或创建充值地址 |
-| `/t-api/openapi/v1/op/openapi/createWithdrawal` | POST | 60秒 | 1000次 | 创建提币订单 |
+|---------|---------|------------|--------|------|
+| `/t-api/openapi/v1/op/openapi/depositAddress` | POST | 60秒 | 120次   | 获取或创建充值地址 |
+| `/t-api/openapi/v1/op/openapi/createWithdrawal` | POST | 60秒 | 120次   | 创建提币订单 |
+| `/t-api/openapi/v1/op/openapi/createPayInOrder` | POST | 60秒 | 120次   | 创建支付订单 |
 
 **限流规则：**
 - 限流类型：用户ID
 - 时间窗口：60秒
-- 最大请求次数：1000次
+- 最大请求次数：120次
 - 超出限流后将返回限流错误响应
 
 **注意事项：**
