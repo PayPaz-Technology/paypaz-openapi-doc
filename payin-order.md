@@ -34,13 +34,13 @@ POST /t-api/openapi/v1/op/openapi/createPayInOrder
 
 #### CreatePayInOrderRequest 属性
 
-| 名称              | 类型             | 必选   | 约束   | 中文名 | 说明               |
-| --------------- | -------------- | ---- | ---- | --- | ---------------- |
-| clientSubUserId | string         | true | none |     | 客户子用户唯一标识        |
-| payOrderNo      | string         | true | none |     | 支付订单号(唯一键，幂等)   |
-| tokenId         | string         | true | none |     | 币种ID             |
-| chainId         | string         | true | none |     | 链ID              |
-| payAmount       | number         | true | none |     | 支付金额(必须大于0)      |
+| 名称              | 类型             | 必选   | 约束   | 中文名 | 说明                              |
+| --------------- | -------------- | ---- | ---- | --- |---------------------------------|
+| clientSubUserId | string         | true | none |     | 客户子用户唯一标识                       |
+| payOrderNo      | string         | true | none |     | 支付订单号(唯一键，幂等)                   |
+| tokenId         | string         | true | none |     | 币种ID                            |
+| chainId         | string         | true | none |     | 链ID                             |
+| payAmount       | number         | true | none |     | 支付金额(必须大于0，大于等于最低充值金额，并且支持2位精度) |
 
 > 返回示例
 
