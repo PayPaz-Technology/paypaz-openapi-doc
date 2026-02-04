@@ -11,6 +11,7 @@ POST /t-api/openapi/v1/op/openapi/createPayInOrder
 #### 特殊说明
 
 预发布环境 tokenId: USDT 预发布环境 chainId: TRON
+使用 (TRON 测试链) 在UAT环境进行测试， 测试币水龙头：https://nileex.io/join/getJoinPage 领取 USDT test tokens
 
 > Body 请求参数
 
