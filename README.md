@@ -15,12 +15,12 @@
 
 ---
 ## 关于鉴权的api密钥
-Paypaz后台管理生成API的密钥对基于HMAC算法运作的，您将获得一对公钥和私钥，请务必妥善保管。
+Paypaz后台生成一对 API_Key 和 API_Secret的密钥，请务必妥善保管。
 ### 公共参数
 
 所有需要签名认证的接口都需要包好以下http的请求头：
 
-- `PAYPAZ-ACCESS-KEY`：字符串类型的 API Key
+- `PAYPAZ-ACCESS-KEY`：字符串类型的 API_Key
 - `PAYPAZ-ACCESS-SIGN`：使用 HMAC SHA256 哈希函数获得的哈希值，再使用 Base-64 编码（详见下方签名说明）
 - `PAYPAZ-ACCESS-TIMESTAMP`：发起请求的时间（UTC 时间，毫秒级时间戳）
 - `PAYPAZ-ACCESS-RECV-WINDOW`：单位是毫秒，默认值为 20000，用于指定请求在多长时间内有效，同时用于防止重放攻击，最大不超过 60000 毫秒
