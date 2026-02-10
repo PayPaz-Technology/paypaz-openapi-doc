@@ -171,7 +171,7 @@ public static void main(String[] args) throws Exception {
 **示例GET：**
 ```javascript
 GET /t-api/openapi/v1/op/openapi/withdrawalOrderInfo?clientWithdrawalId=d2d640dc-db20-43c3-967a-9aa3b5e5589 HTTP/1.1
-Host: brokerapi.PAYPAZ.com
+Host: open-api.paypaz.com
 -H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
 -H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
 -H 'PAYPAZ-ACCESS-TIMESTAMP: 1658384431891' \
@@ -182,7 +182,7 @@ Host: brokerapi.PAYPAZ.com
 **示例POST：**
 ```javascript
 POST /t-api/openapi/v1/op/openapi/createWithdrawal HTTP/1.1
-Host: brokerapi.paypaz.com
+Host: open-api.paypaz.com
 -H 'PAYPAZ-ACCESS-KEY: XXXXXXXXXX' \
 -H 'PAYPAZ-ACCESS-SIGN: xxxxxxxxxxxxxxxxxx' \
 -H 'PAYPAZ-ACCESS-TIMESTAMP: 1658384431891' \
