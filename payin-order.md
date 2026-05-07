@@ -184,7 +184,7 @@ POST /t-api/openapi/v1/op/openapi/payInOrders
 
 #### 特殊说明
 
-`subUid` 与 `clientSubUserId` 二选一必传。
+`startTime` 与 `endTime` 为必填项，当前要求长度为13位毫秒值，支持的最长查询间隔为30天。
 
 > Body 请求参数
 
