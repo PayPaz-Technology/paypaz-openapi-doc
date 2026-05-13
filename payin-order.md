@@ -1,39 +1,42 @@
-# 充值业务
+# 充值业务接口
 
 以下业务接口，都需要通过签名认证
 
-***
+---
 
 ### 充值对接流程说明
 
-1. 调用公共接口 [**获取所有的网络**](base-data-api.md#2get-获取所有的网络) 获取所有支持的CHAIN信息。
-2. 调用公共接口 [**获取该币种下所有的token配置**](base-data-api.md#3get-获取该币种下所有的token配置) 获取对应币种下的充提配置信息。
+1. 调用公共接口 [**获取所有的网络**](./base-data-api.md#get-all-networks) 获取所有支持的CHAIN信息。
+2. 调用公共接口 [**获取该币种下所有的token配置**](./base-data-api.md#get-token-config) 获取对应币种下的充提配置信息。
 3. 充值有两种方式：
-   * 订单模式: 调用接口[**创建支付订单**](payin-order.md#1post-创建支付订单)直接为对应的用户创建待支付订单。
-   * 无订单模式: 调用接口[**根据子用户uid和tokenid获取充值地址**](payin-order.md#4post-根据子用户uid和tokenid获取充值地址)为用户生成充币地址 。\
-     两种模式商户根据自己的业务的处理逻辑使用。
+   - 订单模式: 调用接口[**创建支付订单**](#create-payin-order)直接为对应的用户创建待支付订单。
+   - 无订单模式: 调用接口[**根据子用户uid和tokenid获取充值地址**](#create-deposit-address)为用户生成充币地址 。  
+   两种模式商户根据自己的业务的处理逻辑使用。
 4. 用户链上充值完成
-5.  商户将接收到来自Paypaz的webhook通知\
-    **重要：** 商户需配置回调地址并订阅以下四个事件
+5. 商户将接收到来自Paypaz的webhook通知  
+   **重要：** 商户需配置回调地址并订阅以下四个事件
+   - transaction.payinorder.expired: 支付订单过期事件。
+   - transaction.payinorder.underpaid: 支付订单未足额支付事件。
+   - transaction.payinorder.completed: 支付订单完成事件。
+   - transaction.deposit.succeeded: 充值成功事件。 
 
-    * transaction.payinorder.expired: 支付订单过期事件。
-    * transaction.payinorder.underpaid: 支付订单未足额支付事件。
-    * transaction.payinorder.completed: 支付订单完成事件。
-    * transaction.deposit.succeeded: 充值成功事件。
-
-    > - 充值成功通知一定会发送(链上转账成功)
-    > - 如果存在支付订单未过期时将同步收到 `支付订单未足额支付`或`支付订单完成`事件通知
-    > - 如果支付订单过期后将收到类型 `支付订单过期` 事件通知
+   >  - 充值成功通知一定会发送(链上转账成功)  
+   >  - 如果存在支付订单未过期时将同步收到 `支付订单未足额支付`或`支付订单完成`事件通知  
+   >  - 如果支付订单过期后将收到类型 `支付订单过期` 事件通知
+   
 6. 如果不配置回调地址您可以通过以下方式获取充值结果：
-   * 订单模式可通过轮询接口[**分页查询支付订单**](payin-order.md#3post-分页查询支付订单)或[**查询支付订单详情**](payin-order.md#2get-查询支付订单详情)获取支付订单信息（可选）。
-   * 无订单模式可通过接口[**根据客户子UID，地址，订单号查询充值订单**](payin-order.md#5post-根据客户子uid地址订单号查询充值订单)查询充值订单（可选）。
+   - 订单模式可通过轮询接口[**分页查询支付订单**](#query-payin-order-page)或[**查询支付订单详情**](#query-payin-order-detail)获取支付订单信息（可选）。
+   - 无订单模式可通过接口[**根据客户子UID，地址，订单号查询充值订单**](#query-deposit-order)查询充值订单（可选）。
 
 **备注：**
+- 支付订单是指商户通过订单模式创建的支付订单（仅在订单模式下有此支付订单）。
+- 充值订单是指Paypaz接收到链上的转账成功通知。
 
-* 支付订单是指商户通过订单模式创建的支付订单（仅在订单模式下有此支付订单）。
-* 充值订单是指Paypaz接收到链上的转账成功通知。
 
-***
+
+---
+
+<a id="create-payin-order"></a>
 
 ### 1.POST 创建支付订单
 
@@ -61,19 +64,19 @@ POST /t-api/openapi/v1/op/openapi/createPayInOrder
 
 #### 请求参数
 
-| 名称   | 位置   | 类型                      | 必选 | 说明   |
-| ---- | ---- | ----------------------- | -- | ---- |
+| 名称   | 位置   | 类型                     | 必选 | 说明   |
+| ---- | ---- | ---------------------- | -- | ---- |
 | body | body | CreatePayInOrderRequest | 否  | none |
 
 #### CreatePayInOrderRequest 属性
 
-| 名称              | 类型     | 必选   | 约束   | 中文名 | 说明                              |
-| --------------- | ------ | ---- | ---- | --- | ------------------------------- |
-| clientSubUserId | string | true | none |     | 客户子用户唯一标识                       |
-| payOrderNo      | string | true | none |     | 支付订单号(唯一键，幂等)                   |
-| tokenId         | string | true | none |     | 币种ID                            |
-| chainId         | string | true | none |     | 链ID                             |
-| payAmount       | number | true | none |     | 支付金额(必须大于0，大于等于最低充值金额，并且支持2位精度) |
+| 名称              | 类型             | 必选   | 约束   | 中文名 | 说明                              |
+| --------------- | -------------- | ---- | ---- | --- |---------------------------------|
+| clientSubUserId | string         | true | none |     | 客户子用户唯一标识                       |
+| payOrderNo      | string         | true | none |     | 支付订单号(唯一键，幂等)                   |
+| tokenId         | string         | true | none |     | 币种ID                            |
+| chainId         | string         | true | none |     | 链ID                             |
+| payAmount       | number         | true | none |     | 支付金额(必须大于0，大于等于最低充值金额，并且支持2位精度) |
 
 > 返回示例
 
@@ -113,43 +116,45 @@ POST /t-api/openapi/v1/op/openapi/createPayInOrder
 
 _响应信息主体_
 
-| 名称     | 类型                  | 必选    | 约束   | 中文名 | 说明   |
-| ------ | ------------------- | ----- | ---- | --- | ---- |
-| » code | integer(int32)      | false | none |     | none |
-| » msg  | string              | false | none |     | none |
-| » data | PayInOrderOpenApiVO | false | none |     | none |
+| 名称     | 类型                     | 必选    | 约束   | 中文名 | 说明   |
+| ------ | ---------------------- | ----- | ---- | --- | ---- |
+| » code | integer(int32)         | false | none |     | none |
+| » msg  | string                 | false | none |     | none |
+| » data | PayInOrderOpenApiVO    | false | none |     | none |
 
 #### PayInOrderOpenApiVO 属性
 
-| 名称            | 类型             | 必选    | 约束   | 中文名 | 说明                                |
-| ------------- | -------------- | ----- | ---- | --- | --------------------------------- |
-| id            | integer(int64) | false | none |     | ID                                |
-| payOrderNo    | string         | false | none |     | 支付订单号                             |
-| orderStatus   | integer(int32) | false | none |     | 订单状态(1=处理中,2=未足额支付,3=已经完成,4=已经过期) |
-| orderSource   | integer(int32) | false | none |     | 订单来源(1=broker,2=paypaz)           |
-| tokenId       | string         | false | none |     | tokenId                           |
-| chainId       | string         | false | none |     | chainId                           |
-| walletAddress | string         | false | none |     | 钱包地址                              |
-| payAmount     | string         | false | none |     | 支付金额                              |
-| amount        | string         | false | none |     | 链上金额                              |
-| fee           | string         | false | none |     | 手续费                               |
-| netAmount     | string         | false | none |     | 收到金额（扣除手续费后金额）                    |
-| arriveTime    | string         | false | none |     | 到账时间(毫秒时间戳)                       |
-| fromAddress   | string         | false | none |     | 来源地址                              |
-| txId          | string         | false | none |     | 交易ID（区块链交易哈希）                     |
-| expireSeconds | integer(int32) | false | none |     | 有效期(秒)                            |
-| userId        | integer(int64) | false | none |     | 用户ID(主账号)                         |
-| subUserId     | integer(int64) | false | none |     | 子用户ID                             |
-| createdAt     | string         | false | none |     | 创建时间(毫秒时间戳)                       |
-| updatedAt     | string         | false | none |     | 修改时间(毫秒时间戳)                       |
+| 名称          | 类型             | 必选    | 约束   | 中文名 | 说明                    |
+| ----------- | -------------- | ----- | ---- | --- | --------------------- |
+| id          | integer(int64) | false | none |     | ID                    |
+| payOrderNo  | string         | false | none |     | 支付订单号                 |
+| orderStatus | integer(int32) | false | none |     | 订单状态(1=处理中,2=未足额支付,3=已经完成,4=已经过期) |
+| orderSource | integer(int32) | false | none |     | 订单来源(1=broker,2=paypaz) |
+| tokenId     | string         | false | none |     | tokenId               |
+| chainId     | string         | false | none |     | chainId               |
+| walletAddress | string       | false | none |     | 钱包地址                  |
+| payAmount   | string         | false | none |     | 支付金额                  |
+| amount      | string         | false | none |     | 链上金额                  |
+| fee         | string         | false | none |     | 手续费                   |
+| netAmount   | string         | false | none |     | 收到金额（扣除手续费后金额）        |
+| arriveTime  | string         | false | none |     | 到账时间(毫秒时间戳)            |
+| fromAddress | string         | false | none |     | 来源地址                  |
+| txId        | string         | false | none |     | 交易ID（区块链交易哈希）         |
+| expireSeconds | integer(int32) | false | none |     | 有效期(秒)                 |
+| userId      | integer(int64) | false | none |     | 用户ID(主账号)              |
+| subUserId   | integer(int64) | false | none |     | 子用户ID                  |
+| createdAt   | string         | false | none |     | 创建时间(毫秒时间戳)            |
+| updatedAt   | string         | false | none |     | 修改时间(毫秒时间戳)            |
 
 #### 错误码
 
-* `500105033`：支付订单号已存在
-* `500105034`：支付订单金额精度超过限制
-* `500105035`：支付金额不能小于最小充币金额
+- `500105033`：支付订单号已存在
+- `500105034`：支付订单金额精度超过限制
+- `500105035`：支付金额不能小于最小充币金额
 
-***
+---
+
+<a id="query-payin-order-detail"></a>
 
 ### 2.GET 查询支付订单详情
 
@@ -159,8 +164,8 @@ GET /t-api/openapi/v1/op/openapi/payInOrderInfo
 
 #### 请求参数
 
-| 名称         | 位置    | 类型     | 必选 | 说明    |
-| ---------- | ----- | ------ | -- | ----- |
+| 名称        | 位置    | 类型     | 必选 | 说明     |
+| --------- | ----- | ------ | -- | ------ |
 | payOrderNo | query | string | 是  | 支付订单号 |
 
 > 返回示例
@@ -207,7 +212,9 @@ _响应信息主体_
 | » msg  | string              | false | none |     | none |
 | » data | PayInOrderOpenApiVO | false | none |     | none |
 
-***
+---
+
+<a id="query-payin-order-page"></a>
 
 ### 3.POST 分页查询支付订单
 
@@ -240,26 +247,26 @@ POST /t-api/openapi/v1/op/openapi/payInOrders
 
 #### 请求参数
 
-| 名称   | 位置   | 类型                     | 必选 | 说明   |
-| ---- | ---- | ---------------------- | -- | ---- |
+| 名称   | 位置   | 类型                  | 必选 | 说明   |
+| ---- | ---- | ------------------- | -- | ---- |
 | body | body | QueryPayInOrderRequest | 否  | none |
 
 #### QueryPayInOrderRequest 属性
 
-| 名称              | 类型             | 必选    | 约束   | 中文名 | 说明                                |
-| --------------- | -------------- | ----- | ---- | --- | --------------------------------- |
-| subUid          | integer(int64) | false | none |     | 子用户ID                             |
-| clientSubUserId | string         | false | none |     | 客户子用户唯一标识                         |
-| payOrderNo      | string         | false | none |     | 支付订单号                             |
-| depositOrderId  | integer(int64) | false | none |     | 充值记录id                            |
-| tokenId         | string         | false | none |     | 币种ID                              |
-| chainId         | string         | false | none |     | 链ID                               |
-| walletAddress   | string         | false | none |     | 钱包地址                              |
+| 名称              | 类型             | 必选    | 约束   | 中文名 | 说明            |
+| --------------- | -------------- |-------| ---- | --- | ------------- |
+| subUid          | integer(int64) | false | none |     | 子用户ID         |
+| clientSubUserId | string         | false | none |     | 客户子用户唯一标识     |
+| payOrderNo      | string         | false | none |     | 支付订单号         |
+| depositOrderId  | integer(int64) | false | none |     | 充值记录id        |
+| tokenId         | string         | false | none |     | 币种ID          |
+| chainId         | string         | false | none |     | 链ID           |
+| walletAddress   | string         | false | none |     | 钱包地址          |
 | orderStatus     | integer(int32) | false | none |     | 订单状态(1=处理中,2=未足额支付,3=已经完成,4=已经过期) |
-| startTime       | integer(int64) | true  | none |     | 开始时间（毫秒时间戳）                       |
-| endTime         | integer(int64) | true  | none |     | 结束时间（毫秒时间戳）                       |
-| pageNo          | integer(int32) | false | none |     | 页码，从1开始                           |
-| pageSize        | integer(int32) | false | none |     | 每页大小，范围1-100                      |
+| startTime       | integer(int64) | true  | none |     | 开始时间（毫秒时间戳）   |
+| endTime         | integer(int64) | true | none |     | 结束时间（毫秒时间戳）   |
+| pageNo          | integer(int32) | false | none |     | 页码，从1开始       |
+| pageSize        | integer(int32) | false | none |     | 每页大小，范围1-100  |
 
 > 返回示例
 
@@ -307,7 +314,9 @@ _响应信息主体_
 | » msg  | string                    | false | none |     | none |
 | » data | \[\[PayInOrderOpenApiVO]] | false | none |     | none |
 
-***
+---
+
+<a id="create-deposit-address"></a>
 
 ### 4.POST 根据子用户UID和tokenID获取充值地址
 
@@ -377,7 +386,9 @@ _响应信息主体_
 | tag       | string | false | none |     | <p>标签<br>某些币种（如XRP、XLM等）需要的额外标识符</p> |
 | subUserId | string | false | none |     | <p>子用户ID<br>企业-子用户的ID，标识具体的子账号</p>   |
 
-***
+---
+
+<a id="query-deposit-order"></a>
 
 ### 5.POST 根据客户子UID，地址，订单号查询充值订单
 
@@ -465,3 +476,4 @@ _响应信息主体_
 | updatedAt     | string         | false | none |     | 更新时间（毫秒时间戳）      |
 | userId        | string         | false | none |     | 用户ID（主账号）        |
 | subUserId     | string         | false | none |     | 子用户ID            |
+

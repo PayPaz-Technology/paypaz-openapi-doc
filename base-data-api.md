@@ -1,8 +1,8 @@
-# 公用接口
+# 基础数据
 
 以下业务接口，都需要通过签名认证
 
-***
+---
 
 ## 1.GET 获取服务器时间戳
 
@@ -24,18 +24,19 @@ GET /t-api/openapi/v1/bc/baseConfig/serverTime
 
 状态码 **200**
 
-_响应信息主体_
+*响应信息主体*
 
-| 名称     | 类型             | 必选    | 约束   | 中文名 | 说明         |
-| ------ | -------------- | ----- | ---- | --- | ---------- |
-| » code | integer(int32) | false | none |     | none       |
-| » msg  | string         | false | none |     | none       |
-| » data | string         | false | none |     | 服务器时间戳（毫秒） |
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer(int32)|false|none||none|
+|» msg|string|false|none||none|
+|» data|string|false|none||服务器时间戳（毫秒）|
 
-***
+---
+
+<a id="get-all-networks"></a>
 
 ## 2.GET 获取所有的网络
-
 获取所有支持的区块链网络列表
 
 GET /t-api/openapi/v1/bc/baseConfig/allNetWork
@@ -56,25 +57,26 @@ GET /t-api/openapi/v1/bc/baseConfig/allNetWork
 
 状态码 **200**
 
-_响应信息主体_
+*响应信息主体*
 
-| 名称     | 类型             | 必选    | 约束   | 中文名 | 说明         |
-| ------ | -------------- | ----- | ---- | --- | ---------- |
-| » code | integer(int32) | false | none |     | none       |
-| » msg  | string         | false | none |     | none       |
-| » data | \[\[Chain]]    | false | none |     | \[区块链网络列表] |
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer(int32)|false|none||none|
+|» msg|string|false|none||none|
+|» data|[[Chain]]|false|none||[区块链网络列表]|
 
 ### Chain 属性
 
-| 名称        | 类型     | 必选    | 约束   | 中文名 | 说明     |
-| --------- | ------ | ----- | ---- | --- | ------ |
-| chainId   | string | false | none |     | 链ID    |
-| chainName | string | false | none |     | 链名称    |
-| chainIcon | string | false | none |     | 链图标URL |
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|chainId|string|false|none||链ID|
+|chainName|string|false|none||链名称|
+|chainIcon|string|false|none||链图标URL|
 
-***
+---
+<a id="get-token-config"></a>
 
-### 3.GET 获取该币种下所有的token配置
+## 3.GET 获取该币种下所有的token配置
 
 获取指定币种在不同链上的配置信息，包括充提币限额、手续费等
 
@@ -132,3 +134,5 @@ _响应信息主体_
 | depositChargesMinAmount    | string         | false | none |     | 充币的最小手续费---broker 新配置 |
 | withdrawalChargesMinAmount | string         | false | none |     | 提币的最小手续费---broker 新配置 |
 | withdrawChargeValue        | string         | false | none |     | 提币百分比手续费              |
+
+
