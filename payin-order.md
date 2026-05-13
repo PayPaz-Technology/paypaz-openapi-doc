@@ -6,11 +6,11 @@
 
 ### 充值对接流程说明
 
-1. 调用公共接口 [**获取所有的网络**](base-data-api.md#2get-获取所有的网络) 获取所有支持的CHAIN信息。
-2. 调用公共接口 [**获取该币种下所有的token配置**](base-data-api.md#3get-获取该币种下所有的token配置) 获取对应币种下的充提配置信息。
+1. 调用公共接口 [**获取所有的网络**](./base-data-api.md#get-all-networks) 获取所有支持的CHAIN信息。
+2. 调用公共接口 [**获取该币种下所有的token配置**](./base-data-api.md#get-token-config) 获取对应币种下的充提配置信息。
 3. 充值有两种方式：
-   - 订单模式: 调用接口[**创建支付订单**](#1post-创建支付订单)直接为对应的用户创建待支付订单。
-   - 无订单模式: 调用接口[**根据子用户uid和tokenid获取充值地址**](#4post-根据子用户uid和tokenid获取充值地址)为用户生成充币地址 。  
+   - 订单模式: 调用接口[**创建支付订单**](#create-payin-order)直接为对应的用户创建待支付订单。
+   - 无订单模式: 调用接口[**根据子用户uid和tokenid获取充值地址**](#create-deposit-address)为用户生成充币地址 。  
    两种模式商户根据自己的业务的处理逻辑使用。
 4. 用户链上充值完成
 5. 商户将接收到来自Paypaz的webhook通知  
@@ -25,8 +25,8 @@
    >  - 如果支付订单过期后将收到类型 `支付订单过期` 事件通知
    
 6. 如果不配置回调地址您可以通过以下方式获取充值结果：
-   - 订单模式可通过轮询接口[**分页查询支付订单**](#3post-分页查询支付订单)或[**查询支付订单详情**](#2get-查询支付订单详情)获取支付订单信息（可选）。
-   - 无订单模式可通过接口[**根据客户子UID，地址，订单号查询充值订单**](#5post-根据客户子uid地址订单号查询充值订单)查询充值订单（可选）。
+   - 订单模式可通过轮询接口[**分页查询支付订单**](#query-payin-order-page)或[**查询支付订单详情**](#query-payin-order-detail)获取支付订单信息（可选）。
+   - 无订单模式可通过接口[**根据客户子UID，地址，订单号查询充值订单**](#query-deposit-order)查询充值订单（可选）。
 
 **备注：**
 - 支付订单是指商户通过订单模式创建的支付订单（仅在订单模式下有此支付订单）。
@@ -35,6 +35,8 @@
 
 
 ---
+
+<a id="create-payin-order"></a>
 
 ### 1.POST 创建支付订单
 
@@ -152,6 +154,8 @@ _响应信息主体_
 
 ---
 
+<a id="query-payin-order-detail"></a>
+
 ### 2.GET 查询支付订单详情
 
 根据支付订单号查询支付订单详细信息
@@ -209,6 +213,8 @@ _响应信息主体_
 | » data | PayInOrderOpenApiVO | false | none |     | none |
 
 ---
+
+<a id="query-payin-order-page"></a>
 
 ### 3.POST 分页查询支付订单
 
@@ -309,6 +315,9 @@ _响应信息主体_
 | » data | \[\[PayInOrderOpenApiVO]] | false | none |     | none |
 
 ---
+
+<a id="create-deposit-address"></a>
+
 ### 4.POST 根据子用户UID和tokenID获取充值地址
 
 为指定子用户和币种获取充值地址，如果不存在则创建新地址
@@ -378,6 +387,8 @@ _响应信息主体_
 | subUserId | string | false | none |     | <p>子用户ID<br>企业-子用户的ID，标识具体的子账号</p>   |
 
 ---
+
+<a id="query-deposit-order"></a>
 
 ### 5.POST 根据客户子UID，地址，订单号查询充值订单
 
