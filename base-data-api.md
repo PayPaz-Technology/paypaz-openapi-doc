@@ -76,7 +76,7 @@ GET /t-api/openapi/v1/bc/baseConfig/allNetWork
 ---
 <a id="get-token-config"></a>
 
-### 3.GET 获取该币种下所有的token配置
+## 3.GET 获取该币种下所有的token配置
 
 获取指定币种在不同链上的配置信息，包括充提币限额、手续费等
 
