@@ -34,9 +34,7 @@ GET /t-api/openapi/v1/bc/baseConfig/serverTime
 
 ---
 
-<a id="get-all-networks"></a>
-
-## 2.GET 获取所有的网络
+## 2.GET 获取所有的网络 {#get-all-networks}
 获取所有支持的区块链网络列表
 
 GET /t-api/openapi/v1/bc/baseConfig/allNetWork
@@ -74,9 +72,8 @@ GET /t-api/openapi/v1/bc/baseConfig/allNetWork
 |chainIcon|string|false|none||链图标URL|
 
 ---
-<a id="get-token-config"></a>
 
-## 3.GET 获取该币种下所有的token配置
+## 3.GET 获取该币种下所有的token配置 {#get-token-config}
 
 获取指定币种在不同链上的配置信息，包括充提币限额、手续费等
 
