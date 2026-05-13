@@ -5,8 +5,8 @@
 ---
 
 ### 提现对接流程说明
-1. 调用公共接口 [**获取所有的网络**](./base-data-api.md#get-all-networks) 获取所有支持的CHAIN信息。
-2. 调用公共接口 [**获取该币种下所有的token配置**](./base-data-api.md#get-token-config) 获取对应币种下的充提配置信息。
+1. 调用公共接口 [**获取所有的网络**](base-data-api.md#get-all-networks) 获取所有支持的CHAIN信息。
+2. 调用公共接口 [**获取该币种下所有的token配置**](base-data-api.md#get-token-config) 获取对应币种下的充提配置信息。
 3. 发起提现前调用接口[**根据tokenId查询该商户下所有资产**](#query-user-asset)获取对应币种的余额（查询主账户余额，子账户的余额由商户自行管理）是否满足提现金额。
 4. 调用接口[**根据UID发起提币**](#create-withdraw-order)创建提现订单。
 5. 商户将接收到来自Paypaz的webhook通知。  
@@ -19,9 +19,7 @@
 
 ---
 
-<a id="query-user-asset"></a>
-
-### 1.GET 根据tokenId查询该商户下所有资产
+### 1.GET 根据tokenId查询该商户下所有资产 {#query-user-asset}
 
 查询指定币种或所有币种的资产信息
 
@@ -74,9 +72,7 @@ _响应信息主体_
 
 ---
 
-<a id="create-withdraw-order"></a>
-
-### 2.POST 根据UID发起提币
+### 2.POST 根据UID发起提币 {#create-withdraw-order}
 
 为指定子用户创建提币订单，这个子用户的 2FA 要由调用方自己来验证。
 
@@ -161,9 +157,7 @@ _响应信息主体_
 
 ---
 
-<a id="query-withdraw-order-page"></a>
-
-### 3.POST 根据客户子用户Uid、地址、订单号查询提币订单
+### 3.POST 根据客户子用户Uid、地址、订单号查询提币订单 {#query-withdraw-order-page}
 
 分页查询指定条件下的提币订单列表
 
@@ -257,9 +251,7 @@ _响应信息主体_
 
 ---
 
-<a id="query-withdraw-order-detail"></a>
-
-### 4.GET 查询提币订单详情
+### 4.GET 查询提币订单详情 {#query-withdraw-order-detail}
 
 根据客户端提币订单ID查询提币订单详细信息
 
