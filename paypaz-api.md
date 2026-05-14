@@ -171,7 +171,6 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 
 ```json
 {
-  "subUid": 123456789,
   "clientSubUserId": "csub_abc123",
   "address": "0x1234567890abcdef1234567890abcdef12345678",
   "clientWithdrawalId": "client12345678",
@@ -195,7 +194,6 @@ POST /t-api/openapi/v1/op/openapi/withdrawalOrders
 
 | 名称                 | 类型             | 必选    | 约束   | 中文名 | 说明            |
 | ------------------ | -------------- | ----- | ---- | --- | ------------- |
-| subUid             | string         | false | none |     | 子用户ID         |
 | clientSubUserId    | string         | false | none |     | 客户子用户唯一标识     |
 | address            | string         | false | none |     | 提币地址          |
 | clientWithdrawalId | string         | false | none |     | 客户端提币订单ID     |

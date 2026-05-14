@@ -224,7 +224,6 @@ POST /t-api/openapi/v1/op/openapi/payInOrders
 
 ```json
 {
-  "subUid": 123456789,
   "clientSubUserId": "csub_abc123",
   "payOrderNo": "P202601010001",
   "depositOrderId": 0,
@@ -249,7 +248,6 @@ POST /t-api/openapi/v1/op/openapi/payInOrders
 
 | 名称              | 类型             | 必选    | 约束   | 中文名 | 说明            |
 | --------------- | -------------- |-------| ---- | --- | ------------- |
-| subUid          | integer(int64) | false | none |     | 子用户ID         |
 | clientSubUserId | string         | false | none |     | 客户子用户唯一标识     |
 | payOrderNo      | string         | false | none |     | 支付订单号         |
 | depositOrderId  | integer(int64) | false | none |     | 充值记录id        |
