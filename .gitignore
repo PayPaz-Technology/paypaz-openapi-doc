@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# JetBrains IDEs (IntelliJ IDEA, etc.)
+.idea/
+
+# VS Code / Cursor (local editor settings)
+.vscode/
+
+# Editor backups
+*~
+*.swp
+*.swo
