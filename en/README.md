@@ -220,7 +220,7 @@ All API responses follow a standard envelope:
 
 ### Business Error Codes
 
-When processing fails, `code` contains a specific error code and `msg` contains a description.
+When request processing fails, `code` contains a specific error code and `msg` contains a description.
 
 | Error Code | Description |
 |------------|-------------|
@@ -270,7 +270,7 @@ When processing fails, `code` contains a specific error code and `msg` contains 
 2. Pagination starts at 1 (the first page is `1`).
 3. Maximum page size is 100 items.
 4. For withdrawals, ensure `clientWithdrawalId` is unique for idempotency.
-5. Sub-user operations require that the sub-user belongs to the current API user.
+5. Sub-user operations require the sub-user to belong to the current API user.
 
 ## API Permissions
 
@@ -280,7 +280,7 @@ The following scopes are used:
 
 ## Rate Limits
 
-The following endpoints are rate-limited per user ID:
+The following endpoints are subject to rate limits per user ID
 
 | Endpoint Path | Method | Window | Max Requests | Description |
 |---------------|--------|--------|--------------|-------------|
@@ -295,5 +295,5 @@ The following endpoints are rate-limited per user ID:
 - Exceeding the limit returns a rate limit error response
 
 **Notes:**
-- Counters are tracked independently per user ID
+- Request counters are tracked independently for each user ID
 - Implement retries with backoff when you receive a rate limit error
