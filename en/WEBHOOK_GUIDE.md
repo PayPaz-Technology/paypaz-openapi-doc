@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-The PayPaz Webhook system delivers real-time notifications for account-related events such as successful transactions and withdrawal status updates. This guide explains how to configure and integrate PayPaz Webhooks.
+The PayPaz Webhook system delivers real-time notifications for account-related events, such as successful transactions and withdrawal status updates. This guide explains how to configure and integrate PayPaz webhooks.
 
 ## 2. Supported Webhook Events
 
@@ -299,15 +299,15 @@ private boolean verifySignature(String payload, String timestamp, String signatu
 
 2. **Webhook not received**
     - Check network connectivity and firewall rules
-    - Verify the webhook URL is correct and publicly reachable
+    - Verify that the webhook URL is correct and publicly accessible
 
 3. **Processing timeout**
     - Ensure your service can respond within 5 seconds
-    - Consider processing long-running work asynchronously
+    - Consider processing long-running tasks asynchronously
 
 ## 9. Support
 
-If you need help, contact the PayPaz support team and provide:
+If you need assistance, contact the PayPaz support team and provide the following information:
 - Event ID (`eventLogId`)
 - Timestamp
 - Relevant error messages
