@@ -56,7 +56,8 @@ Use the TRON testnet in UAT. Test token faucet: https://nileex.io/join/getJoinPa
   "payOrderNo": "P202601010001",
   "tokenId": "USDT",
   "chainId": "TRON",
-  "payAmount": 10
+  "payAmount": 10,
+  "partnerCode":"P01"
 }
 ```
 
@@ -68,13 +69,14 @@ Use the TRON testnet in UAT. Test token faucet: https://nileex.io/join/getJoinPa
 
 #### CreatePayInOrderRequest Properties
 
-| Name | Type | Required | Constraint | Description |
-| --------------- | -------------- | ---- | ---- |---------------------------------|
-| clientSubUserId | string | true | none | Client sub-user unique identifier |
-| payOrderNo | string | true | none | Payment order number (unique, idempotent) |
-| tokenId | string | true | none | Token ID |
-| chainId | string | true | none | Chain ID |
+| Name | Type | Required | Constraint | Description                                                                     |
+| --------------- | -------------- | ---- | ---- |---------------------------------------------------------------------------------|
+| clientSubUserId | string | true | none | Client sub-user unique identifier                                               |
+| payOrderNo | string | true | none | Payment order number (unique, idempotent)                                       |
+| tokenId | string | true | none | Token ID                                                                        |
+| chainId | string | true | none | Chain ID                                                                        |
 | payAmount | number | true | none | Payment amount (must be > 0, >= minimum deposit amount, up to 2 decimal places) |
+| partnerCode     | string         | false | none | Partner code                                                                    |
 
 > Response Example
 
@@ -102,6 +104,7 @@ Use the TRON testnet in UAT. Test token faucet: https://nileex.io/join/getJoinPa
     "expireSeconds": 3600,
     "userId": 123456,
     "subUserId": 789012,
+    "checkOutUrl": "https://checkout.example.com/pay?pageId=550e8400-e29b-41d4-a716-446655440000",
     "createdAt": 1700000000000,
     "updatedAt": 1700000000000
   }
@@ -141,6 +144,7 @@ _Response body_
 | expireSeconds | integer(int32) | false | none | Validity period (seconds) |
 | userId | integer(int64) | false | none | User ID (master account) |
 | subUserId | integer(int64) | false | none | Sub-user ID |
+| checkOutUrl |string | false | none | Jump URL for Checkout Page |
 | createdAt | string | false | none | Created at (millisecond timestamp) |
 | updatedAt | string | false | none | Updated at (millisecond timestamp) |
 
@@ -160,9 +164,9 @@ GET /t-api/openapi/v1/op/openapi/payInOrderInfo
 
 #### Request Parameters
 
-| Name | Location | Type | Required | Description |
-| --------- | ----- | ------ | -- | ------ |
-| payOrderNo | query | string | Yes | Payment order number |
+| Name | Location | Type | Required | Description          |
+| --------- | ----- | ------ |----------|----------------------|
+| payOrderNo | query | string | Yes      | Payment order number |
 
 > Response Example
 
@@ -190,6 +194,7 @@ GET /t-api/openapi/v1/op/openapi/payInOrderInfo
     "expireSeconds": 3600,
     "userId": 123456,
     "subUserId": 789012,
+    "checkOutUrl": "https://checkout.example.com/pay?pageId=550e8400-e29b-41d4-a716-446655440000",
     "createdAt": 1700000000000,
     "updatedAt": 1700000000000
   }
@@ -233,6 +238,7 @@ POST /t-api/openapi/v1/op/openapi/payInOrders
   "orderStatus": 1,
   "startTime": 1626307200000,
   "endTime": 1626393600000,
+  "partnerCode": "P01",
   "pageNo": 1,
   "pageSize": 10
 }
@@ -257,6 +263,7 @@ POST /t-api/openapi/v1/op/openapi/payInOrders
 | orderStatus | integer(int32) | false | none | Order status (1=processing, 2=underpaid, 3=completed, 4=expired) |
 | startTime | integer(int64) | true | none | Start time (millisecond timestamp) |
 | endTime | integer(int64) | true | none | End time (millisecond timestamp) |
+| partnerCode | integer(int64) | false | none | Partner Code  |
 | pageNo | integer(int32) | false | none | Page number, starting at 1 |
 | pageSize | integer(int32) | false | none | Page size, range 1–100 |
 
@@ -324,7 +331,8 @@ Staging environment: `tokenId`: USDT, `chainId`: TRON
 {
   "clientSubUserId": "csub_abc123",
   "tokenId": "USDT",
-  "chainId": "TRON"
+  "chainId": "TRON",
+  "partnerCode":"P01"
 }
 ```
 
@@ -337,10 +345,11 @@ Staging environment: `tokenId`: USDT, `chainId`: TRON
 #### GetDepositAddressRequest Properties
 
 | Name | Type | Required | Constraint | Description |
-| --------------- | ------ | ---- | ---- | --------- |
-| clientSubUserId | string | true | none | Client sub-user unique identifier |
-| tokenId | string | true | none | Token ID |
-| chainId | string | true | none | Chain ID |
+| --------------- | ------ |----------| ---- | --------- |
+| clientSubUserId | string | true     | none | Client sub-user unique identifier |
+| tokenId | string | true     | none | Token ID |
+| chainId | string | true     | none | Chain ID |
+| partnerCode | string | false    | none | Partner Code  |
 
 > Response Example
 
@@ -399,6 +408,7 @@ Staging environment: `tokenId`: USDT, `chainId`: TRON
   "chainId": "TRON",
   "startTime": 1626307200000,
   "endTime": 1626393600000,
+  "partnerCode": "P01",
   "pageNo": 1,
   "pageSize": 10
  }
@@ -421,6 +431,7 @@ Staging environment: `tokenId`: USDT, `chainId`: TRON
 | chainId | string | false | none | Chain ID |
 | startTime | string | false | none | Start time (millisecond timestamp) |
 | endTime | string | false | none | End time (millisecond timestamp) |
+| partnerCode | string | false | none | Partner Code  |
 | pageNo | integer(int32) | false | none | Page number, starting at 1 |
 | pageSize | integer(int32) | false | none | Page size, range 1–100 |
 

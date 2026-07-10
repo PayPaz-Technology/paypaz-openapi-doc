@@ -263,6 +263,7 @@ When request processing fails, `code` contains a specific error code and `msg` c
 | 500105037 | Start time cannot be greater than end time |
 | 500105038 | Time range cannot exceed 30 days |
 | 500105039 | Invalid time format; use a 13-digit millisecond timestamp |
+| 500105040 | Invalid Partner Code|
 
 ## Notes
 
