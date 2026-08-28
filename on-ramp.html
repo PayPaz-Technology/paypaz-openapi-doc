@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On-Ramp 法币入金业务接口 · Paypaz OpenAPI</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f7f8fa;
+      --bg-code: #0f172a;
+      --ink: #1f2328;
+      --muted: #656d76;
+      --line: #d0d7de;
+      --link: #0969da;
+      --accent: #1a7f37;
+      --sidebar-w: 240px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      background: var(--bg-soft);
+      padding: 20px 0 40px;
+    }
+    .sidebar .brand {
+      padding: 0 16px 16px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 10px;
+    }
+    .sidebar .brand .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .sidebar .brand h1 {
+      font-size: 15px;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .sidebar .brand .meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .sidebar nav a {
+      display: block;
+      padding: 7px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      border-left: 2px solid transparent;
+    }
+    .sidebar nav a:hover {
+      color: var(--ink);
+      background: #fff;
+      border-left-color: var(--link);
+      text-decoration: none;
+    }
+    .main {
+      flex: 1;
+      min-width: 0;
+      max-width: 920px;
+      padding: 32px 40px 80px;
+    }
+    @media (max-width: 900px) {
+      .layout { display: block; }
+      .sidebar { position: relative; width: 100%; height: auto; }
+      .main { padding: 20px 16px 60px; }
+    }
+    h2 {
+      font-size: 26px;
+      margin: 0 0 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 36px 0 12px;
+      scroll-margin-top: 16px;
+    }
+    h4 { font-size: 15px; margin: 20px 0 8px; }
+    p { margin: 0 0 12px; }
+    .lead { color: var(--muted); margin-bottom: 20px; }
+    hr { border: none; border-top: 1px solid var(--line); margin: 28px 0; }
+    ul { margin: 0 0 14px 22px; }
+    li { margin: 4px 0; }
+    .note {
+      background: #ddf4ff;
+      border: 1px solid #54aeff66;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 18px;
+      font-size: 13.5px;
+      border: 1px solid var(--line);
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--bg-soft);
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    tr:last-child td { border-bottom: none; }
+    code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: var(--bg-soft);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      background: var(--bg-code);
+      color: #e2e8f0;
+      padding: 14px 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.55;
+      margin: 10px 0 16px;
+    }
+    .path {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 8px 0 14px;
+    }
+    .path .method {
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 8px;
+    }
+    .path .method.get { color: var(--link); }
+    .caption {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 8px 0 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow">Paypaz OpenAPI</div>
+        <h1>On-Ramp 法币入金业务接口</h1>
+        <div class="meta">2026-08-28</div>
+      </div>
+      <nav>
+        <a href="#flow">对接流程</a>
+        <a href="#sync-kyc-profile">1. 同步 KYC 资料（initiate）</a>
+        <a href="#create-onramp-order">2. 创建 On-Ramp 订单</a>
+        <a href="#query-onramp-order-detail">3. 查询订单详情</a>
+        <a href="#query-onramp-order-list">4. 查询订单列表</a>
+        <a href="#status">订单与 KYC 状态</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h2>On-Ramp 法币入金业务接口</h2>
+      <p class="lead">
+        以下业务接口都需要签名认证。公共 Header、签名算法见
+        <a href="https://bdy-tech.gitbook.io/paypaz/docs?fallback=true" target="_blank" rel="noopener">认证 API 文档</a>。
+        商户 ID 由 API Key 识别，无需在 Body 中传递。
+      </p>
+
+      <hr>
+
+      <h3 id="flow">对接流程</h3>
+      <p>
+        KYC 绑定在终端用户上（同一商户下固定 <code>clientSubUserId</code>），不绑定某一笔订单。
+        建单返回同时给出 <strong>订单 <code>status</code></strong> 和 <strong>KYC <code>kycStatus</code></strong>。
+        新用户订单一般为 <code>KYC_REQUIRED</code>，必须先走 initiate 把资料同步到 PayPaz。
+      </p>
+      <div class="note">
+        <strong>引导用户只打开建单返回的 <code>embedUrl</code></strong>（订单托管页）。
+        页内会完成剩余 KYC，通过后同一页继续选支付方式并下单。
+      </div>
+      <pre>新用户:
+  POST /onramp/kyc/initiate   （有 shareToken 则复用 Sumsub，否则用户填写）
+       ↓
+  POST /onramp/orders         → status=KYC_REQUIRED，返回 embedUrl
+       ↓
+  打开 embedUrl               → 页内补 KYC → 激活报价 → 支付
+
+老用户（kycStatus=APPROVED）:
+  跳过 initiate
+       ↓
+  POST /onramp/orders         → 通常直接 CREATED（已报价）
+       ↓
+  打开 embedUrl               → 支付</pre>
+      <ul>
+        <li>initiate 可在建单前或建单后调用。新用户建议<strong>先 initiate 再建单</strong>，打开托管页时 profile 已预填。</li>
+        <li>报价、证件/活体、支付控件由托管页调用，商户不必对接这些内部接口。</li>
+        <li>查单笔用 <code>GET /onramp/orders/info?brokerOrderRef=</code>；按时间列表用 <code>POST /onramp/orders/query</code>。</li>
+      </ul>
+
+      <hr>
+
+      <h3 id="sync-kyc-profile">1. POST 同步 KYC 资料（initiate）</h3>
+      <p>
+        按 <code>clientSubUserId</code> 提交并归档 KYC 资料，不依赖已有订单。
+        <strong>不必传 <code>mode</code></strong>：请求带了非空 <code>shareToken</code> 即走 Sumsub 复用；未带则走托管页用户填写（证件/活体在页内完成）。
+      </p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/kyc/initiate</div>
+
+      <div class="caption">Body 请求参数（用户填写，无 shareToken）</div>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "email": "user@example.com",
+  "userIp": "18.136.0.1",
+  "profile": {
+    "email": "user@example.com",
+    "firstName": "Taro",
+    "lastName": "Tanaka",
+    "birthdate": "1990-04-12",
+    "countryIso2Code": "JP",
+    "state": "Tokyo",
+    "city": "Tokyo",
+    "address": "1-1 Chiyoda",
+    "zipCode": "100-0001",
+    "citizenshipIso2Codes": "JP",
+    "placeOfBirth": "JP"
+  }
+}</pre>
+
+      <div class="caption">Body 请求参数（Sumsub 复用，带 shareToken）</div>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "email": "user@example.com",
+  "shareToken": "_act-sbx-jwt-...",
+  "userIp": "18.136.0.1",
+  "profile": {
+    "email": "user@example.com",
+    "firstName": "Taro",
+    "lastName": "Tanaka",
+    "birthdate": "1990-04-12",
+    "countryIso2Code": "JP",
+    "state": "Tokyo",
+    "city": "Tokyo",
+    "address": "1-1 Chiyoda",
+    "zipCode": "100-0001",
+    "citizenshipIso2Codes": "JP",
+    "placeOfBirth": "JP"
+  }
+}</pre>
+
+      <h4>OnRampKycInitiateRequest 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>string</td><td>true</td><td>终端用户 ID，同一用户必须固定</td></tr>
+          <tr><td>email</td><td>string</td><td>true</td><td>终端客户邮箱</td></tr>
+          <tr><td>shareToken</td><td>string</td><td>否</td><td>非空则走 Sumsub 复用；为空则用户在托管页填写。一次性，勿长期落库。获取方式见下方</td></tr>
+          <tr><td>userIp</td><td>string</td><td>建议</td><td>终端用户 IP</td></tr>
+          <tr><td>profile</td><td>object</td><td>见说明</td><td>KYC 个人资料。字段名 camelCase，与其它 OpenAPI 字段一致（见下表）</td></tr>
+        </tbody>
+      </table>
+
+      <h4>profile 字段（KYC 个人资料）</h4>
+      <table>
+        <thead><tr><th>名称</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>email</td><td>建议</td><td>未传时用请求体顶层 email</td></tr>
+          <tr><td>firstName</td><td>建议</td><td>名</td></tr>
+          <tr><td>lastName</td><td>建议</td><td>姓</td></tr>
+          <tr><td>birthdate</td><td>建议</td><td>YYYY-MM-DD</td></tr>
+          <tr><td>countryIso2Code</td><td>有 shareToken 时必填</td><td>居住国 ISO2；须与地址一致</td></tr>
+          <tr><td>state</td><td>建议</td><td>州/省</td></tr>
+          <tr><td>city</td><td>建议</td><td>城市</td></tr>
+          <tr><td>address</td><td>建议</td><td>街道地址</td></tr>
+          <tr><td>zipCode</td><td>建议</td><td>邮编</td></tr>
+          <tr><td>citizenshipIso2Codes</td><td>建议</td><td>国籍 ISO2，可与居住国不同</td></tr>
+          <tr><td>placeOfBirth</td><td>建议</td><td>出生地 ISO2</td></tr>
+        </tbody>
+      </table>
+      <p>无 <code>shareToken</code> 时，未齐的字段由用户在 <code>embedUrl</code> 补填。带 <code>shareToken</code> 时须在 initiate 带齐标准个人资料，证件由 Sumsub 复用。仍兼容旧的下划线字段名。</p>
+
+      <h4 id="share-token">如何获取 shareToken</h4>
+      <p>
+        商户在自己的 Sumsub 后台开通 <strong>Share applicants data</strong>，用 App Token 调用 Sumsub
+        <code>POST /resources/accessTokens/shareToken</code>。
+        <code>forClientId</code> 由 PayPaz 商务提供，不要填商户自己的 clientId。
+        token 一次性、短 TTL，生成后立刻交给 initiate，不要落库。
+      </p>
+      <div class="caption">请求体</div>
+      <pre>{
+  "applicantId": "6a41dab9f1fa3809f65ceae6",
+  "forClientId": "&lt;PayPaz 提供的 Sumsub clientId&gt;",
+  "ttlInSecs": 600
+}</pre>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>applicantId</td><td>string</td><td>true</td><td>商户 Sumsub 侧该申请人的 ID（Dashboard 或 Applicant API 返回）</td></tr>
+          <tr><td>forClientId</td><td>string</td><td>true</td><td>接收方 Sumsub clientId，由 PayPaz 商务提供；不要填商户自己的 clientId</td></tr>
+          <tr><td>ttlInSecs</td><td>number</td><td>否</td><td>token 有效秒数，建议 600（10 分钟）；过期需重新生成</td></tr>
+        </tbody>
+      </table>
+      <div class="caption">curl 示例（需按 Sumsub 规则对 timestamp+METHOD+path+body 做 HMAC-SHA256 hex 签名）</div>
+      <pre>TS=$(date +%s)
+BODY='{"applicantId":"YOUR_APPLICANT_ID","forClientId":"PAYPAZ_CLIENT_ID","ttlInSecs":600}'
+SUMSUB_PATH='/resources/accessTokens/shareToken'
+SIG=$(python3 -c "import hmac,hashlib,os,sys
+secret=os.environ['SUMSUB_SECRET_KEY']
+ts,method,path,body=sys.argv[1:]
+print(hmac.new(secret.encode(), (ts+method+path+body).encode(), hashlib.sha256).hexdigest())" \
+  "$TS" POST "$SUMSUB_PATH" "$BODY")
+
+curl -s -X POST "https://api.sumsub.com$SUMSUB_PATH" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "X-App-Token: $SUMSUB_APP_TOKEN" \
+  -H "X-App-Access-Ts: $TS" \
+  -H "X-App-Access-Sig: $SIG" \
+  -d "$BODY"</pre>
+      <div class="caption">成功响应（取 token 作为 initiate 的 shareToken）</div>
+      <pre>{
+  "token": "_act-sbx-jwt-eyJhbGciOiJub25lIn0...."
+}</pre>
+      <p>沙盒与生产都使用 <code>https://api.sumsub.com</code>，环境由 App Token 前缀区分（沙盒一般为 <code>sbx:</code>）。申请人须已在商户 Sumsub 侧审核通过，且 verification level 含证件核验（不只是活体）。</p>
+
+      <div class="caption">返回示例 · 200</div>
+      <pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "status": "KYC_REQUIRED",
+    "email": "user@example.com",
+    "pageId": "....",
+    "kycCheckoutUrl": "https://pay.example.com/onramp/kyc?pageId=....",
+    "kycStatus": "STARTED",
+    "kycMode": "sdk_v2"
+  }
+}</pre>
+      <p>
+        此接口不返回订单 <code>embedUrl</code>。拿到 <code>kycStatus=STARTED</code> 后请再
+        <a href="#create-onramp-order">创建订单</a>，把用户送到订单的 <code>embedUrl</code>。
+      </p>
+
+      <hr>
+
+      <h3 id="create-onramp-order">2. POST 创建 On-Ramp 订单</h3>
+      <p>
+        按净加密数量建单。法币与支付方式由用户在托管页选择。
+        无论 KYC 是否完成都会落单：未通过时 <code>status=KYC_REQUIRED</code>；
+        已通过（<code>kycStatus=APPROVED</code>）时会尝试激活报价，成功则多为 <code>CREATED</code>。
+      </p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/orders</div>
+
+      <div class="caption">Body 请求参数</div>
+      <pre>{
+  "brokerOrderRef": "ONRAMP-20260825-0001",
+  "clientSubUserId": "csub_abc123",
+  "netCryptoAmount": "1000",
+  "cryptoCurrency": "USDT",
+  "email": "user@example.com",
+  "userIp": "18.136.0.1",
+  "network": "TRON",
+  "tokenId": "USDT",
+  "chainId": "TRON"
+}</pre>
+
+      <h4>CreateOnRampOrderRequest 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>brokerOrderRef</td><td>string</td><td>true</td><td>商户订单号，同商户唯一（幂等键）</td></tr>
+          <tr><td>clientSubUserId</td><td>string</td><td>true</td><td>终端用户 ID，须与 initiate 一致</td></tr>
+          <tr><td>netCryptoAmount</td><td>string</td><td>true</td><td>用户应收净加密数量，须大于 0</td></tr>
+          <tr><td>email</td><td>string</td><td>true</td><td>终端客户邮箱</td></tr>
+          <tr><td>cryptoCurrency</td><td>string</td><td>false</td><td>默认 USDT</td></tr>
+          <tr><td>fiatCurrency</td><td>string</td><td>false</td><td>可选；用户仍可在托管页改</td></tr>
+          <tr><td>tokenId</td><td>string</td><td>false</td><td>入金币种，缺省 USDT</td></tr>
+          <tr><td>chainId</td><td>string</td><td>false</td><td>入金链，缺省 TRON</td></tr>
+          <tr><td>network</td><td>string</td><td>false</td><td>入金网络名，缺省同 chainId</td></tr>
+          <tr><td>userIp</td><td>string</td><td>建议</td><td>终端用户 IP</td></tr>
+        </tbody>
+      </table>
+
+      <div class="caption">返回示例（新用户，需 KYC）· 200</div>
+      <pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "paypazOrderId": "PZO2091798976151027712",
+    "brokerOrderRef": "ONRAMP-20260825-0001",
+    "status": "KYC_REQUIRED",
+    "cryptoCurrency": "USDT",
+    "cryptoAmountNet": "1000",
+    "fiatCurrency": "USD",
+    "fiatAmountCharge": null,
+    "network": "TRON",
+    "walletAddress": null,
+    "embedUrl": "https://pay.example.com/onramp?pageId=....",
+    "kycCheckoutUrl": "https://pay.example.com/onramp/kyc?pageId=....",
+    "pageId": "....",
+    "email": "user@example.com",
+    "kycStatus": "STARTED",
+    "kycMode": "sdk_v2",
+    "expireAt": null,
+    "createdAt": "1787558714317"
+  }
+}</pre>
+
+      <div class="caption">返回示例（KYC 已通过，订单已激活）· 200</div>
+      <pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "paypazOrderId": "PZO2091798976151027712",
+    "brokerOrderRef": "ONRAMP-20260825-0001",
+    "status": "CREATED",
+    "cryptoCurrency": "USDT",
+    "cryptoAmountNet": "1000",
+    "fiatCurrency": "USD",
+    "fiatAmountCharge": "1084.90",
+    "network": "TRON",
+    "walletAddress": "T....",
+    "embedUrl": "https://pay.example.com/onramp?pageId=....",
+    "kycCheckoutUrl": null,
+    "pageId": "....",
+    "email": "user@example.com",
+    "kycStatus": "APPROVED",
+    "kycMode": "sdk_v2",
+    "expireAt": 1787429849234,
+    "createdAt": "1787558714317"
+  }
+}</pre>
+
+      <h4>OnRampOrderOpenApiVO 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>paypazOrderId</td><td>string</td><td>PayPaz 业务单号</td></tr>
+          <tr><td>brokerOrderRef</td><td>string</td><td>商户订单号</td></tr>
+          <tr><td>status</td><td>string</td><td>订单状态，见下方</td></tr>
+          <tr><td>kycStatus</td><td>string</td><td>该用户 KYC 状态</td></tr>
+          <tr><td>kycMode</td><td>string</td><td><code>sdk_v2</code> / <code>sumsub_share</code></td></tr>
+          <tr><td>cryptoCurrency</td><td>string</td><td>购买的加密币种</td></tr>
+          <tr><td>cryptoAmountNet</td><td>string</td><td>净加密数量</td></tr>
+          <tr><td>fiatCurrency</td><td>string</td><td>法币；KYC 通过并激活后才稳定</td></tr>
+          <tr><td>fiatAmountCharge</td><td>string</td><td>应付法币；未激活时为 null</td></tr>
+          <tr><td>fiatAmountPaid</td><td>string</td><td>实际支付法币（Legend 成交后回写）；成交前为 null</td></tr>
+          <tr><td>network</td><td>string</td><td>打币网络</td></tr>
+          <tr><td>walletAddress</td><td>string</td><td>本单入金地址；KYC 通过后开出</td></tr>
+          <tr><td>clientSubUserId</td><td>string</td><td>终端用户 ID</td></tr>
+          <tr><td>paymentMethod</td><td>string</td><td>支付方式；支付前可能为空</td></tr>
+          <tr><td>txHash</td><td>string</td><td>链上交易哈希；打币完成后回写</td></tr>
+          <tr><td>embedUrl</td><td>string</td><td><strong>请打开此链接</strong>：KYC + 支付托管页</td></tr>
+          <tr><td>kycCheckoutUrl</td><td>string</td><td>仅 KYC 页；不要用来走支付</td></tr>
+          <tr><td>pageId</td><td>string</td><td>托管页令牌</td></tr>
+          <tr><td>email</td><td>string</td><td>建单邮箱</td></tr>
+          <tr><td>expireAt</td><td>integer</td><td>报价/页面过期时间（毫秒）；未激活时可能为 null</td></tr>
+          <tr><td>createdAt</td><td>integer</td><td>建单时间（毫秒）</td></tr>
+          <tr><td>completedAt</td><td>integer</td><td>完成时间（毫秒）；未完成时为 null</td></tr>
+        </tbody>
+      </table>
+
+      <h4>特殊说明</h4>
+      <ul>
+        <li><code>status=KYC_REQUIRED</code> 时订单已创建成功（HTTP 200）。打开 <code>embedUrl</code> 即可，不必再让用户进 <code>kycCheckoutUrl</code>。</li>
+        <li>若尚未 initiate，新用户打开托管页会提示完成身份验证；仍建议商户侧先调 initiate，减少用户填写。</li>
+        <li>KYC 通过后托管页会激活报价并继续支付，无需再调创建订单。</li>
+      </ul>
+
+      <hr>
+
+      <h3 id="query-onramp-order-detail">3. GET 查询 On-Ramp 订单详情</h3>
+      <p>按商户订单号查询。返回结构同创建订单的 <code>OnRampOrderOpenApiVO</code>。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/orders/info</div>
+
+      <h4>请求参数</h4>
+      <table>
+        <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>brokerOrderRef</td><td>query</td><td>string</td><td>true</td><td>商户订单号</td></tr>
+        </tbody>
+      </table>
+
+      <div class="caption">返回示例 · 200</div>
+      <pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "paypazOrderId": "PZO2091798976151027712",
+    "brokerOrderRef": "ONRAMP-20260825-0001",
+    "status": "KYC_REQUIRED",
+    "kycStatus": "STARTED",
+    "cryptoAmountNet": "1000",
+    "embedUrl": "https://pay.example.com/onramp?pageId=....",
+    "createdAt": "1787558714317"
+  }
+}</pre>
+      <p>当前以轮询本接口或列表接口为准。On-Ramp 入账 Webhook 尚未对商户开放。</p>
+
+      <hr>
+
+      <h3 id="query-onramp-order-list">4. POST 查询 On-Ramp 订单列表</h3>
+      <p>
+        按当前 API Key 所属商户分页查询，按 <code>createdAt</code> 倒序。
+        需要 <code>onRamp</code> 权限。
+      </p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/orders/query</div>
+
+      <h4>Body 请求参数</h4>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "brokerOrderRef": "ONRAMP-20260825-0001",
+  "paypazOrderId": "PZO2091798976151027712",
+  "status": "COMPLETED",
+  "startTime": 1721606400000,
+  "endTime": 1724198400000,
+  "pageNo": 1,
+  "pageSize": 20
+}</pre>
+
+      <h4>QueryOnRampOrderRequest 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>string</td><td>false</td><td>按客户过滤；不传则查商户下全部。传了但不存在该子用户则报错</td></tr>
+          <tr><td>brokerOrderRef</td><td>string</td><td>false</td><td>商户订单号（精确匹配）</td></tr>
+          <tr><td>paypazOrderId</td><td>string</td><td>false</td><td>PayPaz 订单号（精确匹配）</td></tr>
+          <tr><td>status</td><td>string</td><td>false</td><td>订单状态，如 <code>CREATED</code> / <code>COMPLETED</code>，见下方状态表</td></tr>
+          <tr><td>startTime</td><td>integer(int64)</td><td>见说明</td><td>创建时间起（13 位毫秒）。与 <code>endTime</code> 须同时传或同时不传</td></tr>
+          <tr><td>endTime</td><td>integer(int64)</td><td>见说明</td><td>创建时间止（13 位毫秒）。都不传则默认 UTC 当天 00:00:00～23:59:59.999</td></tr>
+          <tr><td>pageNo</td><td>integer</td><td>false</td><td>从 1 开始，默认 1</td></tr>
+          <tr><td>pageSize</td><td>integer</td><td>false</td><td>1–100，默认 20</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>时间窗口按订单 <code>createdAt</code> 过滤，最长 30 天。</li>
+        <li>只传 <code>startTime</code> 或只传 <code>endTime</code> 会报错（<code>500105036</code>）。</li>
+        <li>时间戳不是 13 位毫秒会报错（<code>500105039</code>）；开始大于结束（<code>500105037</code>）；间隔超过 30 天（<code>500105038</code>）。</li>
+        <li>列表项字段与创建/详情的 <code>OnRampOrderOpenApiVO</code> 相同，但<strong>列表不额外查 KYC</strong>，<code>kycStatus</code> / <code>kycMode</code> 可能为空。需要 KYC 状态请用详情接口。</li>
+      </ul>
+
+      <div class="caption">返回示例 · 200</div>
+      <pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "total": 1,
+    "pageNum": 1,
+    "pageSize": 20,
+    "pages": 1,
+    "size": 1,
+    "list": [
+      {
+        "paypazOrderId": "PZO2091798976151027712",
+        "brokerOrderRef": "ONRAMP-20260825-0001",
+        "clientSubUserId": "csub_abc123",
+        "status": "CREATED",
+        "cryptoCurrency": "USDT",
+        "cryptoAmountNet": "1000",
+        "fiatCurrency": "USD",
+        "fiatAmountCharge": "1084.90",
+        "fiatAmountPaid": null,
+        "network": "TRON",
+        "walletAddress": "T....",
+        "paymentMethod": null,
+        "txHash": null,
+        "embedUrl": "https://pay.example.com/onramp?pageId=....",
+        "kycCheckoutUrl": null,
+        "pageId": "....",
+        "email": "user@example.com",
+        "kycStatus": null,
+        "kycMode": null,
+        "expireAt": 1787429849234,
+        "createdAt": 1787558714317,
+        "completedAt": null
+      }
+    ]
+  }
+}</pre>
+      <p><code>data.list</code> 为当前页订单；<code>total</code> 为符合条件的总条数。PageHelper 还会带 <code>isFirstPage</code> 等分页辅助字段，对接时以 <code>list</code> / <code>total</code> / <code>pageNum</code> / <code>pageSize</code> 为准。</p>
+
+      <hr>
+
+      <h3 id="status">订单与 KYC 状态</h3>
+      <h4>订单 status</h4>
+      <table>
+        <thead><tr><th>status</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td><code>KYC_REQUIRED</code></td><td>未完成 KYC，订单已保存，尚未报价/开地址</td></tr>
+          <tr><td><code>ACTIVATING</code></td><td>KYC 已通过，正在开地址 / 取报价</td></tr>
+          <tr><td><code>CREATED</code></td><td>已激活，可进入收银台</td></tr>
+          <tr><td><code>AWAITING_PAYMENT</code></td><td>用户已进入支付</td></tr>
+          <tr><td><code>PAYMENT_PROCESSING</code></td><td>支付已受理</td></tr>
+          <tr><td><code>FIAT_RECEIVED</code></td><td>法币已到账</td></tr>
+          <tr><td><code>CRYPTO_TRANSFERRING</code></td><td>打币中</td></tr>
+          <tr><td><code>PENDING_VERIFICATION</code></td><td>合规补充验证</td></tr>
+          <tr><td><code>COMPLETED</code></td><td>完成</td></tr>
+          <tr><td><code>FAILED</code></td><td>失败</td></tr>
+          <tr><td><code>EXPIRED</code></td><td>过期</td></tr>
+        </tbody>
+      </table>
+      <p>常见流转：<code>KYC_REQUIRED</code> →（KYC 通过）→ <code>CREATED</code> → <code>AWAITING_PAYMENT</code> → <code>PAYMENT_PROCESSING</code> → <code>CRYPTO_TRANSFERRING</code> → <code>COMPLETED</code></p>
+
+      <h4>kycStatus</h4>
+      <table>
+        <thead><tr><th>kycStatus</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td><code>NOT_STARTED</code></td><td>尚未 initiate</td></tr>
+          <tr><td><code>STARTED</code></td><td>已 initiate / 资料已提交</td></tr>
+          <tr><td><code>PENDING</code></td><td>审核中</td></tr>
+          <tr><td><code>APPROVED</code></td><td>可通过；建单时会尝试激活订单</td></tr>
+          <tr><td><code>REJECTED</code></td><td>拒绝</td></tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</body>
+</html>
