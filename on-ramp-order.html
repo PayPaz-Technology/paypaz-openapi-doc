@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On-Ramp 法币入金业务接口 · Paypaz OpenAPI</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f7f8fa;
+      --bg-code: #0f172a;
+      --ink: #1f2328;
+      --muted: #656d76;
+      --line: #d0d7de;
+      --link: #0969da;
+      --accent: #1a7f37;
+      --accent-soft: #dafbe1;
+      --warn: #9a6700;
+      --warn-soft: #fff8c5;
+      --sidebar-w: 260px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      background: var(--bg-soft);
+      padding: 20px 0 40px;
+    }
+    .sidebar .brand {
+      padding: 0 16px 16px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 10px;
+    }
+    .sidebar .brand .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .sidebar .brand h1 {
+      font-size: 15px;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .sidebar .brand .meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .sidebar nav a {
+      display: block;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      border-left: 2px solid transparent;
+    }
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      color: var(--ink);
+      background: #fff;
+      border-left-color: var(--link);
+      text-decoration: none;
+    }
+    .sidebar nav .group {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 14px 16px 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .main {
+      flex: 1;
+      min-width: 0;
+      max-width: 920px;
+      padding: 32px 40px 80px;
+    }
+    @media (max-width: 900px) {
+      .layout { display: block; }
+      .sidebar { position: relative; width: 100%; height: auto; }
+      .main { padding: 20px 16px 60px; }
+    }
+    h2 {
+      font-size: 26px;
+      margin: 0 0 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 20px;
+      margin: 36px 0 12px;
+      scroll-margin-top: 16px;
+    }
+    h4 {
+      font-size: 15px;
+      margin: 20px 0 8px;
+      color: var(--ink);
+    }
+    p { margin: 0 0 12px; }
+    .lead { color: var(--muted); margin-bottom: 20px; }
+    hr { border: none; border-top: 1px solid var(--line); margin: 28px 0; }
+    ul, ol { margin: 0 0 14px 22px; }
+    li { margin: 4px 0; }
+    .note {
+      background: var(--warn-soft);
+      border: 1px solid #d4a72c55;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+    .note.ok {
+      background: var(--accent-soft);
+      border-color: #1a7f3755;
+    }
+    .note.info {
+      background: #ddf4ff;
+      border-color: #54aeff66;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 18px;
+      font-size: 13.5px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--bg-soft);
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    tr:last-child td { border-bottom: none; }
+    code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      background: var(--bg-soft);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      background: var(--bg-code);
+      color: #e2e8f0;
+      padding: 14px 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.55;
+      margin: 10px 0 16px;
+    }
+    pre .caption {
+      display: block;
+      color: #94a3b8;
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+    .path {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 8px 0 14px;
+    }
+    .path .method {
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 8px;
+    }
+    .path .method.get { color: var(--link); }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--bg-soft);
+      color: var(--muted);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .tag.draft { background: var(--warn-soft); color: var(--warn); }
+    .tag.auth { background: #ddf4ff; color: #0969da; }
+    .steps { counter-reset: step; list-style: none; margin-left: 0; }
+    .steps li {
+      position: relative;
+      padding: 10px 12px 10px 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 22px;
+      text-align: center;
+    }
+    .toc-inline { margin: 12px 0 20px 18px; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow">Paypaz OpenAPI</div>
+        <h1>On-Ramp 法币入金业务接口</h1>
+        <div class="meta">商户对接文档 · Draft v0.1<br>鉴权同 <a href="README.md">认证 API 文档</a></div>
+      </div>
+      <nav>
+        <div class="group">概览</div>
+        <a href="#overview">业务说明</a>
+        <a href="#flow">对接流程</a>
+        <a href="#modes">两种接入模式</a>
+        <a href="#status">订单状态</a>
+        <div class="group">业务接口</div>
+        <a href="#pairs">获取交易对</a>
+        <a href="#countries">获取国家列表</a>
+        <a href="#deposit-methods">获取支付方式</a>
+        <a href="#quote">询价</a>
+        <a href="#create-order">创建 On-Ramp 订单</a>
+        <a href="#order-detail">查询订单详情</a>
+        <a href="#order-page">分页查询订单</a>
+        <a href="#deposit-account">获取银行收款账户</a>
+        <a href="#kyc-status">查询 KYC 状态</a>
+        <a href="#kyc-sdk-url">获取 KYC SDK URL</a>
+        <a href="#sdk-signature">获取支付 SDK 签名</a>
+        <div class="group">其他</div>
+        <a href="#webhook">Webhook 通知</a>
+        <a href="#errors">错误码</a>
+        <a href="#notes">注意事项</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h2 id="overview">On-Ramp 法币入金业务接口 <span class="tag draft">DRAFT</span></h2>
+      <p class="lead">
+        以下业务接口均需通过签名认证（与现有充值 / 提币 OpenAPI 相同）。
+        本能力用于商户终端用户以法币（银行转账、信用卡/借记卡、Apple Pay、Google Pay）购买加密资产，并入账至 Paypaz 账户。
+      </p>
+
+      <div class="note info">
+        <strong>文档状态：</strong>接口路径与字段为商户对接需求草案，上线前以正式发布版本为准。
+        鉴权、域名、签名算法请参阅 <a href="README.md">认证 API 文档</a>。
+      </div>
+
+      <h4>环境域名（同现网 OpenAPI）</h4>
+      <table>
+        <thead>
+          <tr><th>环境</th><th>说明</th><th>域名</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>预发布环境</td>
+            <td>测试联调</td>
+            <td><code>https://open-api.paypaz.dev</code></td>
+          </tr>
+          <tr>
+            <td>生产环境</td>
+            <td>正式上线</td>
+            <td><code>https://open-api.paypaz.com</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>公共请求头</h4>
+      <table>
+        <thead>
+          <tr><th>Header</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>PAYPAZ-ACCESS-KEY</code></td><td>API Key</td></tr>
+          <tr><td><code>PAYPAZ-ACCESS-SIGN</code></td><td>HMAC-SHA256 后 Base64 签名</td></tr>
+          <tr><td><code>PAYPAZ-ACCESS-TIMESTAMP</code></td><td>毫秒时间戳</td></tr>
+          <tr><td><code>PAYPAZ-ACCESS-RECV-WINDOW</code></td><td>接收窗口，默认 20000，最大 60000</td></tr>
+          <tr><td><code>Content-Type</code></td><td><code>application/json</code>（POST）</td></tr>
+          <tr><td><code>X-User-Ip</code>（建议）</td><td>终端用户真实公网 IP；法币通道风控必填，请务必透传</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>权限：</strong>On-Ramp 接口使用独立权限 scope <code>onramp</code>。请在后台为 API Key 开通该权限后再调用。
+      </div>
+
+      <hr>
+
+      <h3 id="flow">对接流程说明</h3>
+      <ol class="steps">
+        <li>确保子用户已存在：使用商户侧 <code>clientSubUserId</code>（与现有充值/提币一致）。On-Ramp <strong>强制要求子用户</strong>。</li>
+        <li>调用 <a href="#pairs">获取交易对</a> / <a href="#deposit-methods">获取支付方式</a> / <a href="#countries">获取国家列表</a>，动态展示支持的法币、加密货币与支付通道。</li>
+        <li>调用 <a href="#quote">询价</a>，向用户展示到账数量与费用明细。</li>
+        <li>调用 <a href="#kyc-status">查询 KYC 状态</a>；若未通过，引导用户完成 KYC（托管页内置流程，或自建页调用 <a href="#kyc-sdk-url">KYC SDK URL</a>）。</li>
+        <li>调用 <a href="#create-order">创建 On-Ramp 订单</a>。
+          <ul>
+            <li><strong>托管页模式</strong>：使用返回的 <code>checkOutUrl</code> 引导用户完成支付与 KYC。</li>
+            <li><strong>自建页模式</strong>：商户自研页面；银行转账调 <a href="#deposit-account">收款账户</a>；卡 / Apple Pay / Google Pay 调 <a href="#sdk-signature">SDK 签名</a> 后使用 Paypaz 下发的支付组件完成支付。</li>
+          </ul>
+        </li>
+        <li>用户完成支付后，Paypaz 在<strong>链上到账确认</strong>后入账，并向商户发送 Webhook。</li>
+        <li>商户也可轮询 <a href="#order-detail">订单详情</a> / <a href="#order-page">分页查询</a> 获取结果。</li>
+      </ol>
+
+      <div class="note ok">
+        <strong>入账说明：</strong>订单状态变为 <code>completed</code> 表示加密资产已入账至该子用户 Paypaz 余额。
+        中间态（待付款、处理中）不代表已到账。
+      </div>
+
+      <hr>
+
+      <h3 id="modes">两种接入模式</h3>
+      <table>
+        <thead>
+          <tr><th>模式</th><th>说明</th><th>商户工作量</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>托管页模式</strong></td>
+            <td>创建订单后跳转 <code>checkOutUrl</code>，用户在 Paypaz 托管页完成选支付方式、KYC、付款</td>
+            <td>低：建单 + 接 Webhook</td>
+            <td>快速上线，体验统一</td>
+          </tr>
+          <tr>
+            <td><strong>自建页模式</strong></td>
+            <td>商户自研 UI，调用 OpenAPI 完成询价/建单/KYC/收款信息/支付 SDK 签名</td>
+            <td>高：需实现完整前端与 SDK 集成</td>
+            <td>强品牌定制</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>两种模式共用同一套订单与 Webhook，可按订单选择；创建时可忽略或使用 <code>checkOutUrl</code>。</p>
+
+      <hr>
+
+      <h3 id="status">订单状态</h3>
+      <table>
+        <thead>
+          <tr><th>status</th><th>含义</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>pending</code></td><td>已创建 / 待 KYC</td><td>订单已生成，可能需完成身份认证</td></tr>
+          <tr><td><code>awaiting_payment</code></td><td>待支付</td><td>等待银行汇款或卡/钱包支付</td></tr>
+          <tr><td><code>processing</code></td><td>处理中</td><td>法币已受理，等待兑币与链上到账</td></tr>
+          <tr><td><code>verification_required</code></td><td>需补充验证</td><td>合规要求补充材料（EDD/RFI），请提示用户查收邮件/完成验证</td></tr>
+          <tr><td><code>completed</code></td><td>已完成</td><td>链上确认完成，余额已入账</td></tr>
+          <tr><td><code>failed</code></td><td>失败</td><td>支付或交易失败</td></tr>
+          <tr><td><code>expired</code></td><td>已过期</td><td>超过订单有效期未完成支付</td></tr>
+        </tbody>
+      </table>
+
+      <h4>支付方式枚举 paymentMethod</h4>
+      <table>
+        <thead>
+          <tr><th>值</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>bank</code></td><td>银行转账（含各地本地转账 / 电汇等，以 deposit-methods 返回为准）</td></tr>
+          <tr><td><code>card</code></td><td>信用卡 / 借记卡</td></tr>
+          <tr><td><code>apple_pay</code></td><td>Apple Pay</td></tr>
+          <tr><td><code>google_pay</code></td><td>Google Pay</td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <!-- ==================== APIs ==================== -->
+
+      <h3 id="pairs">1. GET 获取交易对 <span class="tag auth">签名</span></h3>
+      <p>获取 On-Ramp 支持的交易对、限额与精度。请动态拉取，勿硬编码币种。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/pairs</div>
+
+      <h4>请求参数</h4>
+      <p>无（或按正式版支持可选过滤参数）</p>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": [
+    {
+      "pair": "USDTJPY",
+      "fiatCurrency": "JPY",
+      "tokenId": "USDT",
+      "minSize": "2000",
+      "maxSize": "1560000",
+      "sizePrecision": 0,
+      "quantityPrecision": 2
+    }
+  ]
+}</pre>
+
+      <h4>OnRampPairVO 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>pair</td><td>string</td><td>false</td><td>交易对，如 USDTJPY</td></tr>
+          <tr><td>fiatCurrency</td><td>string</td><td>false</td><td>法币代码</td></tr>
+          <tr><td>tokenId</td><td>string</td><td>false</td><td>加密货币代码</td></tr>
+          <tr><td>minSize / maxSize</td><td>string</td><td>false</td><td>法币金额限额</td></tr>
+          <tr><td>sizePrecision</td><td>integer</td><td>false</td><td>法币精度</td></tr>
+          <tr><td>quantityPrecision</td><td>integer</td><td>false</td><td>加密货币精度</td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3 id="countries">2. GET 获取国家列表 <span class="tag auth">签名</span></h3>
+      <p>返回可服务与禁止服务的国家/地区，用于 KYC 与支付前置校验。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/countries</div>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": [
+    { "countryIso2Code": "JP", "restricted": false },
+    { "countryIso2Code": "AF", "restricted": true }
+  ]
+}</pre>
+
+      <hr>
+
+      <h3 id="deposit-methods">3. GET 获取支付方式 <span class="tag auth">签名</span></h3>
+      <p>按法币返回可用入金方式（银行、卡等）。前端应以此动态渲染支付选项。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/deposit-methods</div>
+
+      <h4>请求参数</h4>
+      <table>
+        <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>fiatCurrency</td><td>query</td><td>string</td><td>true</td><td>法币，如 JPY、USD、EUR</td></tr>
+          <tr><td>clientSubUserId</td><td>query</td><td>string</td><td>false</td><td>客户子用户标识（部分地区结果可能与用户属性相关）</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": [
+    {
+      "paymentMethod": "bank",
+      "methodName": "Bank Transfer",
+      "fiatCurrency": "JPY",
+      "settleTimeHint": "minutes to 1 business day"
+    },
+    {
+      "paymentMethod": "card",
+      "methodName": "Credit/Debit Card",
+      "fiatCurrency": "JPY",
+      "settleTimeHint": "instant"
+    },
+    {
+      "paymentMethod": "apple_pay",
+      "methodName": "Apple Pay",
+      "fiatCurrency": "JPY",
+      "settleTimeHint": "instant"
+    },
+    {
+      "paymentMethod": "google_pay",
+      "methodName": "Google Pay",
+      "fiatCurrency": "JPY",
+      "settleTimeHint": "instant"
+    }
+  ]
+}</pre>
+
+      <hr>
+
+      <h3 id="quote">4. POST 询价 <span class="tag auth">签名</span></h3>
+      <p>根据法币金额获取可购买的加密货币数量及费用明细。银行与卡报价可能不同，请传 <code>paymentMethod</code> 或 <code>type</code>。</p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/quote</div>
+
+      <h4>Body 请求参数</h4>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "pair": "USDTJPY",
+  "fiatAmount": "15600",
+  "paymentMethod": "bank",
+  "tokenId": "USDT",
+  "chainId": "TRON"
+}</pre>
+
+      <h4>CreateOnRampQuoteRequest 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>string</td><td>true</td><td>客户子用户唯一标识</td></tr>
+          <tr><td>pair</td><td>string</td><td>true</td><td>交易对，如 USDTJPY</td></tr>
+          <tr><td>fiatAmount</td><td>string</td><td>true</td><td>法币金额（size）</td></tr>
+          <tr><td>paymentMethod</td><td>string</td><td>true</td><td>bank / card / apple_pay / google_pay</td></tr>
+          <tr><td>tokenId</td><td>string</td><td>false</td><td>目标币种，建议与 pair 一致传入</td></tr>
+          <tr><td>chainId</td><td>string</td><td>false</td><td>目标链，如 TRON、ETH</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "pair": "USDTJPY",
+    "side": "buy",
+    "paymentMethod": "bank",
+    "price": "150.00",
+    "quantity": "100.00",
+    "fiatAmount": "15600",
+    "commission": "600",
+    "processingFee": "0",
+    "networkFee": "0",
+    "expiresAt": 1721700000000
+  }
+}</pre>
+
+      <h4>OnRampQuoteVO 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>pair</td><td>string</td><td>交易对</td></tr>
+          <tr><td>price</td><td>string</td><td>单价（法币/币）</td></tr>
+          <tr><td>quantity</td><td>string</td><td>预计获得加密货币数量</td></tr>
+          <tr><td>fiatAmount</td><td>string</td><td>法币支付金额</td></tr>
+          <tr><td>commission</td><td>string</td><td>服务佣金</td></tr>
+          <tr><td>processingFee</td><td>string</td><td>处理费</td></tr>
+          <tr><td>networkFee</td><td>string</td><td>网络费</td></tr>
+          <tr><td>expiresAt</td><td>integer(int64)</td><td>报价过期时间（毫秒）</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        报价有时效，下单前如已过期请重新询价。费用以询价返回为准（平台费率通过上游 commission 结算）。
+      </div>
+
+      <hr>
+
+      <h3 id="create-order">5. POST 创建 On-Ramp 订单 <span class="tag auth">签名</span></h3>
+      <p>为指定子用户创建法币买币订单。托管页模式请使用返回的 <code>checkOutUrl</code>。</p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/orders</div>
+
+      <h4>特殊说明</h4>
+      <ul>
+        <li><code>clientOrderNo</code> 为商户侧唯一键，用于幂等；重复提交同一单号将返回原订单。</li>
+        <li>必须传入 <code>clientSubUserId</code>（或正式版支持的 subUid）。</li>
+        <li>预发布环境建议使用 <code>tokenId=USDT</code>、<code>chainId=TRON</code> 进行联调。</li>
+      </ul>
+
+      <h4>Body 请求参数</h4>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "clientOrderNo": "ONRAMP-20260723-0001",
+  "pair": "USDTJPY",
+  "fiatCurrency": "JPY",
+  "fiatAmount": "15600",
+  "tokenId": "USDT",
+  "chainId": "TRON",
+  "paymentMethod": "bank",
+  "returnUrl": "https://merchant.example.com/onramp/callback",
+  "partnerCode": "P01"
+}</pre>
+
+      <h4>CreateOnRampOrderRequest 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>string</td><td>true</td><td>客户子用户唯一标识</td></tr>
+          <tr><td>clientOrderNo</td><td>string</td><td>true</td><td>商户订单号（唯一键，幂等）</td></tr>
+          <tr><td>pair</td><td>string</td><td>true</td><td>交易对</td></tr>
+          <tr><td>fiatCurrency</td><td>string</td><td>true</td><td>法币代码</td></tr>
+          <tr><td>fiatAmount</td><td>string</td><td>true</td><td>法币金额，须满足交易对限额</td></tr>
+          <tr><td>tokenId</td><td>string</td><td>true</td><td>目标加密货币</td></tr>
+          <tr><td>chainId</td><td>string</td><td>true</td><td>目标链</td></tr>
+          <tr><td>paymentMethod</td><td>string</td><td>true</td><td>bank / card / apple_pay / google_pay</td></tr>
+          <tr><td>returnUrl</td><td>string</td><td>false</td><td>托管页完成后回跳地址</td></tr>
+          <tr><td>partnerCode</td><td>string</td><td>false</td><td>合作伙伴代码</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "id": 1234567890123456789,
+    "orderNo": "PZ20260723-00123",
+    "clientOrderNo": "ONRAMP-20260723-0001",
+    "status": "awaiting_payment",
+    "paymentMethod": "bank",
+    "fiatCurrency": "JPY",
+    "fiatAmount": "15600",
+    "tokenId": "USDT",
+    "chainId": "TRON",
+    "pair": "USDTJPY",
+    "quotePrice": "150.00",
+    "quoteQuantity": "100.00",
+    "commission": "600",
+    "processingFee": "0",
+    "networkFee": "0",
+    "walletAddress": "TX3ogswuX8pXWtHiLKNfhVUAdJuVJZQVAmk",
+    "txId": null,
+    "expireAt": 1721701800000,
+    "userId": 123456,
+    "subUserId": 789012,
+    "clientSubUserId": "csub_abc123",
+    "checkOutUrl": "https://pay.example.com/onramp?pageId=xxxxxx",
+    "returnUrl": "https://merchant.example.com/onramp/callback",
+    "createdAt": 1721700000000,
+    "updatedAt": 1721700000000
+  }
+}</pre>
+
+      <h4>OnRampOrderOpenApiVO 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>integer(int64)</td><td>订单 ID</td></tr>
+          <tr><td>orderNo</td><td>string</td><td>Paypaz 订单号（银行汇款备注 / Reference 请使用此号）</td></tr>
+          <tr><td>clientOrderNo</td><td>string</td><td>商户订单号</td></tr>
+          <tr><td>status</td><td>string</td><td>见「订单状态」</td></tr>
+          <tr><td>paymentMethod</td><td>string</td><td>支付方式</td></tr>
+          <tr><td>fiatCurrency / fiatAmount</td><td>string</td><td>法币与金额</td></tr>
+          <tr><td>tokenId / chainId</td><td>string</td><td>入账资产</td></tr>
+          <tr><td>quoteQuantity</td><td>string</td><td>预计到账数量（最终以 completed 为准）</td></tr>
+          <tr><td>commission / processingFee / networkFee</td><td>string</td><td>费用明细</td></tr>
+          <tr><td>walletAddress</td><td>string</td><td>入账地址（系统托管）</td></tr>
+          <tr><td>txId</td><td>string</td><td>链上交易哈希（完成后回填）</td></tr>
+          <tr><td>expireAt</td><td>integer(int64)</td><td>过期时间（毫秒）</td></tr>
+          <tr><td>checkOutUrl</td><td>string</td><td>托管收银台链接；自建页可忽略</td></tr>
+          <tr><td>clientSubUserId</td><td>string</td><td>客户子用户标识</td></tr>
+          <tr><td>createdAt / updatedAt</td><td>integer(int64)</td><td>时间戳（毫秒）</td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3 id="order-detail">6. GET 查询 On-Ramp 订单详情 <span class="tag auth">签名</span></h3>
+      <p>根据商户订单号或 Paypaz 订单号查询详情。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/orders/info</div>
+
+      <h4>请求参数</h4>
+      <table>
+        <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientOrderNo</td><td>query</td><td>string</td><td>否*</td><td>商户订单号</td></tr>
+          <tr><td>orderNo</td><td>query</td><td>string</td><td>否*</td><td>Paypaz 订单号；与 clientOrderNo 二选一</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <p>同 <a href="#create-order">创建订单</a> 的 <code>OnRampOrderOpenApiVO</code>。</p>
+
+      <hr>
+
+      <h3 id="order-page">7. POST 分页查询 On-Ramp 订单 <span class="tag auth">签名</span></h3>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/orders/query</div>
+
+      <h4>特殊说明</h4>
+      <p><code>startTime</code> 与 <code>endTime</code> 为必填，13 位毫秒时间戳，最长查询间隔 30 天（与支付订单查询一致）。</p>
+
+      <h4>Body 请求参数</h4>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "clientOrderNo": "ONRAMP-20260723-0001",
+  "orderNo": "PZ20260723-00123",
+  "status": "completed",
+  "paymentMethod": "bank",
+  "tokenId": "USDT",
+  "chainId": "TRON",
+  "startTime": 1721606400000,
+  "endTime": 1721692800000,
+  "partnerCode": "P01",
+  "pageNo": 1,
+  "pageSize": 10
+}</pre>
+
+      <h4>QueryOnRampOrderRequest 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>string</td><td>false</td><td>客户子用户唯一标识</td></tr>
+          <tr><td>clientOrderNo</td><td>string</td><td>false</td><td>商户订单号</td></tr>
+          <tr><td>orderNo</td><td>string</td><td>false</td><td>Paypaz 订单号</td></tr>
+          <tr><td>status</td><td>string</td><td>false</td><td>订单状态</td></tr>
+          <tr><td>paymentMethod</td><td>string</td><td>false</td><td>支付方式</td></tr>
+          <tr><td>tokenId / chainId</td><td>string</td><td>false</td><td>资产过滤</td></tr>
+          <tr><td>startTime / endTime</td><td>integer(int64)</td><td>true</td><td>时间范围（毫秒）</td></tr>
+          <tr><td>partnerCode</td><td>string</td><td>false</td><td>合作伙伴代码</td></tr>
+          <tr><td>pageNo</td><td>integer</td><td>false</td><td>页码，从 1 开始</td></tr>
+          <tr><td>pageSize</td><td>integer</td><td>false</td><td>每页 1–100</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": [
+    {
+      "orderNo": "PZ20260723-00123",
+      "clientOrderNo": "ONRAMP-20260723-0001",
+      "status": "completed",
+      "paymentMethod": "bank",
+      "fiatCurrency": "JPY",
+      "fiatAmount": "15600",
+      "tokenId": "USDT",
+      "chainId": "TRON",
+      "quoteQuantity": "100.00",
+      "txId": "abc123...",
+      "clientSubUserId": "csub_abc123",
+      "createdAt": 1721700000000,
+      "updatedAt": 1721700720000
+    }
+  ]
+}</pre>
+
+      <hr>
+
+      <h3 id="deposit-account">8. GET 获取银行收款账户 <span class="tag auth">签名</span></h3>
+      <p>自建页 + 银行转账时，展示平台收款账户信息。用户汇款时必须填写正确的 <code>reference</code>（一般为订单 <code>orderNo</code>）。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/deposit-account</div>
+
+      <h4>请求参数</h4>
+      <table>
+        <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>query</td><td>string</td><td>true</td><td>客户子用户唯一标识</td></tr>
+          <tr><td>fiatCurrency</td><td>query</td><td>string</td><td>true</td><td>法币</td></tr>
+          <tr><td>orderNo</td><td>query</td><td>string</td><td>false</td><td>关联订单号；建议传入以便返回对应 reference</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "fiatCurrency": "JPY",
+    "bankName": "三菱UFJ銀行",
+    "branchName": "大手町支店",
+    "accountType": "普通",
+    "accountNumber": "1234567",
+    "accountName": "PAYPAZ合同会社",
+    "reference": "PZ20260723-00123",
+    "amount": "15600",
+    "remark": "Legend does NOT accept third party wires. Transfer from an account under the applicant's name."
+  }
+}</pre>
+
+      <div class="note">
+        <strong>重要：</strong>请提示用户「金额必须完全一致」且「备注/依頼人名必须包含 reference」。
+        缺少正确 reference 可能导致无法自动匹配、到账延迟。
+      </div>
+
+      <hr>
+
+      <h3 id="kyc-status">9. GET 查询 KYC 状态 <span class="tag auth">签名</span></h3>
+      <p>查询子用户在法币通道侧的身份认证状态。未 Approved 时不可完成买币。</p>
+      <div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/onramp/kyc/status</div>
+
+      <h4>请求参数</h4>
+      <table>
+        <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>clientSubUserId</td><td>query</td><td>string</td><td>true</td><td>客户子用户唯一标识</td></tr>
+        </tbody>
+      </table>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "clientSubUserId": "csub_abc123",
+    "kycStatus": "Approved",
+    "nextKycStep": null,
+    "updatedAt": 1721690000000
+  }
+}</pre>
+
+      <h4>kycStatus 常见值</h4>
+      <table>
+        <thead><tr><th>值</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>None</code> / <code>NotStarted</code></td><td>未开始</td></tr>
+          <tr><td><code>Pending</code></td><td>审核中</td></tr>
+          <tr><td><code>Approved</code></td><td>已通过，可交易</td></tr>
+          <tr><td><code>Rejected</code> / <code>Unavailable</code></td><td>拒绝或无法服务</td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3 id="kyc-sdk-url">10. POST 获取 KYC SDK URL <span class="tag auth">签名</span></h3>
+      <p>自建页模式下，获取身份认证页面 URL，建议以 iframe 打开（需允许 <code>camera; geolocation</code>）。URL 有效期约 24 小时。</p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/kyc/sdk-url</div>
+
+      <h4>Body 请求参数</h4>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "email": "alice@example.com",
+  "returnUrl": "https://merchant.example.com/kyc/done"
+}</pre>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "url": "https://otc.example.com/v2/kyc/s/xxxxxx",
+    "expiresAt": 1721786400000
+  }
+}</pre>
+
+      <hr>
+
+      <h3 id="sdk-signature">11. POST 获取支付 SDK 签名 <span class="tag auth">签名</span></h3>
+      <p>
+        自建页使用卡 / Apple Pay / Google Pay 时，需先向本接口申请授权签名包，再在前端初始化支付 SDK（由 Paypaz 提供接入说明与脚本地址）。
+        <strong>商户服务端不得将 API Secret 暴露给前端；</strong>仅将本接口返回的短期签名字段交给前端。
+      </p>
+      <div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/onramp/sdk-signature</div>
+
+      <h4>Body 请求参数</h4>
+      <pre>{
+  "clientSubUserId": "csub_abc123",
+  "orderNo": "PZ20260723-00123",
+  "email": "alice@example.com",
+  "phone": "+819012345678"
+}</pre>
+
+      <h4>返回示例</h4>
+      <pre><span class="caption">200 Response</span>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "timestamp": "1721700000",
+    "signature": "xxxxxx",
+    "appId": "APP-ID",
+    "appKey": "APP-KEY",
+    "appUid": "123456_789012",
+    "appUrl": "https://merchant.example.com/callback",
+    "appEmail": "alice@example.com",
+    "appPhone": "+819012345678",
+    "expiresIn": 3600
+  }
+}</pre>
+
+      <div class="note info">
+        托管页模式无需调用本接口，支付与 KYC 均在 <code>checkOutUrl</code> 内完成。
+        Apple Pay 对商户域名有额外要求，自建页请提前完成域名校验配置（联调时由 Paypaz 支持协助）。
+      </div>
+
+      <hr>
+
+      <h3 id="webhook">Webhook 通知</h3>
+      <p>
+        商户需配置回调地址并订阅 On-Ramp 相关事件。签名验证方式与现有 Webhook 相同，详见
+        <a href="WEBHOOK_GUIDE.md">webhook 说明</a>。
+      </p>
+
+      <h4>建议订阅事件</h4>
+      <table>
+        <thead><tr><th>eventType</th><th>说明</th><th>商户动作建议</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>transaction.onramp.payment_received</code></td>
+            <td>法币支付已确认（可选，多见于银行到账）</td>
+            <td>展示处理中，勿提前给用户上分</td>
+          </tr>
+          <tr>
+            <td><code>transaction.onramp.completed</code></td>
+            <td>买币完成且链上入账成功</td>
+            <td><strong>以此事件为准给用户完成业务</strong></td>
+          </tr>
+          <tr>
+            <td><code>transaction.onramp.failed</code></td>
+            <td>失败</td>
+            <td>通知用户失败原因 / 允许重试</td>
+          </tr>
+          <tr>
+            <td><code>transaction.onramp.expired</code></td>
+            <td>订单过期</td>
+            <td>关闭待支付单</td>
+          </tr>
+          <tr>
+            <td><code>transaction.onramp.verification_required</code></td>
+            <td>需要补充合规验证</td>
+            <td>引导用户完成验证后继续</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>completed 事件 data 示例</h4>
+      <pre>{
+  "eventType": "transaction.onramp.completed",
+  "data": {
+    "orderNo": "PZ20260723-00123",
+    "clientOrderNo": "ONRAMP-20260723-0001",
+    "status": "completed",
+    "paymentMethod": "bank",
+    "fiatCurrency": "JPY",
+    "fiatAmount": "15600",
+    "tokenId": "USDT",
+    "chainId": "TRON",
+    "quantity": "100.00",
+    "txId": "abc123def456...",
+    "walletAddress": "TX3ogswuX8pXWtHiLKNfhVUAdJuVJZQVAmk",
+    "userId": "123456",
+    "subUserId": "789012",
+    "clientSubUserId": "csub_abc123",
+    "createdAt": "1721700000000",
+    "updatedAt": "1721700720000"
+  }
+}</pre>
+
+      <h4>completed data 属性</h4>
+      <table>
+        <thead><tr><th>名称</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>orderNo</td><td>string</td><td>Paypaz 订单号</td></tr>
+          <tr><td>clientOrderNo</td><td>string</td><td>商户订单号</td></tr>
+          <tr><td>status</td><td>string</td><td>completed</td></tr>
+          <tr><td>paymentMethod</td><td>string</td><td>支付方式</td></tr>
+          <tr><td>fiatCurrency / fiatAmount</td><td>string</td><td>法币与金额</td></tr>
+          <tr><td>tokenId / chainId</td><td>string</td><td>入账资产</td></tr>
+          <tr><td>quantity</td><td>string</td><td>实际入账数量</td></tr>
+          <tr><td>txId</td><td>string</td><td>链上交易哈希</td></tr>
+          <tr><td>walletAddress</td><td>string</td><td>入账地址</td></tr>
+          <tr><td>clientSubUserId</td><td>string</td><td>客户子用户标识</td></tr>
+          <tr><td>createdAt / updatedAt</td><td>string</td><td>毫秒时间戳</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note ok">
+        若不配置回调，可通过轮询订单详情 / 分页查询获取结果。仍强烈建议配置 Webhook 以降低延迟。
+      </div>
+
+      <hr>
+
+      <h3 id="errors">错误码（草案）</h3>
+      <table>
+        <thead><tr><th>错误码</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>500106001</code></td><td>On-Ramp 订单号已存在（非幂等命中场景的冲突）</td></tr>
+          <tr><td><code>500106002</code></td><td>法币金额不合法或超出限额</td></tr>
+          <tr><td><code>500106003</code></td><td>不支持的支付方式或法币</td></tr>
+          <tr><td><code>500106004</code></td><td>KYC 未通过，无法下单/支付</td></tr>
+          <tr><td><code>500106005</code></td><td>报价已过期，请重新询价</td></tr>
+          <tr><td><code>500106006</code></td><td>子用户不存在或 clientSubUserId 无效</td></tr>
+          <tr><td><code>500106007</code></td><td>地区不可用（合规限制）</td></tr>
+          <tr><td><code>500106008</code></td><td>需要补充验证（EDD/RFI）</td></tr>
+          <tr><td><code>500106009</code></td><td>API Key 未开通 onramp 权限</td></tr>
+        </tbody>
+      </table>
+      <p>最终错误码以正式发布文档为准；通用鉴权错误码同 <a href="README.md">认证 API 文档</a>。</p>
+
+      <hr>
+
+      <h3 id="notes">注意事项</h3>
+      <ul>
+        <li>On-Ramp 与链上充值（deposit / pay-in）是不同产品：前者为法币买币，后者为链上转入。</li>
+        <li>必须以 <code>completed</code> / <code>transaction.onramp.completed</code> 作为用户到账依据，勿以「已提交汇款」或支付 SDK 的 pending 作为最终成功。</li>
+        <li>银行转账请强调：金额一致、使用本人账户、备注填写 <code>orderNo</code>。</li>
+        <li>卡 / Apple Pay / Google Pay：PCI 相关字段不得经过商户服务器，仅通过 Paypaz 提供的前端 SDK 采集。</li>
+        <li>请始终传递终端用户真实 IP（建议 Header <code>X-User-Ip</code>），否则可能触发风控拒绝。</li>
+        <li>支持的法币、支付方式、国家以接口实时返回为准，请勿写死。</li>
+        <li>费率包含在询价结果的 commission / fee 字段中，下单前请向用户清晰展示。</li>
+      </ul>
+
+      <div class="note info" style="margin-top:24px">
+        文档路径：<code>paypaz-openapi-doc/on-ramp-order.html</code><br>
+        关联内部技术方案：<code>docs/on-ramp-legend-technical-design.html</code><br>
+        目录建议同步加入 <code>SUMMARY.md</code>：<code>* [On-Ramp 法币入金](on-ramp-order.html)</code>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
