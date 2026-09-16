@@ -248,7 +248,20 @@ POST /t-api/openapi/v1/op/openapi/onramp/orders
   "network": "TRON",
   "tokenId": "USDT",
   "chainId": "TRON",
-  "returnUrl": "https://merchant.example.com/onramp/result"
+  "returnUrl": "https://merchant.example.com/onramp/result",
+  "profile": {
+    "email": "user@example.com",
+    "firstName": "Taro",
+    "lastName": "Tanaka",
+    "birthdate": "1990-04-12",
+    "countryIso2Code": "JP",
+    "state": "Tokyo",
+    "city": "Tokyo",
+    "address": "1-1 Chiyoda",
+    "zipCode": "100-0001",
+    "citizenshipIso2Codes": "JP",
+    "placeOfBirth": "JP"
+  }
 }
 ```
 
@@ -273,6 +286,7 @@ POST /t-api/openapi/v1/op/openapi/onramp/orders
 | network         | string | false | none |     | Legend 侧网络名，缺省与 `chainId` 一致        |
 | userIp          | string | false | none |     | 终端用户 IP，建议传                         |
 | returnUrl       | string | false | none |     | 支付结果页「返回商户」的跳转地址，须为 https，最长 2048 字符；支付结果通知不使用此字段 |
+| profile         | object | false | none |     | KYC 个人资料，camelCase，字段同 initiate 的 profile。可选；未先调 initiate 时也可在建单时提交，用于托管页预填 |
 
 > 返回示例
 

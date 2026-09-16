@@ -248,7 +248,20 @@ The order is always persisted regardless of KYC state: when KYC is incomplete, `
   "network": "TRON",
   "tokenId": "USDT",
   "chainId": "TRON",
-  "returnUrl": "https://merchant.example.com/onramp/result"
+  "returnUrl": "https://merchant.example.com/onramp/result",
+  "profile": {
+    "email": "user@example.com",
+    "firstName": "Taro",
+    "lastName": "Tanaka",
+    "birthdate": "1990-04-12",
+    "countryIso2Code": "JP",
+    "state": "Tokyo",
+    "city": "Tokyo",
+    "address": "1-1 Chiyoda",
+    "zipCode": "100-0001",
+    "citizenshipIso2Codes": "JP",
+    "placeOfBirth": "JP"
+  }
 }
 ```
 
@@ -273,6 +286,7 @@ The order is always persisted regardless of KYC state: when KYC is incomplete, `
 | network | string | false | none | Network name on the Legend side, defaults to the same value as `chainId` |
 | userIp | string | false | none | End-user IP, recommended |
 | returnUrl | string | false | none | Redirect URL for the "Return to merchant" action on the result page. Must be https, up to 2048 characters. Payment notifications do not use this field |
+| profile | object | false | none | KYC profile, camelCase field names, same as the initiate `profile`. Optional; can be submitted with the order if initiate was skipped, used to pre-fill the hosted page |
 
 > Response Example
 
