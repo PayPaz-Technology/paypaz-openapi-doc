@@ -142,7 +142,7 @@
     <tr><td>fiatCurrency</td><td>string</td><td>true</td><td>仅 <code>CNY</code></td><td>法币币种</td><td>区分大小写</td></tr>
     <tr><td>fiatAmount</td><td>string</td><td>true</td><td>正整数字符串</td><td>代付金额</td><td>不要小数点、千分位或前导零。闭区间见<a href="#rules"><strong>金额与校验</strong></a>，默认 <code>1000</code>–<code>100000</code></td></tr>
     <tr><td>recipient</td><td>object</td><td>true</td><td>none</td><td>收款账户</td><td>见<a href="#recipient"><strong>recipient 属性</strong></a></td></tr>
-    <tr><td>returnUrl</td><td>string</td><td>false</td><td><code>https://</code>，最长 512</td><td>返回地址</td><td>托管页「返回商户」地址。不传表示不显示该按钮。传入时必须以小写 <code>https://</code> 开头且不能含空白；传空字符串会被拒绝（<code>500105056</code>）</td></tr>
+    <tr><td>returnUrl</td><td>string</td><td>false</td><td><code>https://</code>，最长 512</td><td>返回地址</td><td>托管页「返回商户」地址。不传表示不显示该按钮。传入时必须以小写 <code>https://</code> 开头且不能含空白；传空字符串会被拒绝（<code>500105102</code>）</td></tr>
   </tbody>
 </table>
 <h4 id="kyc">kyc 属性</h4>
@@ -307,7 +307,7 @@
   </tbody>
 </table>
 <h4>错误码</h4>
-<ul><li><code>500105010</code>：API Key 未勾选 Fiat Pay-out</li><li><code>500100000</code>：参数格式不合法</li><li><code>429100000</code>：请求频率超限</li><li><code>500105055</code>–<code>500105070</code>：业务拒绝，见<a href="#error-codes"><strong>错误码</strong></a></li></ul>
+<ul><li><code>500105010</code>：API Key 未勾选 Fiat Pay-out</li><li><code>500100000</code>：参数格式不合法</li><li><code>429100000</code>：请求频率超限</li><li><code>500105101</code>–<code>500105116</code>：业务拒绝，见<a href="#error-codes"><strong>错误码</strong></a></li></ul>
 <hr>
 <h3 id="query-fiat-payout-order">2. GET 查询法币代付订单详情</h3>
 <p>按订单号或商户订单号查询单笔订单，只返回当前 API Key 所属商户的订单。</p>
@@ -322,10 +322,10 @@
 </table>
 <pre>GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?orderNo=PZPO20261113-00001
 GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B20261113000123</pre>
-<ul><li>签名时 <code>requestPath</code> 要包含查询串，并且与实际发送的 URL 完全一致；GET 没有 body，签名里的 body 为空字符串。</li><li>两个都传、两个都不传，或只传空白，返回 <code>500105056</code>，字段名为 <code>orderNo</code>。</li><li>订单不存在或属于其他商户，都返回 <code>500105069</code>，不区分这两种情况。建单被拒的请求不会生成订单，用它的 <code>merchantOrderNo</code> 查询同样返回 <code>500105069</code>。</li></ul>
+<ul><li>签名时 <code>requestPath</code> 要包含查询串，并且与实际发送的 URL 完全一致；GET 没有 body，签名里的 body 为空字符串。</li><li>两个都传、两个都不传，或只传空白，返回 <code>500105102</code>，字段名为 <code>orderNo</code>。</li><li>订单不存在或属于其他商户，都返回 <code>500105115</code>，不区分这两种情况。建单被拒的请求不会生成订单，用它的 <code>merchantOrderNo</code> 查询同样返回 <code>500105115</code>。</li></ul>
 <p>成功时 <code>data</code> 是<a href="#fiat-payout-order-vo"><strong>订单快照</strong></a>，包含当前 <code>hostedUrl</code>、付款记录和申诉记录。</p>
 <h4>错误码</h4>
-<ul><li><code>500105056</code>：单号不是二选一</li><li><code>500105069</code>：订单不存在或无权访问</li><li><code>500105010</code>：API Key 未勾选 Fiat Pay-out</li></ul>
+<ul><li><code>500105102</code>：单号不是二选一</li><li><code>500105115</code>：订单不存在或无权访问</li><li><code>500105010</code>：API Key 未勾选 Fiat Pay-out</li></ul>
 <hr>
 <h3 id="query-fiat-payout-order-list">3. POST 查询法币代付订单列表</h3>
 <p>分页查询当前商户的代付订单。请求体可以省略，或传 <code>{}</code>。关闭代付配置不影响历史订单查询。结果按 <code>createdAt</code> 倒序，同一时间再按 <code>orderNo</code> 倒序。</p>
@@ -349,7 +349,7 @@ GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B2026111300
     <tr><td>status</td><td>array[string]</td><td>false</td><td>见订单状态</td><td>状态</td><td>可多选，区分大小写。不传表示不限状态</td></tr>
   </tbody>
 </table>
-<ul><li>时间筛选按毫秒比较，而快照中的时间只到秒，按秒边界拼接查询区间时请注意。</li><li>页码超出最后一页时，<code>items</code> 为空数组，<code>total</code> 不变。</li><li>页码、每页条数、时间或状态不合法时返回 <code>500105056</code>，原因见<a href="#invalid-reasons"><strong>500105056 的原因</strong></a>。</li></ul>
+<ul><li>时间筛选按毫秒比较，而快照中的时间只到秒，按秒边界拼接查询区间时请注意。</li><li>页码超出最后一页时，<code>items</code> 为空数组，<code>total</code> 不变。</li><li>页码、每页条数、时间或状态不合法时返回 <code>500105102</code>，原因见<a href="#invalid-reasons"><strong>500105102 的原因</strong></a>。</li></ul>
 <p class="lead">返回示例</p>
 <p class="lead">200 Response</p>
 <pre>{
@@ -379,13 +379,13 @@ GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B2026111300
   <thead><tr><th>再次提交</th><th>结果</th></tr></thead>
   <tbody>
     <tr><td>参数与首次一致，且首次已建单</td><td><code>code = 200</code>，返回该订单的当前快照。状态可能已经离开 <code>pending_accept</code>，不会再建一笔，也不会再次冻结</td></tr>
-    <tr><td>参数与首次一致，且首次被业务拒绝（<code>500105055</code>–<code>500105063</code>）</td><td>返回与首次相同的错误码。<code>msg</code> 按本次请求的语言重新生成；<code>500105058</code> 的 <code>data</code> 取当前配置的区间。要重新下单，换一个新的 <code>merchantOrderNo</code></td></tr>
-    <tr><td>同一个 <code>merchantOrderNo</code>，参数与首次不一致</td><td><code>500105064</code></td></tr>
-    <tr><td>另一个使用同一 <code>merchantOrderNo</code> 的请求正在处理</td><td>等待 3 秒仍未处理完时返回 <code>500105065</code>，与参数是否相同无关。稍后用原请求再提交一次</td></tr>
-    <tr><td>结果未能确认</td><td><code>500105070</code>。用原请求原样重试；如果订单其实已经建成，重试会拿到该订单快照</td></tr>
+    <tr><td>参数与首次一致，且首次被业务拒绝（<code>500105101</code>–<code>500105109</code>）</td><td>返回与首次相同的错误码。<code>msg</code> 按本次请求的语言重新生成；<code>500105104</code> 的 <code>data</code> 取当前配置的区间。要重新下单，换一个新的 <code>merchantOrderNo</code></td></tr>
+    <tr><td>同一个 <code>merchantOrderNo</code>，参数与首次不一致</td><td><code>500105110</code></td></tr>
+    <tr><td>另一个使用同一 <code>merchantOrderNo</code> 的请求正在处理</td><td>等待 3 秒仍未处理完时返回 <code>500105111</code>，与参数是否相同无关。稍后用原请求再提交一次</td></tr>
+    <tr><td>结果未能确认</td><td><code>500105116</code>。用原请求原样重试；如果订单其实已经建成，重试会拿到该订单快照</td></tr>
   </tbody>
 </table>
-<ul><li>重放检查在业务校验之前。不传 <code>returnUrl</code> 与传空字符串的比对结果相同：首次没传 <code>returnUrl</code> 且建单成功后，再用 <code>""</code> 重放会返回 <code>200</code>，而不是 <code>500105056</code>。</li><li>建单被拒不会生成订单，查询接口查不到被拒的请求。</li></ul>
+<ul><li>重放检查在业务校验之前。不传 <code>returnUrl</code> 与传空字符串的比对结果相同：首次没传 <code>returnUrl</code> 且建单成功后，再用 <code>""</code> 重放会返回 <code>200</code>，而不是 <code>500105102</code>。</li><li>建单被拒不会生成订单，查询接口查不到被拒的请求。</li></ul>
 <hr>
 <h3 id="webhook">5. Webhook</h3>
 <p>在商户后台「开发者 › Webhooks」配置回调地址并订阅事件，与其他业务共用同一套签名和重试规则，见 <a href="WEBHOOK_GUIDE.md"><strong>webhook说明</strong></a>。每个启用的回调地址各推一次；回调地址设置了事件订阅时，只推送订阅的事件。</p>
@@ -477,7 +477,7 @@ GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B2026111300
 </table>
 <hr>
 <h3 id="banks">银行代码</h3>
-<p><code>recipient.bankCode</code> 取下表代码。不在表内返回 <code>500105060</code>；在表内但当前没有支持该银行的代付通道，返回 <code>500105061</code>。</p>
+<p><code>recipient.bankCode</code> 取下表代码。不在表内返回 <code>500105106</code>；在表内但当前没有支持该银行的代付通道，返回 <code>500105107</code>。</p>
 <table>
   <thead><tr><th>代码</th><th>银行</th><th>代码</th><th>银行</th></tr></thead>
   <tbody>
@@ -516,35 +516,35 @@ GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B2026111300
     <tr><td><code>500100000</code></td><td>缺字段、长度、枚举、卡号、URL 格式不对，或金额不是正整数字符串。<code>msg</code> 是英文字段说明，多个字段用英文逗号加空格拼接</td><td>见说明</td><td>见说明</td></tr>
   </tbody>
 </table>
-<p><code>500100000</code> 还有两种随语言切换的文案：请求体不是合法 JSON 或字段类型不对时为「参数类型错误」/ <code>parameter type error</code>；未知运行时异常时为「系统异常」/ <code>System error</code>。创建接口遇到「系统异常」时结果未知，请按 <code>500105070</code> 处理。</p>
+<p><code>500100000</code> 还有两种随语言切换的文案：请求体不是合法 JSON 或字段类型不对时为「参数类型错误」/ <code>parameter type error</code>；未知运行时异常时为「系统异常」/ <code>System error</code>。创建接口遇到「系统异常」时结果未知，请按 <code>500105116</code> 处理。</p>
 <h4>业务拒绝</h4>
 <table>
   <thead><tr><th>code</th><th>何时返回</th><th>中文 msg</th><th>English msg</th></tr></thead>
   <tbody>
-    <tr><td><code>500105055</code></td><td>该商户未开通法币代付</td><td>法币代付服务未开通，请联系客服。</td><td>Fiat pay-out is not enabled. Please contact customer support.</td></tr>
-    <tr><td><code>500105056</code></td><td>证件号格式不符，或传入了空的 <code>returnUrl</code>。查询时单号不是二选一、页码或时间非法、状态无法识别，也返回这个码。<code>{0}</code>、<code>{1}</code> 替换为字段名和原因</td><td>参数 {0} 不合法：{1}</td><td>Invalid parameter {0}: {1}</td></tr>
-    <tr><td><code>500105057</code></td><td>收款账户名与 KYC 姓名不一致，或姓名规范化后为空</td><td>收款账户名须与收款人 KYC 姓名一致</td><td>The recipient account name must match the KYC name of the recipient.</td></tr>
-    <tr><td><code>500105058</code></td><td>金额是整数，但不在平台区间内</td><td>代付金额需为 {0} - {1} CNY 之间的整数</td><td>The pay-out amount must be a whole number between {0} and {1} CNY.</td></tr>
-    <tr><td><code>500105059</code></td><td>同一证件在任意商户下已有进行中的代付</td><td>该客户有一笔代付订单正在处理中，请完成后再发起。</td><td>This customer already has a pay-out order in progress. Please try again after it is completed.</td></tr>
-    <tr><td><code>500105060</code></td><td><code>bankCode</code> 不在<a href="#banks"><strong>银行代码</strong></a>表内</td><td>不支持的收款银行</td><td>The recipient bank is not supported.</td></tr>
-    <tr><td><code>500105061</code></td><td>当前没有可接这笔金额和银行的代付通道，包括通道不在服务时间、或距服务结束不足 60 分钟</td><td>当前没有可用的代付通道，请稍后再试。</td><td>No pay-out channel is available right now. Please try again later.</td></tr>
-    <tr><td><code>500105062</code></td><td>通道本时段额度不足</td><td>代付通道额度不足，请稍后再试。</td><td>The pay-out channel limit has been reached. Please try again later.</td></tr>
-    <tr><td><code>500105063</code></td><td>商户 USDT 可用余额不够冻结 <code>X + F</code>，或商户还没有 USDT 账户或余额记录</td><td>账户可用余额不足</td><td>Insufficient available balance.</td></tr>
-    <tr><td><code>500105064</code></td><td>同一 <code>merchantOrderNo</code> 的参数与首次不一致</td><td>同一请求标识的参数与首次请求不一致</td><td>The request parameters do not match the first request with the same identifier.</td></tr>
-    <tr><td><code>500105065</code></td><td>另一个使用同一 <code>merchantOrderNo</code> 的请求正在处理</td><td>请求处理中，请稍后查询</td><td>The request is being processed. Please query the result later.</td></tr>
-    <tr><td><code>500105069</code></td><td>查询的订单不存在，或不属于当前商户</td><td>无权访问该资源</td><td>You do not have access to this resource.</td></tr>
-    <tr><td><code>500105070</code></td><td>建单结果未能确认：内部调用超时或失败、系统繁忙（通道锁 3 秒内未拿到）、当日订单号用尽或其他未知异常。订单可能已经建成</td><td>处理结果未知，请使用原请求标识重试或查询</td><td>The result is unknown. Please retry with the original request identifier or query the order.</td></tr>
+    <tr><td><code>500105101</code></td><td>该商户未开通法币代付</td><td>法币代付服务未开通，请联系客服。</td><td>Fiat pay-out is not enabled. Please contact customer support.</td></tr>
+    <tr><td><code>500105102</code></td><td>证件号格式不符，或传入了空的 <code>returnUrl</code>。查询时单号不是二选一、页码或时间非法、状态无法识别，也返回这个码。<code>{0}</code>、<code>{1}</code> 替换为字段名和原因</td><td>参数 {0} 不合法：{1}</td><td>Invalid parameter {0}: {1}</td></tr>
+    <tr><td><code>500105103</code></td><td>收款账户名与 KYC 姓名不一致，或姓名规范化后为空</td><td>收款账户名须与收款人 KYC 姓名一致</td><td>The recipient account name must match the KYC name of the recipient.</td></tr>
+    <tr><td><code>500105104</code></td><td>金额是整数，但不在平台区间内</td><td>代付金额需为 {0} - {1} CNY 之间的整数</td><td>The pay-out amount must be a whole number between {0} and {1} CNY.</td></tr>
+    <tr><td><code>500105105</code></td><td>同一证件在任意商户下已有进行中的代付</td><td>该客户有一笔代付订单正在处理中，请完成后再发起。</td><td>This customer already has a pay-out order in progress. Please try again after it is completed.</td></tr>
+    <tr><td><code>500105106</code></td><td><code>bankCode</code> 不在<a href="#banks"><strong>银行代码</strong></a>表内</td><td>不支持的收款银行</td><td>The recipient bank is not supported.</td></tr>
+    <tr><td><code>500105107</code></td><td>当前没有可接这笔金额和银行的代付通道，包括通道不在服务时间、或距服务结束不足 60 分钟</td><td>当前没有可用的代付通道，请稍后再试。</td><td>No pay-out channel is available right now. Please try again later.</td></tr>
+    <tr><td><code>500105108</code></td><td>通道本时段额度不足</td><td>代付通道额度不足，请稍后再试。</td><td>The pay-out channel limit has been reached. Please try again later.</td></tr>
+    <tr><td><code>500105109</code></td><td>商户 USDT 可用余额不够冻结 <code>X + F</code>，或商户还没有 USDT 账户或余额记录</td><td>账户可用余额不足</td><td>Insufficient available balance.</td></tr>
+    <tr><td><code>500105110</code></td><td>同一 <code>merchantOrderNo</code> 的参数与首次不一致</td><td>同一请求标识的参数与首次请求不一致</td><td>The request parameters do not match the first request with the same identifier.</td></tr>
+    <tr><td><code>500105111</code></td><td>另一个使用同一 <code>merchantOrderNo</code> 的请求正在处理</td><td>请求处理中，请稍后查询</td><td>The request is being processed. Please query the result later.</td></tr>
+    <tr><td><code>500105115</code></td><td>查询的订单不存在，或不属于当前商户</td><td>无权访问该资源</td><td>You do not have access to this resource.</td></tr>
+    <tr><td><code>500105116</code></td><td>建单结果未能确认：内部调用超时或失败、系统繁忙（通道锁 3 秒内未拿到）、当日订单号用尽或其他未知异常。订单可能已经建成</td><td>处理结果未知，请使用原请求标识重试或查询</td><td>The result is unknown. Please retry with the original request identifier or query the order.</td></tr>
   </tbody>
 </table>
-<p><code>500105070</code> 的英文文案有两种写法，另一种是 <code>The result is unknown. Retry with the same request id, or query the order.</code>，请按错误码处理。</p>
-<p><code>500105058</code> 的 <code>data</code> 带当前平台区间，金额为整数字符串：</p>
+<p><code>500105116</code> 的英文文案有两种写法，另一种是 <code>The result is unknown. Retry with the same request id, or query the order.</code>，请按错误码处理。</p>
+<p><code>500105104</code> 的 <code>data</code> 带当前平台区间，金额为整数字符串：</p>
 <pre>{
-  "code": 500105058,
+  "code": 500105104,
   "msg": "代付金额需为 1000 - 100000 CNY 之间的整数",
   "data": { "minAmount": "1000", "maxAmount": "100000" }
 }</pre>
-<p><code>500105055</code> 至 <code>500105063</code> 会按首次结果固定下来。同一 <code>merchantOrderNo</code> 再次提交，即使余额或通道后来恢复，仍然返回第一次的错误码。换新的商户订单号才会重新校验。</p>
-<h4 id="invalid-reasons">500105056 的原因</h4>
+<p><code>500105101</code> 至 <code>500105109</code> 会按首次结果固定下来。同一 <code>merchantOrderNo</code> 再次提交，即使余额或通道后来恢复，仍然返回第一次的错误码。换新的商户订单号才会重新校验。</p>
+<h4 id="invalid-reasons">500105102 的原因</h4>
 <table>
   <thead><tr><th>接口</th><th>字段</th><th>原因 <code>{1}</code></th></tr></thead>
   <tbody>
@@ -562,7 +562,7 @@ GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B2026111300
 <p>创建接口的原因是英文，查询接口的原因是中文，都不随 <code>Accept-Language</code> 切换，只有外层模板「参数 … 不合法」/ <code>Invalid parameter …</code> 随语言变化。</p>
 <hr>
 <h3 id="rules">金额与校验</h3>
-<ul><li><strong>金额区间</strong>：平台配置的闭区间，默认 1000–100000 CNY，以 <code>500105058</code> 响应里的 <code>minAmount</code>、<code>maxAmount</code> 为准。</li><li><strong>结算口径</strong>：汇率和手续费在下单时锁定，写在成功响应里。商户展示给用户的页面不要另算一版汇率。<ul><li>商户结算汇率 Rm = 收款服务商汇率 Rc × (1 − 价差)，保留 4 位小数，向下截断。</li><li>付款金额 X = 代付金额 ÷ Rm，向上取整到分。</li><li>手续费 F：固定金额时为配置的 USDT 值；按比例时为 X × 费率，向上取整到分。</li><li>冻结金额 = X + F。</li></ul></li><li><strong>示例</strong>：100,000 CNY，Rc 7.2000，价差 1%，手续费 0.1% → Rm <code>7.1280</code>，X <code>14029.19</code>，F <code>14.03</code>，冻结 <code>14043.22</code>。</li><li><strong>冻结拆分</strong>：<ul><li>先从 TRON 网络的可用余额中划，不够时按其余网络可用余额从大到小依次划，余额相同按网络标识排序。</li><li>参与计算的余额先截断到 2 位小数。</li><li>合计不足时返回 <code>500105063</code>，不建单、不部分冻结。</li></ul></li><li><strong>跨商户判重</strong>：同一证件类型 + 规范化证件号，在任意商户下只要有一笔未终态的代付（待接单、待付款、待确认到账、申诉中），就不能再下一笔，返回 <code>500105059</code>。</li><li><strong>区分大小写</strong>：<code>bankCode</code>、<code>fiatCurrency</code>、<code>idType</code> 和列表的 <code>status</code> 都区分大小写，<code>returnUrl</code> 须以小写 <code>https://</code> 开头。</li><li><strong>校验顺序</strong>：<ul><li>签名 → IP 白名单 → scope → 字段格式（<code>500100000</code>）→ 限频（<code>429100000</code>）→ 幂等重放。</li><li>业务校验依次为：<code>500105055</code> → 空的 <code>returnUrl</code>（<code>500105056</code>）→ 证件号（<code>500105056</code>）→ <code>500105057</code> → <code>500105060</code> → <code>500105058</code> → <code>500105059</code> → <code>500105061</code> / <code>500105062</code> → <code>500105063</code>。</li></ul></li><li><strong>托管页</strong>：<ul><li>地址加 <code>lang=en</code> 显示英文，<code>lang=zh</code> 显示中文；不带时沿用收款用户上次在页面上的选择，默认中文。</li><li>页面每 5 秒刷新一次。</li><li>待接单与待付款都显示为「待付款」；已拒绝显示为失败（未接单）；收款用户确认到账后显示「待商户确认」。</li><li>倒计时跟随当前阶段的截止时间。</li><li>收款用户只能反馈一次问题。</li><li>传了 <code>returnUrl</code> 时，所有状态下都显示「返回商户」按钮。</li></ul></li></ul>
+<ul><li><strong>金额区间</strong>：平台配置的闭区间，默认 1000–100000 CNY，以 <code>500105104</code> 响应里的 <code>minAmount</code>、<code>maxAmount</code> 为准。</li><li><strong>结算口径</strong>：汇率和手续费在下单时锁定，写在成功响应里。商户展示给用户的页面不要另算一版汇率。<ul><li>商户结算汇率 Rm = 收款服务商汇率 Rc × (1 − 价差)，保留 4 位小数，向下截断。</li><li>付款金额 X = 代付金额 ÷ Rm，向上取整到分。</li><li>手续费 F：固定金额时为配置的 USDT 值；按比例时为 X × 费率，向上取整到分。</li><li>冻结金额 = X + F。</li></ul></li><li><strong>示例</strong>：100,000 CNY，Rc 7.2000，价差 1%，手续费 0.1% → Rm <code>7.1280</code>，X <code>14029.19</code>，F <code>14.03</code>，冻结 <code>14043.22</code>。</li><li><strong>冻结拆分</strong>：<ul><li>先从 TRON 网络的可用余额中划，不够时按其余网络可用余额从大到小依次划，余额相同按网络标识排序。</li><li>参与计算的余额先截断到 2 位小数。</li><li>合计不足时返回 <code>500105109</code>，不建单、不部分冻结。</li></ul></li><li><strong>跨商户判重</strong>：同一证件类型 + 规范化证件号，在任意商户下只要有一笔未终态的代付（待接单、待付款、待确认到账、申诉中），就不能再下一笔，返回 <code>500105105</code>。</li><li><strong>区分大小写</strong>：<code>bankCode</code>、<code>fiatCurrency</code>、<code>idType</code> 和列表的 <code>status</code> 都区分大小写，<code>returnUrl</code> 须以小写 <code>https://</code> 开头。</li><li><strong>校验顺序</strong>：<ul><li>签名 → IP 白名单 → scope → 字段格式（<code>500100000</code>）→ 限频（<code>429100000</code>）→ 幂等重放。</li><li>业务校验依次为：<code>500105101</code> → 空的 <code>returnUrl</code>（<code>500105102</code>）→ 证件号（<code>500105102</code>）→ <code>500105103</code> → <code>500105106</code> → <code>500105104</code> → <code>500105105</code> → <code>500105107</code> / <code>500105108</code> → <code>500105109</code>。</li></ul></li><li><strong>托管页</strong>：<ul><li>地址加 <code>lang=en</code> 显示英文，<code>lang=zh</code> 显示中文；不带时沿用收款用户上次在页面上的选择，默认中文。</li><li>页面每 5 秒刷新一次。</li><li>待接单与待付款都显示为「待付款」；已拒绝显示为失败（未接单）；收款用户确认到账后显示「待商户确认」。</li><li>倒计时跟随当前阶段的截止时间。</li><li>收款用户只能反馈一次问题。</li><li>传了 <code>returnUrl</code> 时，所有状态下都显示「返回商户」按钮。</li></ul></li></ul>
 
 </main>
 </div>

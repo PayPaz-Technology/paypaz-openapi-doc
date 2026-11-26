@@ -272,19 +272,19 @@ When request processing fails, `code` contains a specific error code and `msg` c
 | 500105052 | Fiat pay-in: invalid deposit amount |
 | 500105053 | Fiat pay-in: service is not available |
 | 500105054 | Fiat pay-in: order not found |
-| 500105055 | Fiat pay-out: not enabled |
-| 500105056 | Fiat pay-out: invalid parameter |
-| 500105057 | Fiat pay-out: the recipient account name must match the KYC name |
-| 500105058 | Fiat pay-out: amount out of range |
-| 500105059 | Fiat pay-out: this customer already has a pay-out order in progress |
-| 500105060 | Fiat pay-out: the recipient bank is not supported |
-| 500105061 | Fiat pay-out: no pay-out channel is available |
-| 500105062 | Fiat pay-out: the pay-out channel limit has been reached |
-| 500105063 | Fiat pay-out: insufficient available balance |
-| 500105064 | Fiat pay-out: parameters do not match the first request with the same identifier |
-| 500105065 | Fiat pay-out: the request is being processed |
-| 500105069 | Fiat pay-out: no access to this resource |
-| 500105070 | Fiat pay-out: the result is unknown |
+| 500105101 | Fiat pay-out: not enabled |
+| 500105102 | Fiat pay-out: invalid parameter |
+| 500105103 | Fiat pay-out: the recipient account name must match the KYC name |
+| 500105104 | Fiat pay-out: amount out of range |
+| 500105105 | Fiat pay-out: this customer already has a pay-out order in progress |
+| 500105106 | Fiat pay-out: the recipient bank is not supported |
+| 500105107 | Fiat pay-out: no pay-out channel is available |
+| 500105108 | Fiat pay-out: the pay-out channel limit has been reached |
+| 500105109 | Fiat pay-out: insufficient available balance |
+| 500105110 | Fiat pay-out: parameters do not match the first request with the same identifier |
+| 500105111 | Fiat pay-out: the request is being processed |
+| 500105115 | Fiat pay-out: no access to this resource |
+| 500105116 | Fiat pay-out: the result is unknown |
 
 For trigger conditions and the exact Chinese and English messages of the fiat pay-in and pay-out codes, see [Fiat Pay-in API](fiat-payin.md#error-codes) and [Fiat Pay-out API](fiat-payout.md#error-codes).
 

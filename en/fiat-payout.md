@@ -98,7 +98,7 @@ POST /t-api/openapi/v1/op/openapi/createFiatPayOutOrder
 | fiatCurrency | string | true | `CNY` only | Case-sensitive |
 | fiatAmount | string | true | Positive whole-number string | No decimal point, thousands separators or leading zeros. Inclusive range in [**Amounts and Validation**](#rules), `1000`–`100000` by default |
 | recipient | object | true | none | Recipient account, see [**recipient Properties**](#recipient) |
-| returnUrl | string | false | `https://`, up to 512 | "Return to merchant" URL on the hosted page. Omit it to hide the button. When passed it must start with lowercase `https://` and contain no whitespace; an empty string is rejected (`500105056`) |
+| returnUrl | string | false | `https://`, up to 512 | "Return to merchant" URL on the hosted page. Omit it to hide the button. When passed it must start with lowercase `https://` and contain no whitespace; an empty string is rejected (`500105102`) |
 
 #### kyc Properties {#kyc}
 
@@ -270,7 +270,7 @@ The response contains no partner rate, markup, spread or partner details.
 - `500105010`: the API key does not have Fiat Pay-out
 - `500100000`: invalid parameter format
 - `429100000`: rate limit exceeded
-- `500105055`–`500105070`: business rejections, see [**Error codes**](#error-codes)
+- `500105101`–`500105116`: business rejections, see [**Error codes**](#error-codes)
 
 ---
 
@@ -293,15 +293,15 @@ GET /t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo?merchantOrderNo=B2026111300
 ```
 
 - The signed `requestPath` must include the query string exactly as sent; a GET has no body, so the body part of the signature is an empty string.
-- Passing both, neither, or only blanks returns `500105056` with field `orderNo`.
-- An order that does not exist and an order of another merchant both return `500105069`; the two cases are not distinguished. A rejected creation creates no order, so querying its `merchantOrderNo` also returns `500105069`.
+- Passing both, neither, or only blanks returns `500105102` with field `orderNo`.
+- An order that does not exist and an order of another merchant both return `500105115`; the two cases are not distinguished. A rejected creation creates no order, so querying its `merchantOrderNo` also returns `500105115`.
 
 On success `data` is the [**order snapshot**](#fiat-payout-order-vo), including the current `hostedUrl`, payments and appeal records.
 
 #### Error Codes
 
-- `500105056`: not exactly one order number
-- `500105069`: order not found or not accessible
+- `500105102`: not exactly one order number
+- `500105115`: order not found or not accessible
 - `500105010`: the API key does not have Fiat Pay-out
 
 ---
@@ -336,7 +336,7 @@ POST /t-api/openapi/v1/op/openapi/fiatPayOutOrders
 
 - Time filters compare at millisecond precision while snapshot times are shown to the second; keep this in mind when building ranges from second boundaries.
 - A page beyond the last one returns an empty `items` array with the same `total`.
-- An invalid page, page size, time or status returns `500105056`; see [**Reasons for 500105056**](#invalid-reasons).
+- An invalid page, page size, time or status returns `500105102`; see [**Reasons for 500105102**](#invalid-reasons).
 
 > Response Example
 
@@ -373,12 +373,12 @@ The idempotency key is "this merchant + `merchantOrderNo`". The compared content
 | Submitted again | Result |
 | --------------------------------------- | ------------------------------------------------------------------------------------------ |
 | Same parameters, first attempt created an order | `code = 200` with the order's current snapshot. The status may have moved past `pending_accept`; no second order is created and nothing is frozen again |
-| Same parameters, first attempt was rejected (`500105055`–`500105063`) | The same error code as the first time. `msg` is rendered in this request's language, and `data` of `500105058` reflects the currently configured range. To order again, use a new `merchantOrderNo` |
-| Same `merchantOrderNo`, different parameters | `500105064` |
-| Another request with the same `merchantOrderNo` is in progress | `500105065` if it is still running after 3 seconds, regardless of whether the parameters match. Resubmit the original request later |
-| Result could not be confirmed | `500105070`. Retry the original request unchanged; if the order was in fact created, the retry returns its snapshot |
+| Same parameters, first attempt was rejected (`500105101`–`500105109`) | The same error code as the first time. `msg` is rendered in this request's language, and `data` of `500105104` reflects the currently configured range. To order again, use a new `merchantOrderNo` |
+| Same `merchantOrderNo`, different parameters | `500105110` |
+| Another request with the same `merchantOrderNo` is in progress | `500105111` if it is still running after 3 seconds, regardless of whether the parameters match. Resubmit the original request later |
+| Result could not be confirmed | `500105116`. Retry the original request unchanged; if the order was in fact created, the retry returns its snapshot |
 
-- The replay check runs before the business checks. Omitting `returnUrl` and sending an empty string compare as equal: after a successful creation without `returnUrl`, a replay with `""` returns `200` rather than `500105056`.
+- The replay check runs before the business checks. Omitting `returnUrl` and sending an empty string compare as equal: after a successful creation without `returnUrl`, a replay with `""` returns `200` rather than `500105102`.
 - A rejected creation creates no order, so the query APIs cannot find it.
 
 ---
@@ -483,7 +483,7 @@ The body is `{ "eventType": "...", "data": { } }`. Fields without a value are om
 
 ### Bank Codes {#banks}
 
-Use a code from the table below for `recipient.bankCode`. A code not in the table returns `500105060`; a code in the table with no pay-out channel currently supporting that bank returns `500105061`.
+Use a code from the table below for `recipient.bankCode`. A code not in the table returns `500105106`; a code in the table with no pay-out channel currently supporting that bank returns `500105107`.
 
 | Code | Bank | Code | Bank |
 | ------- | -------- | ------ | -------- |
@@ -524,41 +524,41 @@ All three APIs check these before any business logic, in this order: missing sig
 | `405100000` | Wrong HTTP method, e.g. GET on a POST API. `msg` is always English | `Request method 'GET' is not supported` | `Request method 'GET' is not supported` |
 | `500100000` | Missing fields and wrong lengths, enums, card numbers, URL formats, or an amount that is not a positive whole-number string. `msg` is an English field description; several fields are joined with a comma and a space | See meaning | See meaning |
 
-`500100000` has two more messages that follow the language: 「参数类型错误」/ `parameter type error` when the body is not valid JSON or a field has the wrong type, and 「系统异常」/ `System error` for an unexpected runtime error. When the create API returns 「系统异常」/ `System error`, the result is unknown; handle it like `500105070`.
+`500100000` has two more messages that follow the language: 「参数类型错误」/ `parameter type error` when the body is not valid JSON or a field has the wrong type, and 「系统异常」/ `System error` for an unexpected runtime error. When the create API returns 「系统异常」/ `System error`, the result is unknown; handle it like `500105116`.
 
 #### Business Rejections
 
 | code | When | Chinese msg | English msg |
 | ----------- | -------------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `500105055` | The merchant does not have fiat pay-out enabled | 法币代付服务未开通，请联系客服。 | Fiat pay-out is not enabled. Please contact customer support. |
-| `500105056` | ID number format mismatch, or an empty `returnUrl`. Also returned by the queries when the order number is not exactly one of two, the page or time is invalid, or a status is not recognized. `{0}` and `{1}` are replaced by the field name and the reason | 参数 {0} 不合法：{1} | Invalid parameter {0}: {1} |
-| `500105057` | The recipient account name does not match the KYC name, or the name is empty after normalization | 收款账户名须与收款人 KYC 姓名一致 | The recipient account name must match the KYC name of the recipient. |
-| `500105058` | The amount is a whole number but outside the platform range | 代付金额需为 {0} - {1} CNY 之间的整数 | The pay-out amount must be a whole number between {0} and {1} CNY. |
-| `500105059` | The same ID already has a pay-out in progress with any merchant | 该客户有一笔代付订单正在处理中，请完成后再发起。 | This customer already has a pay-out order in progress. Please try again after it is completed. |
-| `500105060` | `bankCode` is not in [**Bank codes**](#banks) | 不支持的收款银行 | The recipient bank is not supported. |
-| `500105061` | No pay-out channel can take this amount and bank right now, including channels outside their service window or less than 60 minutes before it ends | 当前没有可用的代付通道，请稍后再试。 | No pay-out channel is available right now. Please try again later. |
-| `500105062` | The channel's quota for the current window is used up | 代付通道额度不足，请稍后再试。 | The pay-out channel limit has been reached. Please try again later. |
-| `500105063` | The merchant's available USDT cannot cover `X + F`, or the merchant has no USDT account or balance record yet | 账户可用余额不足 | Insufficient available balance. |
-| `500105064` | The parameters differ from the first request with the same `merchantOrderNo` | 同一请求标识的参数与首次请求不一致 | The request parameters do not match the first request with the same identifier. |
-| `500105065` | Another request with the same `merchantOrderNo` is in progress | 请求处理中，请稍后查询 | The request is being processed. Please query the result later. |
-| `500105069` | The queried order does not exist or belongs to another merchant | 无权访问该资源 | You do not have access to this resource. |
-| `500105070` | The creation result could not be confirmed: an internal call timed out or failed, the system is busy (the channel lock was not obtained within 3 seconds), the daily order numbers ran out, or another unexpected error occurred. The order may have been created | 处理结果未知，请使用原请求标识重试或查询 | The result is unknown. Please retry with the original request identifier or query the order. |
+| `500105101` | The merchant does not have fiat pay-out enabled | 法币代付服务未开通，请联系客服。 | Fiat pay-out is not enabled. Please contact customer support. |
+| `500105102` | ID number format mismatch, or an empty `returnUrl`. Also returned by the queries when the order number is not exactly one of two, the page or time is invalid, or a status is not recognized. `{0}` and `{1}` are replaced by the field name and the reason | 参数 {0} 不合法：{1} | Invalid parameter {0}: {1} |
+| `500105103` | The recipient account name does not match the KYC name, or the name is empty after normalization | 收款账户名须与收款人 KYC 姓名一致 | The recipient account name must match the KYC name of the recipient. |
+| `500105104` | The amount is a whole number but outside the platform range | 代付金额需为 {0} - {1} CNY 之间的整数 | The pay-out amount must be a whole number between {0} and {1} CNY. |
+| `500105105` | The same ID already has a pay-out in progress with any merchant | 该客户有一笔代付订单正在处理中，请完成后再发起。 | This customer already has a pay-out order in progress. Please try again after it is completed. |
+| `500105106` | `bankCode` is not in [**Bank codes**](#banks) | 不支持的收款银行 | The recipient bank is not supported. |
+| `500105107` | No pay-out channel can take this amount and bank right now, including channels outside their service window or less than 60 minutes before it ends | 当前没有可用的代付通道，请稍后再试。 | No pay-out channel is available right now. Please try again later. |
+| `500105108` | The channel's quota for the current window is used up | 代付通道额度不足，请稍后再试。 | The pay-out channel limit has been reached. Please try again later. |
+| `500105109` | The merchant's available USDT cannot cover `X + F`, or the merchant has no USDT account or balance record yet | 账户可用余额不足 | Insufficient available balance. |
+| `500105110` | The parameters differ from the first request with the same `merchantOrderNo` | 同一请求标识的参数与首次请求不一致 | The request parameters do not match the first request with the same identifier. |
+| `500105111` | Another request with the same `merchantOrderNo` is in progress | 请求处理中，请稍后查询 | The request is being processed. Please query the result later. |
+| `500105115` | The queried order does not exist or belongs to another merchant | 无权访问该资源 | You do not have access to this resource. |
+| `500105116` | The creation result could not be confirmed: an internal call timed out or failed, the system is busy (the channel lock was not obtained within 3 seconds), the daily order numbers ran out, or another unexpected error occurred. The order may have been created | 处理结果未知，请使用原请求标识重试或查询 | The result is unknown. Please retry with the original request identifier or query the order. |
 
-`500105070` has a second English wording, `The result is unknown. Retry with the same request id, or query the order.`; handle it by code.
+`500105116` has a second English wording, `The result is unknown. Retry with the same request id, or query the order.`; handle it by code.
 
-`data` of `500105058` carries the current platform range as whole-number strings:
+`data` of `500105104` carries the current platform range as whole-number strings:
 
 ```json
 {
-  "code": 500105058,
+  "code": 500105104,
   "msg": "The pay-out amount must be a whole number between 1000 and 100000 CNY.",
   "data": { "minAmount": "1000", "maxAmount": "100000" }
 }
 ```
 
-`500105055` to `500105063` are fixed by the first result. Submitting the same `merchantOrderNo` again returns the first error code even if the balance or channel has recovered since. Only a new merchant order number is validated again.
+`500105101` to `500105109` are fixed by the first result. Submitting the same `merchantOrderNo` again returns the first error code even if the balance or channel has recovered since. Only a new merchant order number is validated again.
 
-#### Reasons for 500105056 {#invalid-reasons}
+#### Reasons for 500105102 {#invalid-reasons}
 
 | API | Field | Reason `{1}` |
 | -- | ------------- | ------------------------------------------------ |
@@ -578,7 +578,7 @@ The create reasons are English and the query reasons are Chinese, and neither fo
 
 ### Amounts and Validation {#rules}
 
-- **Amount range**: an inclusive range configured by the platform, 1000–100000 CNY by default. `minAmount` and `maxAmount` in a `500105058` response are authoritative.
+- **Amount range**: an inclusive range configured by the platform, 1000–100000 CNY by default. `minAmount` and `maxAmount` in a `500105104` response are authoritative.
 - **Settlement**: the rate and fee are locked at creation and shown in the successful response. Do not compute a different rate on the page you show to users.
   - Merchant settlement rate Rm = partner rate Rc × (1 − spread), 4 decimals, truncated.
   - Payment amount X = pay-out amount ÷ Rm, rounded up to the cent.
@@ -588,12 +588,12 @@ The create reasons are English and the query reasons are Chinese, and neither fo
 - **Freeze split**:
   - Funds are taken from the TRON network's available balance first, then from the other networks in descending order of available balance, ties broken by network identifier.
   - Balances are truncated to 2 decimals before the calculation.
-  - If the total is not enough, `500105063` is returned; no order is created and nothing is partially frozen.
-- **Cross-merchant duplicate check**: while the same ID type + normalized ID number has an unfinished pay-out (pending acceptance, pending payment, pending confirmation or appealed) with any merchant, no new one can be placed; `500105059` is returned.
+  - If the total is not enough, `500105109` is returned; no order is created and nothing is partially frozen.
+- **Cross-merchant duplicate check**: while the same ID type + normalized ID number has an unfinished pay-out (pending acceptance, pending payment, pending confirmation or appealed) with any merchant, no new one can be placed; `500105105` is returned.
 - **Case sensitivity**: `bankCode`, `fiatCurrency`, `idType` and the list `status` values are case-sensitive, and `returnUrl` must start with lowercase `https://`.
 - **Validation order**:
   - Signature → IP whitelist → scope → field format (`500100000`) → rate limit (`429100000`) → idempotent replay.
-  - Business checks in order: `500105055` → empty `returnUrl` (`500105056`) → ID number (`500105056`) → `500105057` → `500105060` → `500105058` → `500105059` → `500105061` / `500105062` → `500105063`.
+  - Business checks in order: `500105101` → empty `returnUrl` (`500105102`) → ID number (`500105102`) → `500105103` → `500105106` → `500105104` → `500105105` → `500105107` / `500105108` → `500105109`.
 - **Hosted page**:
   - `lang=en` shows English and `lang=zh` shows Chinese; without it the page keeps the recipient's last choice, Chinese by default.
   - The page refreshes every 5 seconds.
