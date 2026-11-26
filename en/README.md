@@ -264,10 +264,33 @@ When request processing fails, `code` contains a specific error code and `msg` c
 | 500105038 | Time range cannot exceed 30 days |
 | 500105039 | Invalid time format; use a 13-digit millisecond timestamp |
 | 500105040 | Invalid Partner Code|
+| 500105047 | Fiat pay-in: a deposit order is already in progress (in the deposit address API this code means Meta Trader is not enabled) |
+| 500105048 | Fiat pay-in: does not meet the service provider's requirements |
+| 500105049 | Fiat pay-in: service is paused for the current period |
+| 500105050 | Fiat pay-in: the service is busy |
+| 500105051 | Fiat pay-in: the service is unavailable |
+| 500105052 | Fiat pay-in: invalid deposit amount |
+| 500105053 | Fiat pay-in: service is not available |
+| 500105054 | Fiat pay-in: order not found |
+| 500105055 | Fiat pay-out: not enabled |
+| 500105056 | Fiat pay-out: invalid parameter |
+| 500105057 | Fiat pay-out: the recipient account name must match the KYC name |
+| 500105058 | Fiat pay-out: amount out of range |
+| 500105059 | Fiat pay-out: this customer already has a pay-out order in progress |
+| 500105060 | Fiat pay-out: the recipient bank is not supported |
+| 500105061 | Fiat pay-out: no pay-out channel is available |
+| 500105062 | Fiat pay-out: the pay-out channel limit has been reached |
+| 500105063 | Fiat pay-out: insufficient available balance |
+| 500105064 | Fiat pay-out: parameters do not match the first request with the same identifier |
+| 500105065 | Fiat pay-out: the request is being processed |
+| 500105069 | Fiat pay-out: no access to this resource |
+| 500105070 | Fiat pay-out: the result is unknown |
+
+For trigger conditions and the exact Chinese and English messages of the fiat pay-in and pay-out codes, see [Fiat Pay-in API](fiat-payin.md#error-codes) and [Fiat Pay-out API](fiat-payout.md#error-codes).
 
 ## Notes
 
-1. All timestamps are milliseconds since the Unix epoch.
+1. All timestamps are milliseconds since the Unix epoch, except in the fiat pay-out APIs, which use ISO 8601 strings with a `+08:00` offset.
 2. Pagination starts at 1 (the first page is `1`).
 3. Maximum page size is 100 items.
 4. For withdrawals, ensure `clientWithdrawalId` is unique for idempotency.
@@ -278,6 +301,8 @@ When request processing fails, `code` contains a specific error code and `msg` c
 The following scopes are used:
 - `deposit`: Required for deposit and payment order operations
 - `withdraw`: Required for withdrawal operations
+- `fiatPayIn`: Required to create and query fiat pay-in orders; shown as Fiat Pay-in on the API key in the merchant portal
+- `fiatPayOut`: Required to create and query fiat pay-out orders; shown as Fiat Pay-out on the API key in the merchant portal
 
 ## Rate Limits
 
@@ -288,12 +313,16 @@ The following endpoints are subject to rate limits per user ID
 | `/t-api/openapi/v1/op/openapi/depositAddress` | POST | 60s | 120 | Get or create deposit address |
 | `/t-api/openapi/v1/op/openapi/createWithdrawal` | POST | 60s | 120 | Create withdrawal order |
 | `/t-api/openapi/v1/op/openapi/createPayInOrder` | POST | 60s | 120 | Create payment order |
+| `/t-api/openapi/v1/op/openapi/createFiatPayInOrder` | POST | 60s | 120 | Create fiat pay-in order |
+| `/t-api/openapi/v1/op/openapi/createFiatPayOutOrder` | POST | 60s | 120 | Create fiat pay-out order |
+| `/t-api/openapi/v1/op/openapi/fiatPayOutOrderInfo` | GET | 60s | 120 | Get fiat pay-out order details |
+| `/t-api/openapi/v1/op/openapi/fiatPayOutOrders` | POST | 60s | 120 | List fiat pay-out orders |
 
 **Rate limit rules:**
 - Limit type: per user ID
 - Time window: 60 seconds
 - Maximum requests: 120
-- Exceeding the limit returns a rate limit error response
+- Exceeding the limit returns an error response with `code` `429100000`; the HTTP status stays 200
 
 **Notes:**
 - Request counters are tracked independently for each user ID
