@@ -15,22 +15,44 @@ PayPaz Webhook 系统允许您接收实时通知，了解与您的账户相关�
 - `transaction.payinorder.underpaid`: 支付订单未足额支付
 - `transaction.payinorder.completed`: 支付订单完成
 
+法币收款（代收）事件，载荷见 [法币收款 Webhook](fiat-payin.md#webhook)：
+
+- `transaction.fiat.payin.proof_submitted`: 用户已提交付款凭证
+- `transaction.fiat.payin.appealed`: 订单进入申诉
+- `transaction.fiat.payin.refunding`: 收款服务商已回传退款凭证
+- `transaction.fiat.payin.completed`: 收款成功，USDT 已入账
+- `transaction.fiat.payin.refunded`: 已退款
+- `transaction.fiat.payin.cancelled`: 支付窗口超时，订单取消
+- `transaction.fiat.payin.failed`: 资金未到账，订单失败
+
+法币代付事件，载荷见 [法币代付 Webhook](fiat-payout.md#webhook)：
+
+- `transaction.fiat.payout.accepted`: 服务商已接单
+- `transaction.fiat.payout.proof_submitted`: 服务商已提交付款
+- `transaction.fiat.payout.customer_confirmed`: 收款用户已确认到账
+- `transaction.fiat.payout.appealed`: 订单进入申诉
+- `transaction.fiat.payout.completed`: 代付成功
+- `transaction.fiat.payout.failed`: 代付失败，冻结金额已解冻
+- `transaction.fiat.payout.rejected`: 服务商拒单或接单超时，冻结金额已解冻
+
 ## 3. Webhook 配置
 
 ### 3.1 Webhook 配置参数
 
 在配置 Webhook 时，需要提供以下信息：
 
-- **URL**: 接收 Webhook 通知的 HTTPS 端点
-- **事件类型**: 选择要订阅的事件类型
-- **状态**: 启用/禁用 Webhook
+- **URL**: 接收 Webhook 通知的端点，支持 HTTP 与 HTTPS，生产环境建议使用 HTTPS
+- **事件类型**: 选择要订阅的事件类型。不选表示接收全部事件
+- **状态**: 启用/禁用 Webhook。每个启用的 URL 都会单独收到一次推送
 
 ### 3.2 安全配置
 
-每个 Webhook 配置可以关联一个密钥对，用于验证请求的合法性：
+每个商户有一把 Webhook 密钥，在商户后台生成，该商户的所有 Webhook URL 共用：
 
-- **公钥 (PubSecretKey)**: 用于验证签名的密钥
-- **私钥 (PrivSecretKey)**: 用于生成签名的密钥（仅在 PayPaz 系统中使用）
+- **公钥 (PubSecretKey)**: 签名密钥。PayPaz 用它计算请求签名，您用同一把密钥验签
+- **私钥 (PrivSecretKey)**: 不参与 Webhook 签名
+
+未生成密钥时，请求不带 `PAYPAZ-WEBHOOK-SIGN` 和 `PAYPAZ-WEBHOOK-TIMESTAMP` 两个请求头。
 
 ## 4. Webhook 请求格式
 
@@ -46,8 +68,10 @@ PayPaz Webhook 系统允许您接收实时通知，了解与您的账户相关�
 
 签名生成规则：
 1. 将请求体(payload)和时间戳(timestamp)用竖线(|)连接：`payload|timestamp`
-2. 使用 HMAC-SHA256 算法和您的私钥对上述字符串进行签名
+2. 使用 HMAC-SHA256 算法和 Webhook 公钥 (PubSecretKey) 对上述字符串进行签名
 3. 对签名结果进行 Base64 编码
+
+时间戳在每次投递时重新生成，因此同一事件重试时签名会变化，请求体不变。
 
 验证签名示例代码（Java）：
 ```java
@@ -267,13 +291,16 @@ private boolean verifySignature(String payload, String timestamp, String signatu
 
 ### 5.1 重试策略
 
-- 系统会在发送失败后自动重试，最多重试 7 次
-- 重试间隔采用指数退避策略
+- 首次投递失败后自动重试，最多再重试 6 次，连同首次共投递 7 次
+- 重试间隔线性递增：第 k 次失败后约 k 分钟重试，即约 1、2、3、4、5、6 分钟
 - 每次重试后，`retryCount` 会递增
+- Webhook 被禁用后不再重试
 
 ### 5.2 响应要求
 
-**http响应内容 (Body)**：返回字符串 `success` 表示客户端已成功接收通知。其他字符串， 表示处理失败，系统将根据重试策略进行重试
+**http响应内容 (Body)**：响应体包含字符串 `success`（不区分大小写）即表示客户端已成功接收通知，不检查 HTTP 状态码。其他内容表示处理失败，系统将根据重试策略进行重试。
+
+连接与读取超时各为 5 秒，超时按失败处理。
 
 ## 6. 最佳实践
 
