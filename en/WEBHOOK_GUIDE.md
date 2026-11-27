@@ -15,22 +15,44 @@ The system supports the following event types:
 - `transaction.payinorder.underpaid`: Payment order underpaid
 - `transaction.payinorder.completed`: Payment order completed
 
+Fiat pay-in events; see [Fiat Pay-in Webhook](fiat-payin.md#webhook) for the payload:
+
+- `transaction.fiat.payin.proof_submitted`: The user submitted the payment proof
+- `transaction.fiat.payin.appealed`: The order entered an appeal
+- `transaction.fiat.payin.refunding`: The collection partner returned a refund proof
+- `transaction.fiat.payin.completed`: Collection succeeded and USDT was credited
+- `transaction.fiat.payin.refunded`: Refunded
+- `transaction.fiat.payin.cancelled`: The payment window expired and the order was cancelled
+- `transaction.fiat.payin.failed`: Funds did not arrive and the order failed
+
+Fiat pay-out events; see [Fiat Pay-out Webhook](fiat-payout.md#webhook) for the payload:
+
+- `transaction.fiat.payout.accepted`: The partner accepted the order
+- `transaction.fiat.payout.proof_submitted`: The partner submitted the payment
+- `transaction.fiat.payout.customer_confirmed`: The recipient confirmed receipt
+- `transaction.fiat.payout.appealed`: The order entered an appeal
+- `transaction.fiat.payout.completed`: Pay-out succeeded
+- `transaction.fiat.payout.failed`: Pay-out failed and the frozen amount was released
+- `transaction.fiat.payout.rejected`: The partner rejected the order or did not accept it in time, and the frozen amount was released
+
 ## 3. Webhook Configuration
 
 ### 3.1 Configuration Parameters
 
 When configuring a webhook, provide the following:
 
-- **URL**: HTTPS endpoint that receives webhook notifications
-- **Event types**: Events to subscribe to
-- **Status**: Enable or disable the webhook
+- **URL**: Endpoint that receives webhook notifications. HTTP and HTTPS are both accepted; use HTTPS in production
+- **Event types**: Events to subscribe to. Selecting none means all events are delivered
+- **Status**: Enable or disable the webhook. Every enabled URL receives its own delivery
 
 ### 3.2 Security Configuration
 
-Each webhook configuration can be associated with a key pair used to verify request authenticity:
+Each merchant has one webhook key, generated in the merchant portal and shared by all of the merchant's webhook URLs:
 
-- **Public key (PubSecretKey)**: Key used to verify signatures
-- **Private key (PrivSecretKey)**: Key used to generate signatures (used only within the PayPaz system)
+- **Public key (PubSecretKey)**: The signing key. PayPaz signs requests with it, and you verify with the same key
+- **Private key (PrivSecretKey)**: Not used for webhook signatures
+
+If no key has been generated, requests carry neither `PAYPAZ-WEBHOOK-SIGN` nor `PAYPAZ-WEBHOOK-TIMESTAMP`.
 
 ## 4. Webhook Request Format
 
@@ -46,8 +68,10 @@ Each webhook request includes the following headers:
 
 Signature generation rules:
 1. Concatenate the request body (payload) and timestamp with a pipe (`|`): `payload|timestamp`
-2. Sign the string using HMAC-SHA256 and your private key
+2. Sign the string using HMAC-SHA256 and the webhook public key (PubSecretKey)
 3. Base64-encode the result
+
+The timestamp is regenerated on every delivery, so a retried event carries the same body but a different signature.
 
 Signature verification example (Java):
 ```java
@@ -267,13 +291,16 @@ private boolean verifySignature(String payload, String timestamp, String signatu
 
 ### 5.1 Retry Policy
 
-- The system automatically retries failed deliveries up to 7 times
-- Retry intervals use exponential backoff
+- After a failed first delivery the system retries up to 6 more times, for at most 7 deliveries in total
+- Retry intervals grow linearly: the retry after the k-th failure comes about k minutes later, i.e. roughly 1, 2, 3, 4, 5 and 6 minutes
 - `retryCount` increments after each retry
+- Retries stop once the webhook is disabled
 
 ### 5.2 Response Requirements
 
-**HTTP response body:** Return the string `success` to acknowledge successful receipt. Any other response body indicates failure, and the system will retry according to the retry policy.
+**HTTP response body:** A response body that contains the string `success` (case-insensitive) acknowledges receipt; the HTTP status code is not checked. Any other response body indicates failure, and the system will retry according to the retry policy.
+
+Connect and read timeouts are 5 seconds each; a timeout counts as a failure.
 
 ## 6. Best Practices
 

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法币收款 · 商户 OpenAPI 对接文档</title>
+  <style>
+    :root {
+      --bg: #fff; --bg-soft: #f7f8fa; --bg-code: #0f172a; --ink: #1f2328; --muted: #656d76;
+      --line: #d0d7de; --link: #0969da; --accent: #1a7f37; --accent-soft: #dafbe1;
+      --warn: #9a6700; --warn-soft: #fff8c5; --sidebar-w: 260px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); color: var(--ink); background: var(--bg); line-height: 1.65; font-size: 15px; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar { width: var(--sidebar-w); flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); background: var(--bg-soft); padding: 20px 0 40px; }
+    .sidebar .brand { padding: 0 16px 16px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+    .sidebar .brand .eyebrow { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+    .sidebar .brand h1 { font-size: 15px; margin-top: 4px; line-height: 1.35; }
+    .sidebar .brand .meta { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .sidebar nav a { display: block; padding: 6px 16px; font-size: 13px; color: var(--muted); border-left: 2px solid transparent; }
+    .sidebar nav a:hover { color: var(--ink); background: #fff; border-left-color: var(--link); text-decoration: none; }
+    .sidebar nav .group { font-size: 11px; font-weight: 700; color: var(--muted); padding: 14px 16px 6px; letter-spacing: .04em; text-transform: uppercase; }
+    .main { flex: 1; min-width: 0; max-width: 980px; padding: 32px 40px 80px; }
+    @media (max-width: 900px) { .layout { display: block; } .sidebar { position: relative; width: 100%; height: auto; } .main { padding: 20px 16px 60px; } }
+    h2 { font-size: 26px; margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+    h3 { font-size: 20px; margin: 36px 0 12px; scroll-margin-top: 16px; }
+    h4 { font-size: 15px; margin: 20px 0 8px; }
+    p { margin: 0 0 12px; }
+    .lead { color: var(--muted); margin-bottom: 20px; }
+    hr { border: none; border-top: 1px solid var(--line); margin: 28px 0; }
+    ul, ol { margin: 0 0 14px 22px; }
+    li { margin: 4px 0; }
+    .note { background: var(--warn-soft); border: 1px solid #d4a72c55; border-radius: 6px; padding: 12px 14px; margin: 14px 0; font-size: 14px; }
+    .note.ok { background: var(--accent-soft); border-color: #1a7f3755; }
+    .note.info { background: #ddf4ff; border-color: #54aeff66; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 13.5px; border: 1px solid var(--line); }
+    th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--bg-soft); font-weight: 600; color: var(--muted); font-size: 12px; }
+    tr:last-child td { border-bottom: none; }
+    code { font-family: var(--mono); font-size: 12.5px; background: var(--bg-soft); padding: 1px 5px; border-radius: 4px; }
+    pre { background: var(--bg-code); color: #e2e8f0; padding: 14px 16px; border-radius: 8px; overflow-x: auto; font-family: var(--mono); font-size: 12.5px; line-height: 1.55; margin: 10px 0 16px; }
+    .path { display: inline-block; font-family: var(--mono); font-size: 13px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 8px 0 14px; }
+    .path .method { font-weight: 700; color: var(--accent); margin-right: 8px; }
+    .path .method.get { color: var(--link); }
+    .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: var(--bg-soft); color: var(--muted); margin-left: 6px; vertical-align: middle; }
+    .tag.req { background: #ffebe9; color: #cf222e; }
+    .mermaid { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 14px 0 20px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="eyebrow">Paypaz OpenAPI</div>
+    <h1>法币收款 · 商户对接</h1>
+    <div class="meta">修订稿 · 2026-11-26<br>与 fiat-payin.md 同步<br>scope <code>fiatPayIn</code></div>
+  </div>
+  <nav>
+    <div class="group">概览</div>
+    <a href="#overview">接口说明</a>
+    <a href="#flow">对接流程说明</a>
+    <div class="group">接口与回调</div>
+    <a href="#create-fiat-payin-order">1. 创建法币收款订单</a>
+    <a href="#query-fiat-payin-order">2. 查询法币收款订单详情</a>
+    <a href="#query-fiat-payin-order-list">3. 分页查询法币收款订单</a>
+    <a href="#webhook">4. Webhook</a>
+    <div class="group">附录</div>
+    <a href="#status">订单状态</a>
+    <a href="#kyc">KYC 枚举</a>
+    <a href="#error-codes">错误码</a>
+    <a href="#rules">金额、幂等与边界</a>
+  </nav>
+</aside>
+<main class="main">
+
+<h2 id="overview">法币收款（代收）业务接口</h2>
+<p class="lead">以下业务接口都需要通过签名认证。公共 Header 与签名算法见 <a href="README.md"><strong>认证 API 文档</strong></a>。商户 ID 由 API Key 识别，无需在 Body 中传递。</p>
+<p>API Key 必须勾选 <strong>Fiat Pay-in</strong>（scope 键 <code>fiatPayIn</code>），否则三个接口都返回 <code>500105010</code>，不建单、不返回数据。Webhook 按商户回调配置推送，与 API Key 的 scope 无关。</p>
+<hr>
+<h3 id="flow">对接流程说明</h3>
+<ol><li>用户在商户侧选择法币入金，金额为 200,000–500,000 的整数 CNY。商户页面不要展示汇率或预估 USDT。</li><li>商户服务端调用接口<a href="#create-fiat-payin-order"><strong>创建法币收款订单</strong></a>，成功后把返回的 <code>checkoutUrl</code> 交给该用户，整页跳转或 iframe 嵌入均可。</li><li>用户在 Paypaz 托管收银台完成转账并上传凭证。收款服务商核验到账后，Paypaz 按建单时锁定的汇率把 USDT 记入商户余额，并推送 Webhook。</li><li>商户订阅<a href="#webhook"><strong>Webhook</strong></a> 的 7 个事件。回调未到时，用接口<a href="#query-fiat-payin-order"><strong>查询法币收款订单详情</strong></a>或<a href="#query-fiat-payin-order-list"><strong>分页查询法币收款订单</strong></a>兜底。</li><li>订单成功即已入账，商户无需另行发起结算。把结果告知用户的方式由商户决定。</li></ol>
+<pre>POST createFiatPayInOrder → 返回 orderNo 与 checkoutUrl
+  ↓
+用户打开 checkoutUrl，转账并上传凭证 → Webhook proof_submitted
+  ↓
+收款服务商核验；申诉、退款时 → Webhook appealed / refunding
+  ↓
+订单终态 → Webhook completed / refunded / failed / cancelled
+  ↓
+回调丢失时 → GET fiatPayInOrderInfo 对账</pre>
+<p><strong>通用约定：</strong></p>
+<ul><li>统一响应为 <code>{ "code": 200, "msg": "success", "data": { } }</code>，<code>code = 200</code> 表示成功。业务拒绝仍是 HTTP 200，用 body 里的 <code>code</code> 区分。</li><li><code>msg</code> 随语言变化，<code>zh-CN</code> 时成功为「成功」。请只按 <code>code</code> 判断结果，不要依赖 <code>msg</code> 文案。</li><li>请求头 <code>Accept-Language</code> 的首选语言为 <code>zh-CN</code> 时 <code>msg</code> 为中文，其余（包括 <code>zh</code>、<code>zh-TW</code>）一律为英文。</li><li>金额全部是十进制字符串。时间全部是 13 位毫秒时间戳，<strong>以字符串返回</strong>，例如 <code>"1791622800000"</code>。</li><li>卡号、开户名、开户行只出现在收银台，查询接口不返回。</li></ul>
+<hr>
+<h3 id="create-fiat-payin-order">1. POST 创建法币收款订单</h3>
+<p>服务端对服务端调用，创建一笔 CNY 法币入金订单。</p>
+<div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/createFiatPayInOrder</div>
+<h4>特殊说明</h4>
+<ul><li><strong>限频</strong>：同一商户每 60 秒最多调用 120 次，超出返回 <code>429100000</code>（HTTP 状态仍为 200）。</li><li><strong>幂等</strong>：同一商户下 <code>merchantOrderNo</code> 唯一。<ul><li>已经落成订单时，直接返回该单的<strong>当前</strong>信息，不比对本次请求的其他字段。此时订单可能已经不是 <code>PENDING_PAYMENT</code>，字段规则同<a href="#query-fiat-payin-order"><strong>查询法币收款订单详情</strong></a>。</li><li>此前被拒时，按本次请求重新校验，不保留上一次的 <code>code</code> 与 <code>msg</code>。</li><li>重复提交的请求仍要先通过参数校验与金额解析。</li></ul></li><li><strong>结果未知</strong>：服务端内部调用失败时返回 <code>code = 500</code>，msg 为「系统异常」/ <code>System error</code>。此时订单可能已经创建，请用同一个 <code>merchantOrderNo</code> 重试或查单。</li><li>校验顺序见<a href="#create-validation-order"><strong>建单校验顺序</strong></a>。</li></ul>
+<p class="lead">Body 请求参数</p>
+<pre>{
+  "merchantOrderNo": "B20261010000123",
+  "userId": "U10023841",
+  "fiatCurrency": "CNY",
+  "fiatAmount": "216000",
+  "customer": {
+    "name": "张三",
+    "idType": "ID_CARD",
+    "idNo": "110101199001011234",
+    "country": "CN",
+    "ethnicity": "01",
+    "dateOfBirth": "1990-05-20"
+  },
+  "returnUrl": "https://broker.example.com/deposit/result"
+}</pre>
+<h4>请求参数</h4>
+<table>
+  <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>body</td><td>body</td><td>CreateFiatPayInOrderRequest</td><td>是</td><td>none</td></tr>
+  </tbody>
+</table>
+<h4>CreateFiatPayInOrderRequest 属性</h4>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>约束</th><th>中文名</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>merchantOrderNo</td><td>string</td><td>true</td><td>1–64 位，<code>[A-Za-z0-9_-]</code></td><td>商户订单号</td><td>幂等键，同一商户内唯一</td></tr>
+    <tr><td>userId</td><td>string</td><td>true</td><td>1–64 位</td><td>客户 ID</td><td>商户侧客户 ID，写入订单，查询、对账和 Webhook 中回传</td></tr>
+    <tr><td>fiatCurrency</td><td>string</td><td>true</td><td>仅 <code>CNY</code></td><td>法币币种</td><td>区分大小写，<code>cny</code> 会被拒绝</td></tr>
+    <tr><td>fiatAmount</td><td>string</td><td>true</td><td>整数，200000–500000（闭区间）</td><td>法币金额</td><td>推荐写成不带小数点、千分位和前导零的整数。数值相等的写法（如 <code>216000.00</code>）也会被接受；带千分位或小数不为 0 时拒单</td></tr>
+    <tr><td>customer</td><td>object</td><td>true</td><td>none</td><td>客户资料</td><td>见<a href="#customer"><strong>customer 属性</strong></a></td></tr>
+    <tr><td>returnUrl</td><td>string</td><td>true</td><td><code>http://</code> 或 <code>https://</code>，最长 1024</td><td>返回地址</td><td>结果页「返回商户」的跳转地址，按订单传入。不能含空白字符，协议须为小写</td></tr>
+  </tbody>
+</table>
+<h4 id="customer">customer 属性</h4>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>约束</th><th>中文名</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>name</td><td>string</td><td>true</td><td>1–64 字</td><td>客户姓名</td><td>去首尾空格</td></tr>
+    <tr><td>idType</td><td>string</td><td>true</td><td><code>ID_CARD</code> / <code>PASSPORT</code></td><td>证件类型</td><td>区分大小写，见<a href="#kyc"><strong>KYC 枚举</strong></a></td></tr>
+    <tr><td>idNo</td><td>string</td><td>true</td><td>1–64 位</td><td>证件号</td><td>入库与跨商户判重前去掉空格并转大写</td></tr>
+    <tr><td>country</td><td>string</td><td>true</td><td><code>CN</code> / <code>HK</code> / <code>MO</code> / <code>TW</code></td><td>国家或地区</td><td>区分大小写</td></tr>
+    <tr><td>ethnicity</td><td>string</td><td>false</td><td><code>01</code>–<code>56</code></td><td>民族</td><td>GB/T 3304 两位编码。不传则不会分到设置了民族条件的收款卡</td></tr>
+    <tr><td>dateOfBirth</td><td>string</td><td>false</td><td><code>YYYY-MM-DD</code></td><td>出生日期</td><td>按 Asia/Shanghai 的当天校验，不能晚于当天。不传则不会分到设置了年龄条件的收款卡</td></tr>
+  </tbody>
+</table>
+<ul><li><code>name</code>、<code>idNo</code>、<code>userId</code> 的 64 位上限按去空格前的原文计算。</li><li>枚举、日期、URL、长度不合法时返回参数错误 <code>500100000</code>，<code>msg</code> 指出字段，见<a href="#invalid-params"><strong>参数不合法</strong></a>。</li><li>金额不是整数、不在区间内或无法解析时，返回场景⑥ <code>500105052</code>。</li></ul>
+<p class="lead">返回示例</p>
+<p class="lead">200 Response</p>
+<pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "orderNo": "PZPI20261010-00001",
+    "merchantOrderNo": "B20261010000123",
+    "userId": "U10023841",
+    "fiatCurrency": "CNY",
+    "fiatAmount": "216000.00",
+    "status": "PENDING_PAYMENT",
+    "checkoutUrl": "https://pay.paypaz.com/fiat-deposit?pageId=mF3n0Q2sX6v9rT1bK8yW4zC7pL5aE2uH0jN9dG3kV6qR8tY1oI4wS7xZb5Lc2",
+    "expireAt": "1791622800000",
+    "createdAt": "1791621000000"
+  }
+}</pre>
+<h4>返回数据结构</h4>
+<p>状态码 <strong>200</strong></p>
+<p>_响应信息主体_</p>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>约束</th><th>中文名</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>» code</td><td>integer(int32)</td><td>false</td><td>none</td><td></td><td>none</td></tr>
+    <tr><td>» msg</td><td>string</td><td>false</td><td>none</td><td></td><td>none</td></tr>
+    <tr><td>» data</td><td>FiatPayInOrderOpenApiVO</td><td>false</td><td>none</td><td></td><td>none</td></tr>
+  </tbody>
+</table>
+<h4 id="fiat-payin-order-vo">FiatPayInOrderOpenApiVO 属性</h4>
+<p>创建、单笔查询和分页查询返回的订单都是这个结构。尚未发生的字段不返回，不要当成 0。</p>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>何时返回</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>orderNo</td><td>string</td><td>始终</td><td>Paypaz 订单号，<code>PZPI</code> + 上海日期 + <code>-</code> + 至少 5 位当日序号，例如 <code>PZPI20261010-00001</code>。全链路共用</td></tr>
+    <tr><td>merchantOrderNo</td><td>string</td><td>始终</td><td>商户订单号</td></tr>
+    <tr><td>userId</td><td>string</td><td>始终</td><td>商户侧客户 ID</td></tr>
+    <tr><td>fiatCurrency</td><td>string</td><td>始终</td><td><code>CNY</code></td></tr>
+    <tr><td>fiatAmount</td><td>string</td><td>始终</td><td>订单金额 CNY，两位小数。入参是整数，出参补 <code>.00</code></td></tr>
+    <tr><td>status</td><td>string</td><td>始终</td><td>订单状态，见<a href="#status"><strong>订单状态</strong></a>。新建时固定为 <code>PENDING_PAYMENT</code></td></tr>
+    <tr><td>checkoutUrl</td><td>string</td><td>始终</td><td>托管收银台地址，路径为 <code>/fiat-deposit?pageId=</code>。见下方说明</td></tr>
+    <tr><td>expireAt</td><td>string</td><td>始终</td><td>支付窗口截止时间，建单后 30 分钟。窗口内未上传凭证，订单变为 <code>CANCELLED</code></td></tr>
+    <tr><td>createdAt</td><td>string</td><td>始终</td><td>建单时间</td></tr>
+    <tr><td>proofSubmittedAt</td><td>string</td><td>已提交凭证</td><td>用户提交凭证的时间</td></tr>
+    <tr><td>settlementRate</td><td>string</td><td><code>SUCCEEDED</code></td><td>商户结算汇率 Rm，含义为 1 USDT = Rm CNY，4 位小数</td></tr>
+    <tr><td>creditAmount</td><td>string</td><td><code>SUCCEEDED</code></td><td>商户入账 USDT，两位小数</td></tr>
+    <tr><td>feeAmount</td><td>string</td><td><code>SUCCEEDED</code></td><td>充值手续费 USDT，两位小数。为 0 时返回 <code>"0.00"</code></td></tr>
+    <tr><td>netCreditAmount</td><td>string</td><td><code>SUCCEEDED</code></td><td><code>creditAmount − feeAmount</code>，两位小数</td></tr>
+    <tr><td>completedAt</td><td>string</td><td><code>SUCCEEDED</code></td><td>确认收款或裁定生效的时间</td></tr>
+    <tr><td>refundAmount</td><td>string</td><td><code>REFUNDING</code> / <code>REFUNDED</code></td><td>实际退款 CNY，两位小数，可能小于订单金额</td></tr>
+    <tr><td>refundSubmittedAt</td><td>string</td><td>收款服务商回传过退款凭证</td><td>回传退款凭证的时间，驳回后再次回传会更新。运营人工标记已退款的订单没有此字段</td></tr>
+    <tr><td>refundedAt</td><td>string</td><td><code>REFUNDED</code></td><td>Paypaz 确认退款或运营标记已退款的时间</td></tr>
+    <tr><td>failReason</td><td>string</td><td><code>FAILED</code></td><td><code>USER_NOT_PAID</code> / <code>FORGED_PROOF</code> / <code>WRONG_ACCOUNT</code> / <code>OTHER</code></td></tr>
+    <tr><td>failedAt</td><td>string</td><td><code>FAILED</code></td><td>失败时间</td></tr>
+    <tr><td>cancelledAt</td><td>string</td><td><code>CANCELLED</code></td><td>取消时间，等于 <code>expireAt</code></td></tr>
+  </tbody>
+</table>
+<ul><li>**<code>checkoutUrl</code>**：<ul><li>每次返回的链接字符串都可能不同，但都指向同一笔订单，并且长期有效，终态后打开的是结果页。不要用它做比对或去重。</li><li><code>pageId</code> 是加密令牌，不能解析，任何改动都会导致链接无效。</li></ul></li><li><strong>结算字段</strong>：只在订单为 <code>SUCCEEDED</code> 时返回，新建的响应里没有。</li><li><strong>不返回的信息</strong>：收款服务商汇率 Rc、价差、收款服务商名称，以及卡号、户名、开户行。</li><li><strong>申诉信息</strong>：只在 Webhook <code>appealed</code> 中提供，查询接口不返回。</li></ul>
+<h4 id="create-validation-order">建单校验顺序</h4>
+<p>任一步失败即拒绝，不建单：</p>
+<ol><li>鉴权：缺少签名头 → 时间戳 → API Key → 签名 → IP 白名单 → scope。</li><li>请求体字段格式（<code>500100000</code>）。</li><li>限频（<code>429100000</code>）。</li><li><code>fiatCurrency</code> 必须为 <code>CNY</code>（<code>500100000</code>）。</li><li>金额能否解析成数字，不能则返回场景⑥。</li><li>出生日期是否合法、是否晚于当天（<code>500100000</code>）。</li><li>同一商户订单号已有订单时，直接返回该单。</li><li>业务校验：⑦ 未开通 → ⑥ 金额 → ① 判重 → ② 资质 → 按 ④ ＞ ③ ＞ ⑤ 的优先级返回一个原因。</li></ol>
+<p>业务规则：</p>
+<ul><li><strong>跨商户判重</strong>：同一证件类型 + 证件号，在任意商户下已有进行中的订单（待付款、待核验、申诉中、退款中），返回场景①。这与「同一商户订单号幂等」不是一回事。</li><li><strong>分配收款卡</strong>：<ul><li>按单笔金额、国家、民族、年龄匹配收款卡，多张卡都匹配时按「最久未被分配」轮询。</li><li>卡上没配的条件视为不限。卡配了某个条件而本单没传对应资料，视为不命中该卡。</li></ul></li><li><strong>资质命中的卡都不可用时</strong>，按优先级只返回一个原因：可提现不足（④）＞ 不在服务时间或本时段剩余额度不足（③）＞ 卡停用、收款服务商停用、汇率不可用或收款服务商代收业务已关闭（⑤）。</li><li><strong>服务时间</strong>：按北京时间计算，含开始时刻、不含结束时刻。服务时间内都可以分配新订单，服务时间外不分配。</li><li><strong>场景③ 推荐时段</strong>：有可推荐的下一时段时，<code>data</code> 带 <code>startTime</code> / <code>endTime</code>，格式为 <code>HH:mm</code>，不带日期。取所有资质命中且启用的收款卡中最早开始的时段：当天的时段还没开始就推荐当天，否则推荐次日。</li></ul>
+<pre>{
+  "code": 500105049,
+  "msg": "当前时段服务暂停，请于 09:00 - 17:00 再试。",
+  "data": { "startTime": "09:00", "endTime": "17:00" }
+}</pre>
+<h4>错误码</h4>
+<ul><li><code>500105010</code>：API Key 未勾选 Fiat Pay-in</li><li><code>500100000</code>：参数不合法，见<a href="#invalid-params"><strong>参数不合法</strong></a></li><li><code>429100000</code>：请求频率超限</li><li><code>500105047</code>–<code>500105053</code>：建单拒绝，见<a href="#create-rejections"><strong>建单拒绝</strong></a></li><li><code>500</code>：结果未知，请用同一个 <code>merchantOrderNo</code> 重试或查单</li></ul>
+<hr>
+<h3 id="query-fiat-payin-order">2. GET 查询法币收款订单详情</h3>
+<p>按订单号或商户订单号查询单笔订单。只能查到本商户的订单。</p>
+<div class="path"><span class="method get">GET</span>/t-api/openapi/v1/op/openapi/fiatPayInOrderInfo</div>
+<h4>请求参数</h4>
+<table>
+  <thead><tr><th>名称</th><th>位置</th><th>类型</th><th>必选</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>orderNo</td><td>query</td><td>string</td><td>否</td><td>Paypaz 订单号</td></tr>
+    <tr><td>merchantOrderNo</td><td>query</td><td>string</td><td>否</td><td>商户订单号</td></tr>
+  </tbody>
+</table>
+<ul><li><code>orderNo</code> 与 <code>merchantOrderNo</code> 至少传一个，都不传返回 <code>500105008</code>。</li><li>两个都传时必须指向同一笔订单，否则按订单不存在处理，返回 <code>500105054</code>。</li><li>签名时 <code>requestPath</code> 要包含查询串，并且与实际发送的 URL 完全一致，例如 <code>/t-api/openapi/v1/op/openapi/fiatPayInOrderInfo?orderNo=PZPI20261010-00001</code>。</li></ul>
+<p class="lead">返回示例</p>
+<p class="lead">200 Response</p>
+<pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "orderNo": "PZPI20261010-00001",
+    "merchantOrderNo": "B20261010000123",
+    "userId": "U10023841",
+    "fiatCurrency": "CNY",
+    "fiatAmount": "216000.00",
+    "status": "SUCCEEDED",
+    "checkoutUrl": "https://pay.paypaz.com/fiat-deposit?pageId=Vq7pL2nX9sK4tR8bC1yW6zM3dF5aE0uH2jN7gG9kQ4rS8vY1oI6wT3xZc5Ld0",
+    "expireAt": "1791622800000",
+    "createdAt": "1791621000000",
+    "proofSubmittedAt": "1791621600000",
+    "settlementRate": "7.2720",
+    "creditAmount": "29702.97",
+    "feeAmount": "148.52",
+    "netCreditAmount": "29554.45",
+    "completedAt": "1791624300000"
+  }
+}</pre>
+<h4>返回数据结构</h4>
+<p>状态码 <strong>200</strong></p>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>约束</th><th>中文名</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>» code</td><td>integer(int32)</td><td>false</td><td>none</td><td></td><td>none</td></tr>
+    <tr><td>» msg</td><td>string</td><td>false</td><td>none</td><td></td><td>none</td></tr>
+    <tr><td>» data</td><td>FiatPayInOrderOpenApiVO</td><td>false</td><td>none</td><td></td><td>见<a href="#fiat-payin-order-vo"><strong>FiatPayInOrderOpenApiVO 属性</strong></a></td></tr>
+  </tbody>
+</table>
+<h4>错误码</h4>
+<ul><li><code>500105008</code>：<code>orderNo</code> 与 <code>merchantOrderNo</code> 都没传</li><li><code>500105054</code>：订单不存在、不属于本商户，或两个单号不指向同一笔</li><li><code>500105010</code>：API Key 未勾选 Fiat Pay-in</li></ul>
+<hr>
+<h3 id="query-fiat-payin-order-list">3. POST 分页查询法币收款订单</h3>
+<p>按当前 API Key 所属商户分页查询法币收款订单，按 <code>createdAt</code> 倒序。请求体可以省略。</p>
+<div class="path"><span class="method">POST</span>/t-api/openapi/v1/op/openapi/fiatPayInOrders</div>
+<p class="lead">Body 请求参数</p>
+<pre>{
+  "merchantOrderNo": "B20261010000123",
+  "orderNo": "PZPI20261010-00001",
+  "userId": "U10023841",
+  "statuses": ["SUCCEEDED", "REFUNDED"],
+  "createdStart": 1791532800000,
+  "createdEnd": 1791619199000,
+  "pageNo": 1,
+  "pageSize": 20
+}</pre>
+<h4>QueryFiatPayInOrderRequest 属性</h4>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>必选</th><th>约束</th><th>中文名</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>merchantOrderNo</td><td>string</td><td>false</td><td>none</td><td>商户订单号</td><td>精确匹配</td></tr>
+    <tr><td>orderNo</td><td>string</td><td>false</td><td>none</td><td>订单号</td><td>精确匹配</td></tr>
+    <tr><td>userId</td><td>string</td><td>false</td><td>none</td><td>客户 ID</td><td>精确匹配</td></tr>
+    <tr><td>statuses</td><td>array[string]</td><td>false</td><td>见订单状态</td><td>状态</td><td>空或不传表示全部</td></tr>
+    <tr><td>createdStart</td><td>integer(int64)</td><td>false</td><td>13 位毫秒</td><td>建单开始时间</td><td>含该时刻。须与 <code>createdEnd</code> 同时传或同时不传</td></tr>
+    <tr><td>createdEnd</td><td>integer(int64)</td><td>false</td><td>13 位毫秒</td><td>建单结束时间</td><td>含该时刻。起止间隔不超过 30 天</td></tr>
+    <tr><td>pageNo</td><td>integer(int32)</td><td>false</td><td>≥ 1</td><td>页码</td><td>默认 1</td></tr>
+    <tr><td>pageSize</td><td>integer(int32)</td><td>false</td><td>1–100</td><td>每页条数</td><td>默认 20</td></tr>
+  </tbody>
+</table>
+<p class="lead">返回示例</p>
+<p class="lead">200 Response</p>
+<pre>{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "total": "1",
+    "pageNo": 1,
+    "pageSize": 20,
+    "list": []
+  }
+}</pre>
+<h4>返回数据结构</h4>
+<table>
+  <thead><tr><th>名称</th><th>类型</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>» total</td><td>string</td><td>符合条件的订单总数，十进制字符串</td></tr>
+    <tr><td>» pageNo</td><td>integer(int32)</td><td>页码</td></tr>
+    <tr><td>» pageSize</td><td>integer(int32)</td><td>每页条数</td></tr>
+    <tr><td>» list</td><td>array[FiatPayInOrderOpenApiVO]</td><td>每一项与单笔查询的 <code>data</code> 相同，见<a href="#fiat-payin-order-vo"><strong>FiatPayInOrderOpenApiVO 属性</strong></a></td></tr>
+  </tbody>
+</table>
+<ul><li>支付窗口到期的订单，在系统完成取消处理之前，按 <code>statuses</code> 筛选时仍归在 <code>PENDING_PAYMENT</code> 下，但返回的 <code>status</code> 已显示为 <code>CANCELLED</code>。</li></ul>
+<h4>错误码</h4>
+<ul><li><code>500105036</code>：只传了 <code>createdStart</code> 或 <code>createdEnd</code> 其中一个</li><li><code>500105037</code>：<code>createdStart</code> 大于 <code>createdEnd</code></li><li><code>500105038</code>：起止间隔超过 30 天</li><li><code>500105039</code>：时间不是 13 位毫秒时间戳</li><li><code>500100000</code>：页码或每页条数不合法，或 <code>statuses</code> 含有未知值</li><li><code>500105010</code>：API Key 未勾选 Fiat Pay-in</li></ul>
+<hr>
+<h3 id="webhook">4. Webhook</h3>
+<p>在商户后台「开发者 › Webhooks」配置回调地址并订阅事件。每个启用的回调地址各推一次；回调地址设置了事件订阅时，只推送订阅的事件。签名、请求头与重试规则见 <a href="WEBHOOK_GUIDE.md"><strong>webhook说明</strong></a>，要点如下：</p>
+<table>
+  <thead><tr><th>项</th><th>值</th></tr></thead>
+  <tbody>
+    <tr><td>方法</td><td><code>POST</code>，<code>Content-Type: application/json</code></td></tr>
+    <tr><td>签名头</td><td><code>PAYPAZ-WEBHOOK-SIGN</code>、<code>PAYPAZ-WEBHOOK-TIMESTAMP</code></td></tr>
+    <tr><td>签名原文</td><td><code>payload + "|" + timestamp</code>，HMAC-SHA256 后 Base64。密钥为商户后台生成的 Webhook 公钥（每个商户一把，所有回调地址共用）；未生成密钥时请求不带签名头</td></tr>
+    <tr><td>超时</td><td>连接、读取各 5 秒</td></tr>
+    <tr><td>成功判定</td><td>响应体包含 <code>success</code>（不区分大小写），不看 HTTP 状态码</td></tr>
+    <tr><td>重试</td><td>首次投递失败后最多再重试 6 次（共 7 次），间隔约 1、2、3、4、5、6 分钟</td></tr>
+  </tbody>
+</table>
+<p>包体只有 <code>eventType</code> 和 <code>data</code>。<code>data</code> 的公共字段为 <code>orderNo</code>、<code>merchantOrderNo</code>、<code>userId</code>、<code>fiatAmount</code>。</p>
+<table>
+  <thead><tr><th>eventType</th><th>触发</th><th>额外字段</th></tr></thead>
+  <tbody>
+    <tr><td><code>transaction.fiat.payin.proof_submitted</code></td><td>用户提交凭证，进入待核验</td><td><code>proofSubmittedAt</code></td></tr>
+    <tr><td><code>transaction.fiat.payin.appealed</code></td><td>进入申诉中（收款服务商或商户发起）</td><td><code>appealType</code>、<code>appealedAt</code></td></tr>
+    <tr><td><code>transaction.fiat.payin.refunding</code></td><td>收款服务商回传退款凭证。驳回后再次回传会再推一次</td><td><code>refundAmount</code>、<code>refundSubmittedAt</code></td></tr>
+    <tr><td><code>transaction.fiat.payin.completed</code></td><td>确认收款，或裁定「无异常 / 资金已到账」后自动结算</td><td><code>settlementRate</code>、<code>creditAmount</code>、<code>feeAmount</code>、<code>completedAt</code></td></tr>
+    <tr><td><code>transaction.fiat.payin.refunded</code></td><td>Paypaz 确认退款，或运营标记已退款</td><td><code>refundAmount</code>、<code>refundedAt</code></td></tr>
+    <tr><td><code>transaction.fiat.payin.cancelled</code></td><td>支付窗口内未提交凭证</td><td><code>cancelledAt</code></td></tr>
+    <tr><td><code>transaction.fiat.payin.failed</code></td><td>裁定资金未到账</td><td><code>failReason</code>、<code>failedAt</code></td></tr>
+  </tbody>
+</table>
+<p><strong>载荷格式与查询接口不同：</strong></p>
+<ul><li>金额是去掉末尾 0 的十进制字符串，例如 <code>"216000"</code>、<code>"7.272"</code>；手续费为 0 时是 <code>"0"</code>。</li><li>时间是毫秒时间戳字符串。</li><li>载荷里没有 <code>fiatCurrency</code>、<code>status</code> 和 <code>netCreditAmount</code>。事件名已经对应状态；净入账请自行计算 <code>creditAmount − feeAmount</code>。</li></ul>
+<pre>{
+  "eventType": "transaction.fiat.payin.completed",
+  "data": {
+    "orderNo": "PZPI20261010-00001",
+    "merchantOrderNo": "B20261010000123",
+    "userId": "U10023841",
+    "fiatAmount": "216000",
+    "settlementRate": "7.272",
+    "creditAmount": "29702.97",
+    "feeAmount": "148.52",
+    "completedAt": "1791624300000"
+  }
+}</pre>
+<ul><li>**<code>appealType</code> 取值**：<code>ARRIVAL_ABNORMAL</code> 到账异常 / <code>NOT_RECEIVED</code> 未查到入账 / <code>MERCHANT</code> 商户申诉。</li><li><strong>不推送的情况</strong>：<ul><li>下单被同步拒绝时不推送。建单被拒与异步终态「失败」不同：前者是创建接口的错误码，后者是 <code>transaction.fiat.payin.failed</code>。</li><li>退款凭证被驳回时不推送，订单回到申诉中；收款服务商重新回传后会再推一次 <code>refunding</code>。</li><li>运营人工标记已退款时直接推 <code>refunded</code>，不会先推 <code>refunding</code>。</li></ul></li><li>**<code>cancelled</code> 的时机**：支付窗口到期后由定时任务推送，<code>cancelledAt</code> 等于 <code>expireAt</code>，不是推送时间。</li><li><strong>去重</strong>：回调不带事件 ID，请按 <code>orderNo + eventType + 该事件的时间字段</code> 去重。只按订单号 + 事件名去重，会丢掉第二次 <code>refunding</code>。</li><li>**<code>completed</code> 的内容**：不含收款服务商汇率 Rc 与价差。手续费从商户余额另行扣收，<code>creditAmount</code> 不是先扣手续费后的金额。</li></ul>
+<hr>
+<h3 id="status">订单状态</h3>
+<p>终态唯一且不可逆。收银台把待核验、申诉中、退款中都显示为「处理中」；商户接口与 Webhook 使用下表的细分状态。</p>
+<table>
+  <thead><tr><th>status</th><th>中文</th><th>终态</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>PENDING_PAYMENT</code></td><td>待付款</td><td></td><td>已建单，等待用户转账并上传凭证</td></tr>
+    <tr><td><code>VERIFYING</code></td><td>待核验</td><td></td><td>凭证已提交</td></tr>
+    <tr><td><code>APPEALING</code></td><td>申诉中</td><td></td><td>平台裁定中，或已裁定需退款、等待回传</td></tr>
+    <tr><td><code>REFUNDING</code></td><td>退款中</td><td></td><td>退款凭证已回传，等待 Paypaz 确认。驳回后回到申诉中</td></tr>
+    <tr><td><code>SUCCEEDED</code></td><td>成功</td><td>是</td><td>USDT 已入账</td></tr>
+    <tr><td><code>REFUNDED</code></td><td>已退款</td><td>是</td><td>原路退回，商户无入账</td></tr>
+    <tr><td><code>FAILED</code></td><td>失败</td><td>是</td><td>资金未到账，无退款</td></tr>
+    <tr><td><code>CANCELLED</code></td><td>已取消</td><td>是</td><td>支付窗口超时，未提交凭证</td></tr>
+  </tbody>
+</table>
+<hr>
+<h3 id="kyc">KYC 枚举</h3>
+<h4>证件类型 idType</h4>
+<table>
+  <thead><tr><th>值</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>ID_CARD</code></td><td>居民身份证</td></tr>
+    <tr><td><code>PASSPORT</code></td><td>护照</td></tr>
+  </tbody>
+</table>
+<h4>国家或地区 country</h4>
+<table>
+  <thead><tr><th>值</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>CN</code></td><td>中国大陆</td></tr>
+    <tr><td><code>HK</code></td><td>中国香港</td></tr>
+    <tr><td><code>MO</code></td><td>中国澳门</td></tr>
+    <tr><td><code>TW</code></td><td>中国台湾</td></tr>
+  </tbody>
+</table>
+<p>收款卡的国家条件目前只能配置为 <code>CN</code> 或不限，因此 <code>HK</code>、<code>MO</code>、<code>TW</code> 的客户只能分到没有设置国家条件的卡。</p>
+<h4>民族 ethnicity（GB/T 3304）</h4>
+<table>
+  <thead><tr><th>编码</th><th>民族</th><th>编码</th><th>民族</th><th>编码</th><th>民族</th><th>编码</th><th>民族</th></tr></thead>
+  <tbody>
+    <tr><td>01</td><td>汉族</td><td>02</td><td>蒙古族</td><td>03</td><td>回族</td><td>04</td><td>藏族</td></tr>
+    <tr><td>05</td><td>维吾尔族</td><td>06</td><td>苗族</td><td>07</td><td>彝族</td><td>08</td><td>壮族</td></tr>
+    <tr><td>09</td><td>布依族</td><td>10</td><td>朝鲜族</td><td>11</td><td>满族</td><td>12</td><td>侗族</td></tr>
+    <tr><td>13</td><td>瑶族</td><td>14</td><td>白族</td><td>15</td><td>土家族</td><td>16</td><td>哈尼族</td></tr>
+    <tr><td>17</td><td>哈萨克族</td><td>18</td><td>傣族</td><td>19</td><td>黎族</td><td>20</td><td>傈僳族</td></tr>
+    <tr><td>21</td><td>佤族</td><td>22</td><td>畲族</td><td>23</td><td>高山族</td><td>24</td><td>拉祜族</td></tr>
+    <tr><td>25</td><td>水族</td><td>26</td><td>东乡族</td><td>27</td><td>纳西族</td><td>28</td><td>景颇族</td></tr>
+    <tr><td>29</td><td>柯尔克孜族</td><td>30</td><td>土族</td><td>31</td><td>达斡尔族</td><td>32</td><td>仫佬族</td></tr>
+    <tr><td>33</td><td>羌族</td><td>34</td><td>布朗族</td><td>35</td><td>撒拉族</td><td>36</td><td>毛南族</td></tr>
+    <tr><td>37</td><td>仡佬族</td><td>38</td><td>锡伯族</td><td>39</td><td>阿昌族</td><td>40</td><td>普米族</td></tr>
+    <tr><td>41</td><td>塔吉克族</td><td>42</td><td>怒族</td><td>43</td><td>乌孜别克族</td><td>44</td><td>俄罗斯族</td></tr>
+    <tr><td>45</td><td>鄂温克族</td><td>46</td><td>德昂族</td><td>47</td><td>保安族</td><td>48</td><td>裕固族</td></tr>
+    <tr><td>49</td><td>京族</td><td>50</td><td>塔塔尔族</td><td>51</td><td>独龙族</td><td>52</td><td>鄂伦春族</td></tr>
+    <tr><td>53</td><td>赫哲族</td><td>54</td><td>门巴族</td><td>55</td><td>珞巴族</td><td>56</td><td>基诺族</td></tr>
+  </tbody>
+</table>
+<hr>
+<h3 id="error-codes">错误码</h3>
+<p>业务拒绝仍是 HTTP 200，用 body 的 <code>code</code> 区分。<code>Accept-Language</code> 的首选语言为 <code>zh-CN</code> 时 <code>msg</code> 为中文，其余为英文。除下面注明的情况外，<code>data</code> 为 <code>null</code>。请按错误码处理，不要改写文案含义。</p>
+<p>创建、单笔查询、分页查询共用下面这些码。不要复用加密货币支付订单的 <code>500105033</code>–<code>500105035</code>。另外，<code>500105047</code> 在充币地址接口中表示「未开通 Meta Trader」，请按接口区分含义。</p>
+<h4 id="create-rejections">建单拒绝</h4>
+<table>
+  <thead><tr><th>场景</th><th>code</th><th>含义</th><th>中文 msg</th><th>English msg</th></tr></thead>
+  <tbody>
+    <tr><td>① 重复下单</td><td><code>500105047</code></td><td>同一证件类型 + 证件号已有进行中订单（待付款、待核验、申诉中、退款中），跨商户判重</td><td>您有一笔入金订单正在处理中，请完成后再发起。</td><td>You have a deposit order in progress. Please complete it before starting a new one.</td></tr>
+    <tr><td>② 资质不匹配</td><td><code>500105048</code></td><td>没有任何收款卡（含停用的卡）同时满足单笔金额、国家、民族、年龄；当前没有任何收款卡时也返回此码。金额已在平台区间内、但落不进任何卡的单笔区间，也走这个码</td><td>不满足服务商要求，请联系客服。</td><td>Does not meet the service provider's requirements. Please contact support.</td></tr>
+    <tr><td>③ 暂停且有下一时段</td><td><code>500105049</code></td><td>命中的卡不在服务时间，或本时段剩余额度不足以容纳本单，并且能算出下一可服务时段。<code>data.startTime</code> / <code>data.endTime</code> 为 <code>HH:mm</code></td><td>当前时段服务暂停，请于 09:00 - 17:00 再试。</td><td>Service is paused for the current period. Please try again between 09:00 and 17:00.</td></tr>
+    <tr><td>③ 暂停且无下一时段</td><td><code>500105049</code></td><td>与上一行同一错误码。没有可推荐时段时 <code>data</code> 为 <code>null</code>，文案不同</td><td>当前时段服务暂停，请稍后再试。</td><td>Service is paused for the current period. Please try again later.</td></tr>
+    <tr><td>④ 服务繁忙</td><td><code>500105050</code></td><td>匹配到的收款服务商可冻结 USDT 不足。建单要排队的锁（同一商户订单号、同一证件、同一收款服务商）5 秒内没拿到时也返回此码，文案相同</td><td>当前服务繁忙，请联系客服，稍后再试。</td><td>The service is busy. Please contact customer support or try again later.</td></tr>
+    <tr><td>⑤ 服务不可用</td><td><code>500105051</code></td><td>卡停用、收款服务商停用、汇率不可用，或收款服务商的代收业务已关闭</td><td>当前服务不可用，请联系客服</td><td>The service is unavailable. Please contact customer support.</td></tr>
+    <tr><td>⑥ 金额不合法</td><td><code>500105052</code></td><td>金额不是整数、不在平台区间 200,000–500,000 内，或 <code>fiatAmount</code> 无法解析成数字。区间写在文案里，不随收款卡的单笔区间变化</td><td>入金金额需为 200,000 - 500,000 CNY 之间的整数</td><td>The deposit amount must be a whole number between 200,000 and 500,000 CNY.</td></tr>
+    <tr><td>⑦ 未开通</td><td><code>500105053</code></td><td>该商户没有启用中的 CNY/USDT 法币收款配置</td><td>服务暂未开通，请联系客服。</td><td>Service is not available. Please contact customer support.</td></tr>
+  </tbody>
+</table>
+<h4>查询与列表</h4>
+<table>
+  <thead><tr><th>code</th><th>接口</th><th>含义</th><th>中文 msg</th><th>English msg</th></tr></thead>
+  <tbody>
+    <tr><td><code>500105054</code></td><td>单笔</td><td>订单不存在，或不属于本商户。两个单号都传了但不指向同一笔，同样返回此码</td><td>订单不存在</td><td>Order not found</td></tr>
+    <tr><td><code>500105008</code></td><td>单笔</td><td><code>orderNo</code> 与 <code>merchantOrderNo</code> 都没传</td><td>查询参数不能同时为空</td><td>Query parameters cannot all be empty simultaneously</td></tr>
+    <tr><td><code>500105036</code></td><td>列表</td><td>只传了 <code>createdStart</code> 或 <code>createdEnd</code> 其中一个</td><td>开始时间和结束时间不能为空</td><td>Order query time cannot be null</td></tr>
+    <tr><td><code>500105037</code></td><td>列表</td><td><code>createdStart</code> 大于 <code>createdEnd</code></td><td>开始时间不能大于结束时间</td><td>Start time must not be later than end time</td></tr>
+    <tr><td><code>500105038</code></td><td>列表</td><td>起止间隔超过 30 天</td><td>开始时间与结束时间间隔不能超过30天</td><td>The interval between start time and end time cannot exceed 30 days</td></tr>
+    <tr><td><code>500105039</code></td><td>列表</td><td>时间不是 13 位毫秒时间戳</td><td>时间格式错误，请传入正确的13位毫秒时间戳</td><td>Invalid time format. Please enter a valid 13-digit millisecond timestamp.</td></tr>
+  </tbody>
+</table>
+<h4>鉴权与通用</h4>
+<p>三个接口在进入业务前都会校验，先后顺序为：缺签名头 → 时间戳 → API Key → 签名 → IP 白名单 → scope。</p>
+<table>
+  <thead><tr><th>code</th><th>含义</th><th>中文 msg</th><th>English msg</th></tr></thead>
+  <tbody>
+    <tr><td><code>500105001</code></td><td>缺少签名头</td><td>请求缺少必要的认证信息</td><td>Request missing required authentication information</td></tr>
+    <tr><td><code>500105002</code></td><td>API Key 无效（含已停用的 Key）</td><td>无效的API Key</td><td>Invalid API Key</td></tr>
+    <tr><td><code>500105003</code></td><td>签名校验失败</td><td>签名验证失败</td><td>Signature verification failed</td></tr>
+    <tr><td><code>500105004</code></td><td>时间戳超出接收窗口</td><td>请求时间戳已过期</td><td>Request timestamp has expired</td></tr>
+    <tr><td><code>500105005</code></td><td>时间戳或接收窗口格式不对</td><td>无效的时间戳格式</td><td>Invalid timestamp format</td></tr>
+    <tr><td><code>500105011</code></td><td>来源 IP 不在 API Key 的白名单中（白名单为空时不限制）</td><td>IP不在白名单中</td><td>IP address is not in the whitelist</td></tr>
+    <tr><td><code>500105010</code></td><td>API Key 未勾选 Fiat Pay-in</td><td>没有权限访问该API</td><td>No permission to access this API</td></tr>
+    <tr><td><code>429100000</code></td><td>建单接口超出限频（每商户每 60 秒 120 次），HTTP 状态仍为 200</td><td>访问过于频繁，请稍候再试</td><td>You have exceeded the request limit. Please wait a moment before trying again.</td></tr>
+    <tr><td><code>500</code></td><td>服务端内部调用失败，结果未知。建单时请用同一个 <code>merchantOrderNo</code> 重试或查单</td><td>系统异常</td><td>System error</td></tr>
+  </tbody>
+</table>
+<h4 id="invalid-params">参数不合法 <code>500100000</code></h4>
+<p><code>data</code> 为 <code>null</code>。字段校验类 <code>msg</code> 是英文字段说明，不随 <code>Accept-Language</code> 切换。多个字段同时不合法时，用英文逗号加空格拼在同一个 <code>msg</code> 里，顺序不固定，同一字段可能出现多条。<code>fiatCurrency must be CNY</code>、出生日期、分页参数和 <code>statuses</code> 这几条在其余字段校验通过后才检查，一次只返回一条。</p>
+<table>
+  <thead><tr><th>接口</th><th>msg</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td>创建</td><td><code>merchantOrderNo must not be blank</code></td><td>商户订单号为空</td></tr>
+    <tr><td>创建</td><td><code>merchantOrderNo length must be between 1 and 64</code></td><td>商户订单号长度超出 1–64</td></tr>
+    <tr><td>创建</td><td><code>merchantOrderNo contains invalid characters</code></td><td>含有 <code>[A-Za-z0-9_-]</code> 以外的字符</td></tr>
+    <tr><td>创建</td><td><code>userId must not be blank</code></td><td>客户 ID 为空</td></tr>
+    <tr><td>创建</td><td><code>userId length must be at most 64</code></td><td>客户 ID 超过 64 位</td></tr>
+    <tr><td>创建</td><td><code>fiatCurrency must not be blank</code></td><td>法币为空</td></tr>
+    <tr><td>创建</td><td><code>fiatCurrency must be CNY</code></td><td>法币不是 <code>CNY</code></td></tr>
+    <tr><td>创建</td><td><code>fiatAmount must not be blank</code></td><td>金额为空。无法解析成数字时走 <code>500105052</code>，不走本码</td></tr>
+    <tr><td>创建</td><td><code>customer must not be null</code></td><td>缺少 <code>customer</code></td></tr>
+    <tr><td>创建</td><td><code>customer.name must not be blank</code></td><td>姓名为空</td></tr>
+    <tr><td>创建</td><td><code>customer.name length must be at most 64</code></td><td>姓名超过 64 字</td></tr>
+    <tr><td>创建</td><td><code>customer.idType must not be blank</code></td><td>证件类型为空</td></tr>
+    <tr><td>创建</td><td><code>customer.idType must be ID_CARD or PASSPORT</code></td><td>证件类型不是这两个值</td></tr>
+    <tr><td>创建</td><td><code>customer.idNo must not be blank</code></td><td>证件号为空</td></tr>
+    <tr><td>创建</td><td><code>customer.idNo length must be at most 64</code></td><td>证件号超过 64 位</td></tr>
+    <tr><td>创建</td><td><code>customer.country must not be blank</code></td><td>国家为空</td></tr>
+    <tr><td>创建</td><td><code>customer.country must be CN, HK, MO or TW</code></td><td>国家不在这四个值里</td></tr>
+    <tr><td>创建</td><td><code>customer.ethnicity is invalid</code></td><td>民族不是空或 <code>01</code>–<code>56</code></td></tr>
+    <tr><td>创建</td><td><code>customer.dateOfBirth must be YYYY-MM-DD</code></td><td>出生日期格式不对，或不是合法日期</td></tr>
+    <tr><td>创建</td><td><code>customer.dateOfBirth must not be after today</code></td><td>出生日期晚于 Asia/Shanghai 的当天</td></tr>
+    <tr><td>创建</td><td><code>returnUrl must not be blank</code></td><td>返回地址为空</td></tr>
+    <tr><td>创建</td><td><code>returnUrl length must be at most 1024</code></td><td>返回地址超过 1024</td></tr>
+    <tr><td>创建</td><td><code>returnUrl must start with http:// or https://</code></td><td>返回地址不是 http(s) URL</td></tr>
+    <tr><td>列表</td><td><code>pageNo must be at least 1 and pageSize must be between 1 and 100</code></td><td>页码小于 1，或每页条数不在 1–100</td></tr>
+    <tr><td>列表</td><td><code>statuses contains an unknown value</code></td><td>状态不是<a href="#status"><strong>订单状态</strong></a>中的 8 个值之一</td></tr>
+    <tr><td>全部</td><td><code>参数类型错误</code> / <code>parameter type error</code></td><td>请求体不是合法 JSON，或字段类型不对。此条随语言切换</td></tr>
+    <tr><td>全部</td><td><code>系统异常</code> / <code>System error</code></td><td>未知的运行时异常。此条随语言切换</td></tr>
+  </tbody>
+</table>
+<pre>{
+  "code": 500100000,
+  "msg": "customer.country must be CN, HK, MO or TW",
+  "data": null
+}</pre>
+<hr>
+<h3 id="rules">金额、幂等与边界</h3>
+<ul><li><strong>汇率锁定</strong>：汇率、加点、手续费在建单时锁定。之后调整只影响新订单，结算使用订单上的快照值。</li><li><strong>结算口径</strong>：<ul><li>商户结算汇率 Rm = 收款服务商汇率 Rc × (1 + 加点)，保留 4 位小数，向上取整。</li><li>入账 <code>creditAmount</code> = 订单金额 ÷ Rm，向下取整到 2 位小数。</li><li>手续费 <code>feeAmount</code>：按比例时为 <code>creditAmount × 费率</code>，固定金额时为配置的 USDT 值，都向上取整到 2 位小数。</li><li>净入账 <code>netCreditAmount</code> = <code>creditAmount − feeAmount</code>。</li></ul></li><li><strong>示例</strong>：216,000 CNY，收款汇率 7.20，加点 1%，手续费 0.5% → Rm <code>7.2720</code>，入账 <code>29702.97</code>，手续费 <code>148.52</code>，净入账 <code>29554.45</code>。</li><li><strong>入账网络</strong>：USDT 记入商户法币收款配置中的入账网络，默认 TRON。</li><li><strong>幂等</strong>：同一 <code>merchantOrderNo</code> 已经落成的订单一直可以再取；此前被拒则按本次请求重新校验。并发请求由服务端按「商户 + 商户订单号」加锁。</li><li><strong>判重范围</strong>：进行中订单按证件判重，范围跨所有商户。已取消、失败、成功、已退款的订单不拦截新单。支付窗口到期后、系统完成取消处理前的短暂时间内，该订单仍可能被视为进行中，触发场景①。</li><li><strong>收银台</strong>：<ul><li>语言跟随浏览器，<code>zh</code> 开头显示中文，其余显示英文；页面上可以手动切换。链接不带语言参数。</li><li>收银台没有申诉入口。</li><li>签名被改动、订单不存在或接口请求失败时，显示「链接无效」，且没有返回商户按钮。</li><li>页面每 10 秒刷新一次状态。凭证提交满 30 分钟仍在处理中时，显示超时提示。</li><li>「返回商户」按钮只出现在终态页，以及处理中超时之后。</li><li>「返回商户」通过顶层窗口跳转。以 iframe 嵌入且设置了 <code>sandbox</code> 时，需要允许顶层跳转（<code>allow-top-navigation</code>）。</li><li><code>checkoutUrl</code> 只发给本单用户。</li></ul></li><li><strong>商户申诉</strong>：在商户后台「法币收款/付款 › 法币收款记录」中发起，不在这组 OpenAPI 里。仅待核验、凭证提交已满 30 分钟、且该单从未申诉过时可以发起。</li></ul>
+
+</main>
+</div>
+</body>
+</html>

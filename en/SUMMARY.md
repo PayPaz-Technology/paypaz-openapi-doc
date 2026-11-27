@@ -4,5 +4,7 @@
 * [Common APIs](base-data-api.md)
 * [Pay-in](payin-order.md)
 * [On-Ramp](on-ramp.md)
+* [Fiat Pay-in](fiat-payin.md)
+* [Fiat Pay-out](fiat-payout.md)
 * [Withdrawal](paypaz-api.md)
 * [Webhook Guide](WEBHOOK_GUIDE.md)
